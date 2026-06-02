@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="De Bareel — Broodjes- en Espressobar in Bouwel. Verse broodjes, warme koffie & een glimlach. Open ma-vr 07:00-17:00.">
+  <meta property="og:title" content="De Bareel — Broodjes- en Espressobar Bouwel">
+  <meta property="og:description" content="Verse broodjes, warme koffie & een glimlach — al meer dan 20 jaar jouw vaste stek in Bouwel.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.debareel.be">
+  <meta property="og:locale" content="nl_BE">
+  <title>De Bareel — Broodjes- en Espressobar Bouwel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@300;400;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="grain-overlay">
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="loading-inner">
+      <svg class="loading-cup" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Steam lines -->
+        <path d="M28 18 Q30 12 28 6" stroke="#D4883E" stroke-width="2" stroke-linecap="round" fill="none">
+          <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M40 16 Q42 10 40 4" stroke="#D4883E" stroke-width="2" stroke-linecap="round" fill="none">
+          <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.2s" repeatCount="indefinite"/>
+        </path>
+        <path d="M52 18 Q54 12 52 6" stroke="#D4883E" stroke-width="2" stroke-linecap="round" fill="none">
+          <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.4s" repeatCount="indefinite"/>
+        </path>
+        <!-- Cup body -->
+        <path d="M18 26 L22 66 Q22 70 26 70 L54 70 Q58 70 58 66 L62 26 Z" fill="#5C3D2E"/>
+        <!-- Cup rim -->
+        <rect x="16" y="22" width="48" height="6" rx="3" fill="#2E1F15"/>
+        <!-- Handle -->
+        <path d="M60 36 Q74 36 74 48 Q74 60 60 60" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <!-- Saucer -->
+        <ellipse cx="40" cy="72" rx="28" ry="4" fill="#5C3D2E" opacity="0.5"/>
+        <!-- Coffee surface -->
+        <ellipse cx="40" cy="28" rx="20" ry="3" fill="#D4883E" opacity="0.5"/>
+      </svg>
+      <span class="loading-title">De Bareel</span>
+    </div>
+  </div>
+
+  <!-- HEADER / NAV -->
+  <header class="site-header" role="banner">
+    <nav class="navbar" aria-label="Hoofdnavigatie">
+      <a class="navbar-brand" href="#home" aria-label="De Bareel — startpagina">
+        <strong>De Bareel</strong>
+        <span class="brand-tagline">Broodjes- en Espressobar</span>
+      </a>
+      <ul class="navbar-links" role="list">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#over-ons">Over ons</a></li>
+        <li><a href="#aanbod">Aanbod</a></li>
+        <li><a href="#terras">Terras</a></li>
+        <li><a href="#reserveren">Reserveren</a></li>
+        <li><a href="#openingstijden">Openingstijden</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="navbar-toggle" aria-label="Menu openen" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect y="4" width="24" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect y="11" width="24" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect y="18" width="24" height="2.5" rx="1.25" fill="currentColor"/>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobiel menu" aria-hidden="true">
+    <button class="mobile-menu-close" aria-label="Menu sluiten">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav aria-label="Mobiele navigatie">
+      <ul role="list">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#over-ons">Over ons</a></li>
+        <li><a href="#aanbod">Aanbod</a></li>
+        <li><a href="#terras">Terras</a></li>
+        <li><a href="#reserveren">Reserveren</a></li>
+        <li><a href="#openingstijden">Openingstijden</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="mobile-menu-footer">
+      <a href="tel:014517757">014 51 77 57</a>
+      <a href="mailto:info@debareel.be">info@debareel.be</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- SECTION 1: HERO -->
+    <section class="hero" id="home" aria-labelledby="hero-heading">
+      <div class="hero-content">
+        <p class="hero-tag">Broodjes- en Espressobar · Bouwel</p>
+        <h1 class="hero-title" id="hero-heading">De Bareel</h1>
+        <p class="hero-subtitle">Verse broodjes, warme koffie &amp; een glimlach — al meer dan 20 jaar jouw vaste stek in Bouwel</p>
+        <p class="hero-location">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+          </svg>
+          Herenthoutsesteenweg 4, Bouwel — op 114m van Station Bouwel
+        </p>
+        <div class="hero-buttons">
+          <a href="#aanbod" class="btn-primary">Bekijk ons aanbod</a>
+          <a href="#reserveren" class="btn-outline">Reserveer ontbijtbuffet &rarr;</a>
+        </div>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#D4883E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INTRO STRIP -->
+    <section class="intro-strip" aria-label="Kenmerken">
+      <div class="strip-items">
+        <div class="strip-item" data-animate="fade-up">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6" y="12" width="20" height="14" rx="3" fill="#D4883E" opacity="0.2"/>
+            <path d="M8 12 C8 8 12 6 16 6 C20 6 24 8 24 12" stroke="#D4883E" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M6 16 L26 16" stroke="#D4883E" stroke-width="1.5"/>
+            <path d="M24 18 Q30 18 30 22 Q30 26 24 26" stroke="#D4883E" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <rect x="6" y="26" width="20" height="2" rx="1" fill="#D4883E" opacity="0.5"/>
+          </svg>
+          <strong>Verse broodjes &amp; koffie</strong>
+          <span>Elke dag vers klaargemaakt</span>
+        </div>
+        <div class="strip-item" data-animate="fade-up">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 4 L18.9 11.6 L27 12.3 L21 17.8 L22.9 26 L16 21.8 L9.1 26 L11 17.8 L5 12.3 L13.1 11.6 Z" fill="#D4883E" opacity="0.85"/>
+          </svg>
+          <strong>4.2/5 Beoordelingen</strong>
+          <span>308+ tevreden klanten</span>
+        </div>
+        <div class="strip-item" data-animate="fade-up">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 27 C16 27 6 20 6 13 C6 9.13 9.13 6 13 6 C14.74 6 16.34 6.63 17.59 7.69 C18.84 6.63 20.44 6 22.18 6 C25.91 6 29 9.13 29 13 C29 20 16 27 16 27Z" fill="#D4883E" opacity="0.85"/>
+          </svg>
+          <strong>Jouw buurtcafé</strong>
+          <span>Vertrouwd adres in Bouwel</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: OVER ONS -->
+    <section class="over-ons" id="over-ons" aria-labelledby="over-ons-heading">
+      <div class="about-grid">
+        <div class="about-image-wrapper" aria-hidden="true">
+          <div class="about-image-bg">
+            <div class="about-image-inner">
+              <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="180" opacity="0.25">
+                <circle cx="150" cy="100" r="60" fill="#FBF6EF"/>
+                <path d="M90 200 C90 160 110 145 150 145 C190 145 210 160 210 200 L210 240 L90 240 Z" fill="#FBF6EF"/>
+              </svg>
+            </div>
+          </div>
+          <div class="about-frame" aria-hidden="true"></div>
+          <div class="about-badge">Kenneth &amp; team — Uw gastheren</div>
+        </div>
+        <div class="about-content">
+          <span class="section-label">Ons verhaal</span>
+          <h2 id="over-ons-heading">Meer dan een broodjeszaak — een vaste stek</h2>
+          <p>Bij De Bareel in Bouwel ben je altijd welkom. Al meer dan 20 jaar is onze zaak het kloppende hart van de buurt — een plek waar buren elkaar ontmoeten, fietsers even uitblazen en werknemers starten met een verse koffie en een belegd broodje.</p>
+          <p>Kenneth en zijn team kennen je bij naam. Elke dag vers, met liefde klaargemaakt — van klassieke broodjes tot creatieve lunchborden. En achter de zaak? Een heerlijk terras om van te genieten. Kom gerust langs!</p>
+          <div class="counter-row" aria-label="Onze cijfers">
+            <div class="counter-item">
+              <div class="counter-number">
+                <span class="counter" data-target="20">0</span><span class="counter-suffix">+</span>
+              </div>
+              <span class="counter-label">Jaar ervaring</span>
+            </div>
+            <div class="counter-item">
+              <div class="counter-number">
+                <span class="counter" data-target="308">0</span><span class="counter-suffix">+</span>
+              </div>
+              <span class="counter-label">Beoordelingen</span>
+            </div>
+            <div class="counter-item">
+              <div class="counter-number">
+                <span class="counter" data-target="4" data-decimal="true">0</span><span class="counter-suffix">.2 &#9733;</span>
+              </div>
+              <span class="counter-label">Gemiddelde score</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: AANBOD -->
+    <section class="aanbod" id="aanbod" aria-labelledby="aanbod-heading">
+      <div class="section-header">
+        <span class="section-label">Wat wij aanbieden</span>
+        <h2 id="aanbod-heading">Van ontbijt tot lunch — en alles daartussen</h2>
+        <p class="section-intro">Elke dag vers, elke dag met liefde klaargemaakt.</p>
+      </div>
+      <div class="menu-grid">
+
+        <!-- Card 1: Broodjes -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <rect x="2" y="9" width="22" height="5" rx="2.5" fill="#D4883E" opacity="0.3"/>
+              <rect x="4" y="13" width="18" height="5" rx="2.5" fill="#5C3D2E" opacity="0.4"/>
+              <path d="M2 9 Q2 4 13 4 Q24 4 24 9" fill="#D4883E" opacity="0.6"/>
+              <path d="M4 18 Q4 22 13 22 Q22 22 22 18" fill="#5C3D2E" opacity="0.35"/>
+              <ellipse cx="9" cy="11.5" rx="2" ry="1" fill="#E8A84C" opacity="0.8"/>
+              <ellipse cx="15" cy="11.5" rx="3" ry="1" fill="#5C3D2E" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>Verse Broodjes</h3>
+          <p class="card-desc">Ons paradepaardje! Dagelijks vers belegd met de lekkerste ingrediënten. Van klassiek tot creatief.</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Hesp, kaas &amp; ei</li>
+              <li>Gezonde opties met groenten</li>
+              <li>Luxe: zalm, carpaccio</li>
+              <li>Warm: croque, tosti</li>
+              <li>Dagverse salade</li>
+              <li>Groepsbestellingen mogelijk</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 2: Koffie -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M4 10 L7 22 Q7 23 8.5 23 L15.5 23 Q17 23 17 22 L20 10 Z" fill="#5C3D2E" opacity="0.4"/>
+              <rect x="3" y="8" width="18" height="3" rx="1.5" fill="#2E1F15" opacity="0.5"/>
+              <path d="M19 13 Q24 13 24 17 Q24 21 19 21" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+              <path d="M9 5 Q10 2 9 0" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+              <path d="M13 4 Q14 1 13 -1" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+            </svg>
+          </div>
+          <h3>Koffie &amp; Warme Dranken</h3>
+          <p class="card-desc">Espresso, cappuccino of warme chocolademelk — de perfecte start van jouw dag.</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Espresso, lungo, americano</li>
+              <li>Cappuccino &amp; latte macchiato</li>
+              <li>Warme chocolademelk</li>
+              <li>Thee (diverse smaken)</li>
+              <li>Koffie verkeerd</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 3: Koude dranken -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M7 6 L9 23 Q9 24 10.5 24 L15.5 24 Q17 24 17 23 L19 6 Z" fill="#D4883E" opacity="0.25"/>
+              <rect x="6" y="4" width="14" height="3" rx="1.5" fill="#5C3D2E" opacity="0.4"/>
+              <line x1="13" y1="4" x2="13" y2="1" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M13 1 L16 1" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="8" y="10" width="10" height="3" rx="1.5" fill="#D4883E" opacity="0.2"/>
+            </svg>
+          </div>
+          <h3>Koude Dranken</h3>
+          <p class="card-desc">Verfrissend voor elk seizoen — van vers geperst sap tot een huisgemaakte milkshake.</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Vers fruitsap</li>
+              <li>Frisdranken</li>
+              <li>Milkshakes</li>
+              <li>IJskoffie</li>
+              <li>Water (plat &amp; bruis)</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 4: Gebak -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <rect x="3" y="15" width="20" height="8" rx="3" fill="#5C3D2E" opacity="0.35"/>
+              <path d="M3 15 Q3 9 13 9 Q23 9 23 15" fill="#D4883E" opacity="0.4"/>
+              <path d="M7 9 Q7 6 10 5 Q13 4 16 5 Q19 6 19 9" fill="#E8A84C" opacity="0.5"/>
+              <circle cx="13" cy="4" r="2" fill="#D4883E" opacity="0.7"/>
+              <line x1="3" y1="15" x2="23" y2="15" stroke="#2E1F15" stroke-width="1" opacity="0.3"/>
+            </svg>
+          </div>
+          <h3>Gebak van de Week</h3>
+          <p class="card-desc">Elke week een andere verwennerij — huisgemaakt of zorgvuldig geselecteerd. Vraag ernaar!</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Wekelijks wisselend aanbod</li>
+              <li>Taart per punt</li>
+              <li>Koeken &amp; zoetigheden</li>
+              <li>Perfect bij de koffie</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 5: Ontbijtbuffet -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <circle cx="10" cy="10" r="5" fill="#E8A84C" opacity="0.5"/>
+              <circle cx="10" cy="10" r="2.5" fill="#D4883E" opacity="0.7"/>
+              <line x1="18" y1="6" x2="18" y2="16" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+              <path d="M16 6 L20 6" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+              <ellipse cx="13" cy="21" rx="11" ry="2.5" fill="#5C3D2E" opacity="0.2"/>
+              <rect x="2" y="19" width="22" height="2" rx="1" fill="#5C3D2E" opacity="0.3"/>
+            </svg>
+          </div>
+          <h3>Ontbijtbuffet</h3>
+          <p class="card-desc">Elke 2de en 4de zaterdag — een uitgebreid buffet om je weekend heerlijk te starten. Reserveer op tijd!</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Uitgebreid ontbijtbuffet</li>
+              <li>Elke 2de &amp; 4de zaterdag</li>
+              <li>Reservatie aanbevolen</li>
+              <li>Ideaal voor gezinnen &amp; groepen</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 6: Ontbijtmanden -->
+        <article class="menu-card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M4 14 Q4 22 13 22 Q22 22 22 14 Z" fill="#D4883E" opacity="0.3"/>
+              <path d="M4 14 L7 8 L13 12 L19 8 L22 14" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+              <path d="M8 14 Q8 18 13 18 Q18 18 18 14" stroke="#5C3D2E" stroke-width="1.5" fill="none" opacity="0.4"/>
+              <line x1="13" y1="12" x2="13" y2="6" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M10 6 Q13 3 16 6" stroke="#D4883E" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <h3>Ontbijtmanden</h3>
+          <p class="card-desc">Het perfecte cadeau of een verrassingsontbijt aan huis. Bestel op voorhand — plaatsen beperkt!</p>
+          <button class="card-toggle" aria-expanded="false">Bekijk aanbod ↓</button>
+          <div class="card-items" aria-hidden="true">
+            <ul>
+              <li>Samengestelde ontbijtmand</li>
+              <li>Vol verse producten</li>
+              <li>Bestel minstens 1 dag op voorhand</li>
+              <li>Ideaal voor verjaardagen, moederdag, babyborrels</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: TERRAS -->
+    <section class="terras" id="terras" aria-labelledby="terras-heading">
+      <div class="terras-content">
+        <p class="caveat-accent">Ons verborgen pareltje</p>
+        <h2 id="terras-heading">Het zonnige terras</h2>
+        <p>Achter onze zaak schuilt een heerlijk terras — omringd door groen, perfect voor een rustige koffie of een uitgebreide lunch in de zon.</p>
+        <blockquote class="review-quote">
+          "Pleasant terrace at the back — a hidden gem!"
+        </blockquote>
+        <a class="btn-outline-light" href="#contact">Kom langs en ontdek het zelf &rarr;</a>
+      </div>
+      <div class="terras-visual" aria-hidden="true">
+        <svg class="terras-leaf terras-leaf-1" viewBox="0 0 60 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 95 C30 95 5 70 5 40 C5 15 20 5 30 5 C40 5 55 15 55 40 C55 70 30 95 30 95Z" fill="#5A8F5C" opacity="0.4"/>
+          <line x1="30" y1="95" x2="30" y2="5" stroke="#5A8F5C" stroke-width="2" opacity="0.3"/>
+          <path d="M30 30 L15 45" stroke="#5A8F5C" stroke-width="1.5" opacity="0.3"/>
+          <path d="M30 50 L45 35" stroke="#5A8F5C" stroke-width="1.5" opacity="0.3"/>
+        </svg>
+        <svg class="terras-leaf terras-leaf-2" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 115 C40 115 8 85 5 50 C2 20 20 5 40 5 C60 5 78 20 75 50 C72 85 40 115 40 115Z" fill="#5A8F5C" opacity="0.3"/>
+          <line x1="40" y1="115" x2="40" y2="5" stroke="#5A8F5C" stroke-width="2" opacity="0.25"/>
+        </svg>
+        <svg class="terras-leaf terras-leaf-3" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 75 C25 75 5 55 5 30 C5 12 15 4 25 4 C35 4 45 12 45 30 C45 55 25 75 25 75Z" fill="#D4883E" opacity="0.2"/>
+        </svg>
+        <div class="terras-table" aria-hidden="true">
+          <div class="terras-table-top"></div>
+          <div class="terras-table-leg"></div>
+          <div class="terras-table-cup">
+            <svg viewBox="0 0 30 30" fill="none" width="20">
+              <path d="M5 12 L8 24 Q8 25 10 25 L20 25 Q22 25 22 24 L25 12 Z" fill="#5C3D2E" opacity="0.6"/>
+              <rect x="4" y="10" width="22" height="3" rx="1.5" fill="#2E1F15" opacity="0.5"/>
+              <path d="M23 15 Q28 15 28 19 Q28 23 23 23" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: RESERVEREN -->
+    <section class="reserveren" id="reserveren" aria-labelledby="reserveren-heading">
+      <div class="section-header">
+        <span class="section-label">Kom langs</span>
+        <h2 id="reserveren-heading">Reserveer jouw plek</h2>
+        <p>Reserveer eenvoudig voor het ontbijtbuffet, een groepslunch of een gezellig moment. We houden een plekje vrij — binnen of op het terras!</p>
+      </div>
+      <div class="reservation-card">
+        <form id="reservation-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="naam">Naam <span aria-hidden="true">*</span></label>
+              <input type="text" id="naam" name="naam" required placeholder="Jouw naam" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="telefoon">Telefoon <span aria-hidden="true">*</span></label>
+              <input type="tel" id="telefoon" name="telefoon" required placeholder="0499 00 00 00" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="jouw@email.be" autocomplete="email">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="personen">Aantal personen <span aria-hidden="true">*</span></label>
+              <select id="personen" name="personen" required>
+                <option value="" disabled selected>Selecteer...</option>
+                <option value="1">1 persoon</option>
+                <option value="2">2 personen</option>
+                <option value="3">3 personen</option>
+                <option value="4">4 personen</option>
+                <option value="5">5 personen</option>
+                <option value="6">6 personen</option>
+                <option value="7">7 personen</option>
+                <option value="8">8 personen</option>
+                <option value="9">9 personen</option>
+                <option value="10">10 personen</option>
+                <option value="10+">10+ personen</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="datum">Datum <span aria-hidden="true">*</span></label>
+              <input type="date" id="datum" name="datum" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="type">Type bezoek</label>
+            <select id="type" name="type">
+              <option value="ontbijtbuffet">Ontbijtbuffet</option>
+              <option value="lunch">Lunch</option>
+              <option value="groep">Groep of vergadering</option>
+              <option value="terras">Terras reservatie</option>
+              <option value="andere">Andere</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="opmerkingen">Opmerkingen</label>
+            <textarea id="opmerkingen" name="opmerkingen" rows="4" placeholder="Bijzondere wensen, allergieën, ..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-full">Verstuur reservatie</button>
+        </form>
+        <div class="form-success" role="alert" aria-live="polite">
+          <svg class="checkmark-svg" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <circle cx="30" cy="30" r="27" stroke="#5A8F5C" stroke-width="3"/>
+            <path class="checkmark-path" d="M18 30 L26 38 L42 22" stroke="#5A8F5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Reservatie ontvangen!</h3>
+          <p>Je reservatie is ontvangen! We contacteren je ter bevestiging.</p>
+          <div class="contact-fallback">
+            <a href="tel:014517757">014 51 77 57</a>
+            <a href="mailto:info@debareel.be">info@debareel.be</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: OPENINGSTIJDEN -->
+    <section class="openingstijden" id="openingstijden" aria-labelledby="hours-heading">
+      <div class="hours-grid">
+        <div class="hours-table-wrapper">
+          <h2 id="hours-heading">Openingstijden</h2>
+          <table class="hours-table" aria-label="Openingstijden overzicht">
+            <tbody>
+              <tr data-day="0">
+                <td class="day-name">Maandag</td>
+                <td class="day-hours">07:00 – 17:00</td>
+              </tr>
+              <tr data-day="1">
+                <td class="day-name">Dinsdag</td>
+                <td class="day-hours">07:00 – 17:00</td>
+              </tr>
+              <tr data-day="2">
+                <td class="day-name">Woensdag</td>
+                <td class="day-hours">07:00 – 17:00</td>
+              </tr>
+              <tr data-day="3">
+                <td class="day-name">Donderdag</td>
+                <td class="day-hours">07:00 – 17:00</td>
+              </tr>
+              <tr data-day="4">
+                <td class="day-name">Vrijdag</td>
+                <td class="day-hours">07:00 – 17:00</td>
+              </tr>
+              <tr data-day="5">
+                <td class="day-name">Zaterdag</td>
+                <td class="day-hours closed-text">Gesloten</td>
+              </tr>
+              <tr data-day="6">
+                <td class="day-name">Zondag</td>
+                <td class="day-hours closed-text">Gesloten</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="hours-notes">
+            <p>🍳 Ontbijtbuffet: elke 2de &amp; 4de zaterdag van de maand</p>
+            <p>☀️ Zomer (april–oktober): keuken sluit om 16u, deur om 17u</p>
+          </div>
+          <div class="live-status" aria-live="polite" aria-label="Huidige status"></div>
+        </div>
+        <div class="hours-info">
+          <div class="info-card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+            </svg>
+            <div class="info-content">
+              <strong>Adres</strong>
+              <span>Herenthoutsesteenweg 4</span>
+              <span>2288 Bouwel (Grobbendonk)</span>
+              <a href="https://maps.google.com/?q=Herenthoutsesteenweg+4,+2288+Grobbendonk" target="_blank" rel="noopener noreferrer">Open in Google Maps &rarr;</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
+            </svg>
+            <div class="info-content">
+              <strong>Telefoon</strong>
+              <a href="tel:014517757">014 51 77 57</a>
+              <a href="tel:0476469108">0476 46 91 08</a>
+              <a href="mailto:info@debareel.be">info@debareel.be</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <div class="info-content">
+              <strong>Sociaal</strong>
+              <a href="https://www.facebook.com/people/De-Bareel/100084503757029" target="_blank" rel="noopener noreferrer">Facebook pagina</a>
+              <a href="https://www.instagram.com/debareelbouwel" target="_blank" rel="noopener noreferrer">Instagram @debareelbouwel</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="1" y="6" width="22" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M5 10 L12 14 L19 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <circle cx="5" cy="9" r="1" fill="currentColor" opacity="0"/>
+            </svg>
+            <div class="info-content">
+              <strong>Station Bouwel</strong>
+              <span>Op 114m van Station Bouwel</span>
+              <span>Perfect bereikbaar met trein of fiets!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: CONTACT -->
+    <section class="contact" id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Neem contact op</h2>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
+          </svg>
+          <h3>Telefoon</h3>
+          <p><a href="tel:014517757">014 51 77 57</a></p>
+          <p><a href="tel:0476469108">0476 46 91 08</a></p>
+        </div>
+        <div class="contact-card">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" fill="none"/>
+            <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+          <h3>E-mail</h3>
+          <p><a href="mailto:info@debareel.be">info@debareel.be</a></p>
+        </div>
+        <div class="contact-card">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-3.92-7.93-6.45-13.44-6.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+          <h3>Sociaal</h3>
+          <p><a href="https://www.facebook.com/people/De-Bareel/100084503757029" target="_blank" rel="noopener noreferrer">Facebook</a></p>
+          <p><a href="https://www.instagram.com/debareelbouwel" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <strong>De Bareel</strong>
+        <span class="footer-caveat">Verse broodjes, warme koffie &amp; een glimlach</span>
+        <p class="footer-tagline-sub">Broodjes- en Espressobar · Bouwel</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigatie">
+        <strong>Navigatie</strong>
+        <ul role="list">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#over-ons">Over ons</a></li>
+          <li><a href="#aanbod">Aanbod</a></li>
+          <li><a href="#terras">Terras</a></li>
+          <li><a href="#reserveren">Reserveren</a></li>
+          <li><a href="#openingstijden">Openingstijden</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <address class="footer-address">
+        <strong>Contact</strong>
+        <span>Herenthoutsesteenweg 4</span>
+        <span>2288 Bouwel (Grobbendonk)</span>
+        <a href="tel:014517757">014 51 77 57</a>
+        <a href="tel:0476469108">0476 46 91 08</a>
+        <a href="mailto:info@debareel.be">info@debareel.be</a>
+      </address>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 De Bareel &middot; Herenthoutsesteenweg 4, Bouwel</p>
+    </div>
+  </footer>
+
+  <!-- CHATBOT -->
+  <div id="chat-container" aria-label="Chatbot">
+    <button id="chat-toggle" aria-label="Stel ons een vraag!" title="Stel ons een vraag!">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="white"/>
+      </svg>
+      <span class="notification-dot" aria-hidden="true"></span>
+    </button>
+    <div id="chat-window" role="dialog" aria-label="De Bareel Chatbot" aria-modal="false">
+      <div class="chat-header">
+        <div class="chat-avatar" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 26 26" fill="none">
+            <path d="M4 10 L7 22 Q7 23 8.5 23 L15.5 23 Q17 23 17 22 L20 10 Z" fill="white" opacity="0.7"/>
+            <rect x="3" y="8" width="18" height="3" rx="1.5" fill="white" opacity="0.9"/>
+            <path d="M19 13 Q24 13 24 17 Q24 21 19 21" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="chat-info">
+          <span class="chat-title">De Bareel Assistent</span>
+          <span class="chat-subtitle">Kenneth &amp; team helpen je graag!</span>
+        </div>
+        <span class="online-dot" aria-hidden="true"></span>
+        <button class="chat-close" id="chat-close" aria-label="Chat sluiten">&times;</button>
+      </div>
+      <div id="chat-messages" role="log" aria-live="polite" aria-label="Chatberichten"></div>
+      <div id="quick-replies" aria-label="Snelle antwoorden"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Typ je vraag..." autocomplete="off" aria-label="Typ je bericht">
+        <button id="chat-send" aria-label="Verstuur bericht">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
