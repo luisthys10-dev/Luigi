@@ -572,12 +572,13 @@ button { font-family: var(--font-body); cursor: pointer; }
   justify-content: center;
 }
 
-.about-image-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.about-image-bg img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: var(--radius-lg);
 }
 
 .about-frame {
@@ -837,16 +838,21 @@ button { font-family: var(--font-body); cursor: pointer; }
 .terras-visual {
   position: relative;
   z-index: 2;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
-  height: 200px;
-  background: linear-gradient(135deg, rgba(90,143,92,0.15) 0%, rgba(46,31,21,0.4) 100%);
+  height: 280px;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(212,136,62,0.2);
+  border: 2px solid rgba(212,136,62,0.3);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.terras-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .terras-leaf {
@@ -1874,12 +1880,7 @@ footer {
       <div class="about-grid">
         <div class="about-image-wrapper" aria-hidden="true">
           <div class="about-image-bg">
-            <div class="about-image-inner">
-              <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="180" opacity="0.25">
-                <circle cx="150" cy="100" r="60" fill="#FBF6EF"/>
-                <path d="M90 200 C90 160 110 145 150 145 C190 145 210 160 210 200 L210 240 L90 240 Z" fill="#FBF6EF"/>
-              </svg>
-            </div>
+            <img src="images/zaak.jpg" alt="De Bareel — de zaak van binnen" loading="lazy">
           </div>
           <div class="about-frame" aria-hidden="true"></div>
           <div class="about-badge">Kenneth &amp; team — Uw gastheren</div>
@@ -2087,30 +2088,7 @@ footer {
         <a class="btn-outline-light" href="#contact">Kom langs en ontdek het zelf &rarr;</a>
       </div>
       <div class="terras-visual" aria-hidden="true">
-        <svg class="terras-leaf terras-leaf-1" viewBox="0 0 60 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30 95 C30 95 5 70 5 40 C5 15 20 5 30 5 C40 5 55 15 55 40 C55 70 30 95 30 95Z" fill="#5A8F5C" opacity="0.4"/>
-          <line x1="30" y1="95" x2="30" y2="5" stroke="#5A8F5C" stroke-width="2" opacity="0.3"/>
-          <path d="M30 30 L15 45" stroke="#5A8F5C" stroke-width="1.5" opacity="0.3"/>
-          <path d="M30 50 L45 35" stroke="#5A8F5C" stroke-width="1.5" opacity="0.3"/>
-        </svg>
-        <svg class="terras-leaf terras-leaf-2" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40 115 C40 115 8 85 5 50 C2 20 20 5 40 5 C60 5 78 20 75 50 C72 85 40 115 40 115Z" fill="#5A8F5C" opacity="0.3"/>
-          <line x1="40" y1="115" x2="40" y2="5" stroke="#5A8F5C" stroke-width="2" opacity="0.25"/>
-        </svg>
-        <svg class="terras-leaf terras-leaf-3" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25 75 C25 75 5 55 5 30 C5 12 15 4 25 4 C35 4 45 12 45 30 C45 55 25 75 25 75Z" fill="#D4883E" opacity="0.2"/>
-        </svg>
-        <div class="terras-table" aria-hidden="true">
-          <div class="terras-table-top"></div>
-          <div class="terras-table-leg"></div>
-          <div class="terras-table-cup">
-            <svg viewBox="0 0 30 30" fill="none" width="20">
-              <path d="M5 12 L8 24 Q8 25 10 25 L20 25 Q22 25 22 24 L25 12 Z" fill="#5C3D2E" opacity="0.6"/>
-              <rect x="4" y="10" width="22" height="3" rx="1.5" fill="#2E1F15" opacity="0.5"/>
-              <path d="M23 15 Q28 15 28 19 Q28 23 23 23" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
-            </svg>
-          </div>
-        </div>
+        <img src="images/terras.jpg" alt="Het zonnige terras van De Bareel" loading="lazy">
       </div>
     </section>
 
