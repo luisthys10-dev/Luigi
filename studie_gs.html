@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyGrind — Geschiedenis</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0D14;--surface:#14141E;--surface2:#1C1C28;--border:#252535;--accent:#EF4444;--text:#F0F0F8;--muted:#7878A0;--red:#EF4444;--green:#22C55E;--amber:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+h1,h2,h3,.sg{font-family:'Space Grotesk',sans-serif}
+#app{max-width:680px;margin:0 auto;padding:16px 16px 80px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;max-width:100%}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--accent)}
+.topbar-stats{display:flex;gap:16px;font-size:.85rem;font-weight:600}
+.xpv{color:var(--amber)}.stv{color:var(--red)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 22px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:#dc2626;transform:translateY(-1px)}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.btn-s:hover{background:var(--border)}
+.btn-g{background:transparent;color:var(--muted);border:none}.btn-g:hover{color:var(--text)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.nav-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;font-weight:600}
+.nav-btn:hover{border-color:var(--accent);background:var(--surface2);transform:translateY(-2px)}
+.nav-btn .ic{font-size:2rem;display:block;margin-bottom:8px}
+.nav-btn .lb{color:var(--text);font-size:.95rem}
+.nav-btn .sb{color:var(--muted);font-size:.75rem;margin-top:2px}
+.nav-wide{grid-column:1/-1}
+.prog-w{background:var(--surface2);border-radius:99px;height:6px;margin-bottom:14px}
+.prog-b{height:6px;border-radius:99px;background:var(--accent);transition:width .3s}
+.opts{display:flex;flex-direction:column;gap:9px;margin:18px 0}
+.opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;cursor:pointer;font-size:.9rem;text-align:left;transition:all .15s}
+.opt:hover:not(.dis){border-color:var(--accent)}
+.opt.ok{border-color:var(--green);background:rgba(34,197,94,.1);color:var(--green)}
+.opt.no{border-color:var(--red);background:rgba(239,68,68,.1);color:var(--red)}
+.opt.dis{cursor:default}
+.expl{background:var(--surface2);border-left:3px solid var(--accent);border-radius:8px;padding:13px 15px;font-size:.88rem;line-height:1.65;margin-top:11px}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.75rem;font-weight:600}
+.ba{background:rgba(239,68,68,.15);color:var(--accent)}
+.bg{background:rgba(34,197,94,.15);color:var(--green)}
+.bam{background:rgba(245,158,11,.15);color:var(--amber)}
+.termcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:30px 24px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px}
+.termcard:hover{border-color:var(--accent)}
+.term-t{font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;text-align:center;margin-bottom:10px}
+.def-t{font-size:.88rem;line-height:1.7;text-align:left;width:100%;white-space:pre-line}
+.ex-t{font-size:.82rem;color:var(--muted);line-height:1.6;margin-top:10px;border-top:1px solid var(--border);padding-top:10px;width:100%;white-space:pre-line}
+.navrow{display:flex;gap:10px;margin-top:12px}
+.inp{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;color:var(--text);font-size:.95rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;margin:16px 0}
+.inp:focus{border-color:var(--accent)}
+.inp.bok{border-color:var(--green)}.inp.bno{border-color:var(--red)}
+.wnw-row{display:flex;gap:12px;margin:18px 0}
+.wnw-btn{flex:1;padding:17px;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--surface2);transition:all .15s}
+.wnw-btn:hover:not(.dis){transform:scale(1.02)}
+.wnw-waar{border-color:var(--green)!important;color:var(--green)}
+.wnw-niet{border-color:var(--red)!important;color:var(--red)}
+.wnw-ok{background:rgba(34,197,94,.15)}.wnw-no{background:rgba(239,68,68,.15)}
+.wnw-btn.dis{cursor:default;opacity:.8}
+.kop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.kop-item{padding:11px 12px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);cursor:pointer;font-size:.82rem;text-align:center;transition:all .15s;min-height:56px;display:flex;align-items:center;justify-content:center;line-height:1.3}
+.kop-item:hover:not(.kmatched):not(.kdis){border-color:var(--accent)}
+.kop-item.ksel{border-color:var(--accent);background:rgba(239,68,68,.1)}
+.kop-item.kmatched{border-color:var(--green);background:rgba(34,197,94,.08);color:var(--green);cursor:default}
+.kop-item.kdis{cursor:default}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.shake{animation:shake .35s}
+.tl-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.tl-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;display:flex;align-items:center;gap:10px;cursor:grab;user-select:none;transition:all .2s}
+.tl-item.dragging{opacity:.45;border-color:var(--accent)}
+.tl-item.dragover{border-color:var(--accent);background:rgba(239,68,68,.06);transform:scale(1.01)}
+.tl-item.tlok{border-color:var(--green);background:rgba(34,197,94,.06)}
+.tl-item.tlno{border-color:var(--red);background:rgba(239,68,68,.06)}
+.tl-nr{width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--muted);flex-shrink:0}
+.tl-txt{flex:1;font-size:.88rem}
+.tl-yr{color:var(--amber);font-size:.82rem;font-weight:600;margin-left:auto;white-space:nowrap}
+.tl-arrows{display:flex;flex-direction:column}
+.tl-arr{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:1px 5px;border-radius:4px;line-height:1.2}
+.tl-arr:hover{color:var(--accent)}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}
+.mc{aspect-ratio:.9;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;padding:7px;text-align:center;font-size:.7rem;line-height:1.3;position:relative;overflow:hidden;color:transparent}
+.mc::after{content:'⚔️';position:absolute;font-size:1.4rem;opacity:.3}
+.mc.mflip{color:var(--text);background:var(--surface);border-color:var(--accent)}.mc.mflip::after{display:none}
+.mc.mmatch{color:var(--green);background:rgba(34,197,94,.07);border-color:var(--green);cursor:default}.mc.mmatch::after{display:none}
+.mc.mwrong{border-color:var(--red)!important}
+.mem-stats{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:var(--surface2);border-radius:10px;font-size:.83rem;margin-bottom:12px;color:var(--muted)}
+.mem-stats span{font-weight:700;color:var(--text)}
+#toasts{position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:7px}
+.toast{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:.88rem;font-weight:600;max-width:240px;animation:tslide .3s,tfade .3s 2.7s forwards}
+.t-xp{border-color:var(--amber);color:var(--amber)}.t-st{border-color:var(--red);color:var(--red)}.t-ok{border-color:var(--green);color:var(--green)}
+@keyframes tslide{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tfade{to{opacity:0;transform:translateX(80px)}}
+.xp-pop{position:fixed;pointer-events:none;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--amber);font-size:1.1rem;z-index:9999;animation:xpf 1.1s forwards}
+@keyframes xpf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-70px) scale(1.3)}}
+.back{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:.88rem;cursor:pointer;background:none;border:none;padding:3px 0;margin-bottom:14px;font-family:'Inter',sans-serif}
+.back:hover{color:var(--text)}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:3px}
+.sec-sub{color:var(--muted);font-size:.83rem;margin-bottom:18px}
+.mix-badge{display:inline-block;padding:3px 11px;border-radius:99px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.mb-mc{background:rgba(239,68,68,.15);color:var(--red)}
+.mb-invul{background:rgba(245,158,11,.15);color:var(--amber)}
+.mb-datum{background:rgba(139,92,246,.15);color:#a78bfa}
+.mb-wnw{background:rgba(34,197,94,.15);color:var(--green)}
+.mb-koppel{background:rgba(59,130,246,.15);color:#60a5fa}
+.datum-big{font-family:'Space Grotesk',sans-serif;font-size:3rem;font-weight:700;color:var(--accent);text-align:center;padding:16px 0}
+.stelling{font-size:1rem;line-height:1.65;padding:18px;background:var(--surface2);border-radius:12px;margin:14px 0;text-align:center}
+.fill-sent{font-size:1rem;line-height:2;background:var(--surface2);border-radius:12px;padding:18px;margin:12px 0}
+.fill-blank{display:inline-block;min-width:110px;border-bottom:2px solid var(--accent);text-align:center;color:var(--accent);font-weight:600}
+.hint{color:var(--amber);font-size:.82rem;margin-top:3px}
+.res-wrap{text-align:center;padding:20px 0}
+.res-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0}
+.res-stat{background:var(--surface2);border-radius:10px;padding:14px;text-align:center}
+.res-val{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700}
+.res-lbl{color:var(--muted);font-size:.73rem;margin-top:3px}
+.kop-sep{text-align:center;color:var(--muted);font-size:.72rem;padding:2px 0;pointer-events:none;font-weight:600}
+.mini-q{background:var(--surface2);border:1px solid var(--amber);border-radius:12px;padding:18px;margin:14px 0}
+.mini-h{color:var(--amber);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:10px}
+.q-ctr{color:var(--muted);font-size:.82rem}
+.div{height:1px;background:var(--border);margin:14px 0}
+.frow{display:flex;align-items:center;gap:8px}
+.ml-a{margin-left:auto}
+@media(max-width:460px){.nav-grid{grid-template-columns:1fr}.mem-grid{grid-template-columns:repeat(3,1fr)}.kop-grid{grid-template-columns:1fr}.res-stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toasts"></div>
+<script>
+'use strict';
+
+// ── DATA ──────────────────────────────────────────────────────
+
+const H = [
+{
+  naam:"H4 — Religieuze strijd (1500–1650)",
+  topics:[
+    {
+      term:"Karel V en centralisatie",
+      def:"Karel V erfde via huwelijkspolitiek een enorm rijk: Bourgondische Nederlanden + Castilië + Aragon + Duits keizerschap. Hij streefde naar centralisatie: één bestuur, één wet, één godsdienst (katholiek) voor het hele rijk. Dit betekende: belastingen opleggen, wetten invoeren én het protestantisme tegengaan.",
+      ex:"Centralisatie = macht samenvoegen vanuit één punt. Karel V wilde dat IEDEREEN in zijn enorme rijk katholiek was. Dit botste hard met de groeiende protestantse beweging, vooral in de Nederlanden."
+    },
+    {
+      term:"Reformatie & tijdlijn conflict",
+      def:"1517: Luther protesteert → start Reformatie. In de Nederlanden: protestanten weigerden bekering, adel/burgerij verzetten zich tegen Spaans bestuur.\n\nTijdlijn:\n1517 — Luther protesteert (Reformatie)\n1545 — Concilie van Trente (Contrareformatie start)\n1566 — Beeldenstorm\n1568 — Start Tachtigjarige Oorlog\n1576 — Spaanse Furie (Antwerpen geplunderd)\n1588 — Noord verklaart onafhankelijkheid\n1648 — Vrede van Munster (einde oorlog)",
+      ex:"Spaanse Furie 1576: Spaanse soldaten plunderden en verwoestten Antwerpen. Dit was een keerpunt dat veel mensen naar de noordelijke kant dreef. Beeldenstorm 1566: protestanten vernielden katholieke kunst en beelden in kerken."
+    },
+    {
+      term:"Splitsing Nederlanden — Vrede van Munster (1648)",
+      def:"Resultaat van de Tachtigjarige Oorlog:\n• Noord (Republiek der Zeven Verenigde Nederlanden): ONAFHANKELIJK + protestants + vrijheid van godsdienst\n• Zuid (huidig België): SPAANS gebleven + katholiek\n\nDit verklaart waarom Nederland historisch protestant was en België katholiek!",
+      ex:"De Vrede van Munster was een historisch compromis. Het Noorden koos voor vrijheid van godsdienst (revolutionair voor die tijd!). Het Zuiden bleef onder Spaans-katholiek gezag. Dit religieuze verschil is tot vandaag voelbaar."
+    },
+    {
+      term:"Contrareformatie: hervormingen",
+      def:"Reactie van de katholieke kerk op de Reformatie.\n\nConcilie van Trente (1545–1563):\n• Wantoestanden aanpakken (corrupte priesters, misbruiken)\n• Betere priestersopleiding\n• Strengere regels\n• Jezuïetenorde opgericht: kwalitatief onderwijs voor jongeren",
+      ex:"De kerk besefte dat ze zichzelf moest hervormen om gelovigen te behouden. De Jezuïetenorde stichtte overal scholen van hoge kwaliteit. Dit is de constructieve kant van de contrareformatie."
+    },
+    {
+      term:"Contrareformatie: repressie & barok",
+      def:"REPRESSIE: Inquisitie = kerkelijke rechtbank die ketters (andersdenkenden) vervolgde. Ketters die hun geloof niet afzwoeren riskeerden de doodstraf. Engeland: Hendrik VIII brak met Rome → anglicaanse kerk.\n\nBAROK als propaganda: de kerk gebruikte kunst om het katholicisme aantrekkelijk te maken. Kenmerken: extreme dramatiek, sterke emotie, contrast licht/donker (chiaroscuro), weelderige symmetrie. Bekendste kunstenaar: Rubens (Antwerpen).",
+      ex:"Barok = kunst als reclamemiddel voor de kerk. Grote dramatische schilderijen en kerken moesten gelovigen ontroeren en bij het geloof houden. Rubens schilderde enorme altaarstukken vol beweging en emotie."
+    },
+    {
+      term:"Collectieve herinnering",
+      def:"Herinneringen die voortleven in het geheugen van een grote groep mensen.\n\n2 soorten erfgoed:\n• MATERIEEL: gebouwen, schilderijen, standbeelden, artefacten\n• IMMATERIEEL: verhalen, tradities, rituelen, feesten\n\nFuncties: identiteitsconstructie · sociale cohesie · trots cultiveren · slachtofferschap cultiveren · waardenoverdracht",
+      ex:"De Pot van Olen = lokaal voorbeeld van collectieve herinnering. Bronnenstudie: 1. Contextuele info verzamelen 2. Observeer de bron 3. Interpreteer (doelpubliek, boodschap, perspectief van de maker)."
+    }
+  ]
+},
+{
+  naam:"H5 — Absolutisme & Verlichting (1650–1800)",
+  topics:[
+    {
+      term:"Absolutisme: Lodewijk XIV",
+      def:"Absolute vorst = trekt ALLE macht naar zich toe. Lodewijk XIV: 'L'état c'est moi' (de staat dat ben ik).\n\nKenmerken:\n• Centraliseerde macht in Versailles\n• Hoge adel VERPLICHT aan het hof (verloor lokale macht)\n• Katholicisme = staatsgodsdienst, protestanten gediscrimineerd\n• Beroepsleger + geschoolde ambtenaren\n\nEconomie — mercantilisme (minister Colbert):\n• Invoer zwaar belasten\n• Uitvoer stimuleren → meer staatsgeld",
+      ex:"Versailles als machtsmiddel: de ongekende pracht symboliseerde de macht. Door de adel aan het hof te verplichten verloren ze hun lokale invloed en werden ze afhankelijk van de gunsten van de koning. Slim maar ook een beperking van de aristocratie."
+    },
+    {
+      term:"Andere absolute vorsten",
+      def:"Lodewijk XIV (Fr) — 'L'état c'est moi', Versailles\nHendrik VIII (Eng) — brak met Rome, anglicaanse kerk\nKarel V — probeerde heel rijk katholiek te maken\nFrederik van Pruisen — grote Europese macht, oorlog en diplomatie\nCatharina de Grote (Rusland) — nodigde filosofen zoals Voltaire uit\nMaria Theresia (Duits Rijk) — huwelijkspolitiek",
+      ex:"Let op het verschil: sommige vorsten waren 'verlichte despoten' (bv. Catharina de Grote die met filosofen correspondeerde) maar behielden hun absolute macht. Verlicht despotisme = macht gebruiken in het voordeel van het volk, ZONDER inspraak te geven."
+    },
+    {
+      term:"Verlichtingsdenkers",
+      def:"De Verlichting (18e eeuw) = gebruik van de rede/ratio om de samenleving te verbeteren.\n\nDescartes: 'Je pense, donc je suis' → rationalisme (basis van de Verlichting)\n\nJohn Locke (Brits): aangeboren vrijheid van de mens. Rechtsstaat met grondwet. Als vorst slecht regeert → volk mag hem afzetten = VOLKSSOEVEREINITEIT\n\nRousseau (Frans): volkssoevereiniteit via een parlement\n\nMontesquieu (Frans): SCHEIDING DER MACHTEN — wetgevende + uitvoerende + rechterlijke macht houden elkaar in evenwicht = TRIAS POLITICA",
+      ex:"Trias politica = het idee dat geen enkele persoon of groep alle drie de machten tegelijk mag hebben. Dit voorkomt machtsmisbruik. Het werd voor het eerst in de praktijk gebracht in de Amerikaanse grondwet van 1787 — Montesquieu in actie!"
+    },
+    {
+      term:"Verlichte kritiek op absolutisme",
+      def:"Domein → Probleem (absol.) → Verlichte oplossing:\n• Politiek → Onvrijheid → Rechtsstaat + grondwet\n• Politiek → Machtsmisbruik → Volkssoevereiniteit + trias politica\n• Sociaal → Standenmaatschappij → Gelijkheid van alle burgers\n• Economie → Overheidsregulering → Vrije markt\n• Cultuur → Staatsgodsdienst → Godsdienstvrijheid",
+      ex:"MAAR: in de praktijk golden deze idealen enkel voor blanke, mannelijke, vrije burgers! Verlichtingsdenkers zoals Hume en Voltaire beschouwden Afrikanen als inferieur en steunden slavernij. De Verlichting had een blinde vlek."
+    }
+  ]
+},
+{
+  naam:"H6 — Revoluties (1750–1800)",
+  topics:[
+    {
+      term:"Industriële Revolutie (ca. 1750–1870)",
+      def:"Start: Engeland. Oorzaken: bevolkingsgroei → stijgende vraag → technologische innovatie.\n\nStoommachine (1712): steenkool als energiebron voor pompen in mijnen → later voor textielmachines.\n\nGevolg: huisnijverheid (thuis werken) verdween → fabrieken. Kapitalisme: investeren in fabrieken → snel rijk worden.\n\nKEERZIJDE: lange werkdagen voor laag loon. Vrouwen en kinderen moesten ook werken. Gevaarlijke omstandigheden.",
+      ex:"De stoommachine was de game changer. Eerst voor de mijnen, dan voor de textielsector, dan voor transport (trein). Manchester groeide van een klein stadje naar een industriestad van 300.000 inwoners in enkele decennia. Indrukwekkend maar ook sociaal ontwrichtend."
+    },
+    {
+      term:"Amerikaanse Revolutie: oorzaken",
+      def:"13 Britse kolonies aan de oostkust van Noord-Amerika hadden eigen parlement en veel zelfbestuur.\n\nProbleem: moesten belastingen betalen aan Groot-Brittannië MAAR hadden GEEN vertegenwoordiging in het Britse parlement in Londen.\n\nSugar Act, Stamp Act, Townshend Acts → verhoogde belastingen na de Zevenjarige Oorlog.\n\nSleutelzin: 'No taxation without representation'",
+      ex:"Stel je voor: je betaalt belastingen aan een overheid maar mag niet meepraten over hoe die gebruikt worden. Dat was de situatie van de kolonisten. Groot-Brittannië zag de kolonies puur als melkkoe. De kolonisten waren het zat."
+    },
+    {
+      term:"Amerikaanse Revolutie: verloop & gevolgen",
+      def:"1774: Declaration of Rights (burgerrechtenverklaring)\n1775: start onafhankelijkheidsoorlog\n1776: Stichting van de VS (aanvankelijk confederatie)\n1783: Groot-Brittannië erkent onafhankelijkheid\n1787: Grondwet — TRIAS POLITICA voor het eerst in praktijk:\n• Congres = wetgevende macht\n• President = uitvoerende macht\n• Hooggerechtshof = rechterlijke macht\n\nVerlichting voor het eerst echt in de praktijk gebracht!",
+      ex:"De Amerikaanse grondwet van 1787 is een rechtstreekse toepassing van Montesquieu's ideeën. Dit was baanbrekend: voor het eerst in de geschiedenis een land dat bewust gebouwd werd op verlichtingsideeën. De Founding Fathers (Washington, Jefferson, Franklin) lazen Locke en Montesquieu."
+    },
+    {
+      term:"Franse Revolutie: oorzaken",
+      def:"POLITIEK: absolutisme, derde stand (het volk) had geen inspraak. In de Staten-Generaal had elke stand één stem: clerus + adel stemden samen tégen de derde stand.\n\nECONOMISCH: slechte oogsten → enorm gestegen broodprijzen. Staatsschuld door de Zevenjarige Oorlog.\n\nSOCIAAL: clerus en adel betaalden bijna GEEN belastingen, de derde stand droeg alles.\n\nCULTUREEL: invloed verlichtingsidealen (Rousseau, Montesquieu, Voltaire — allemaal Fransen!).",
+      ex:"Ironie: de verlichtingsideeën die de revolutie inspireerden kwamen grotendeels van FRANSE filosofen. Rousseau schreef over volkssoevereiniteit terwijl de Franse koning absoluut regeerde. Die contradictie kon niet eeuwig standhouden."
+    },
+    {
+      term:"Franse Revolutie: verloop",
+      def:"1789: Louis XVI heropent de Staten-Generaal → onverwacht startpunt.\n14 juli 1789: Bestorming van de Bastille (koninklijke gevangenis = symbool absolutisme) → startpunt revolutie.\nAugustus 1789: Déclaration des droits de l'homme et du citoyen.\n1791: Grondwet → constitutionele monarchie.\n1792: Republiek uitgeroepen, monarchie afgeschaft.\nDE TERREUR (1792–1794): Robespierre + Comité van Algemeen Welzijn → duizenden guillotineerd, ook Lodewijk XVI en Marie-Antoinette.",
+      ex:"De Bastille had op dat moment nog maar 7 gevangenen — het ging om het symbool, niet om bevrijding. De Terreur is de tragische wending: de revolutie begon met 'vrijheid, gelijkheid, broederlijkheid' maar eindigde met massale executies. Robespierre zelf werd uiteindelijk ook gegullotineerd."
+    },
+    {
+      term:"Vaardigheden: bronnen ontleden",
+      def:"VISUELE BRON ontleden:\n1. Contextuele info (wie, wanneer, wat, maker)\n2. Observeer (oriënterend + gedetailleerd)\n3. Interpreteer (doelpubliek, boodschap, perspectief maker)\n\nTEKSTUELE BRON: auteur · jaar · doelpubliek · boodschap · perspectief · betrouwbaarheid\n\nGRAFIEK: assen + tijdsperiode + eenheden → koppel aan historische context\n\nMULTIPERSPECTIVITEIT: bekijk vanuit meerdere invalshoeken voor een volledigere kijk",
+      ex:"Goetsbloets (Antwerpse edelman, 1765–1816) maakte aquarellen van de Franse Revolutie toen Franse troepen Antwerpen binnentrokken (24 juli 1794). Zijn perspectief = kritisch ooggetuigenverslag van een lid van de elite. Wat zie je NIET in zijn werk? Dat is ook een bron!"
+    }
+  ]
+}
+];
+
+const TIJDLIJN=[
+  {jaar:1517,event:"Luther protesteert — start Reformatie"},
+  {jaar:1545,event:"Concilie van Trente — start Contrareformatie"},
+  {jaar:1566,event:"Beeldenstorm in de Nederlanden"},
+  {jaar:1568,event:"Start Tachtigjarige Oorlog"},
+  {jaar:1576,event:"Spaanse Furie — Antwerpen geplunderd"},
+  {jaar:1588,event:"Republiek der Zeven Verenigde Nederlanden"},
+  {jaar:1648,event:"Vrede van Munster"},
+  {jaar:1712,event:"Uitvinding stoommachine"},
+  {jaar:1776,event:"Amerikaanse Onafhankelijkheidsverklaring"},
+  {jaar:1787,event:"Grondwet VS — trias politica in praktijk"},
+  {jaar:1789,event:"Bestorming van de Bastille"},
+  {jaar:1792,event:"Franse Republiek uitgeroepen — start Terreur"}
+];
+
+const MEMORY_DATA=[
+  ["Spaanse Furie (1576)","Spaanse soldaten plunderden Antwerpen"],
+  ["Vrede van Munster (1648)","Einde Tachtigjarige Oorlog — Noord onafhankelijk"],
+  ["Trias politica","Scheiding: wetgevende + uitvoerende + rechterlijke macht"],
+  ["Volkssoevereiniteit","Macht berust bij het volk, kan vorst afzetten (Locke)"],
+  ["Mercantilisme","Invoer belasten + uitvoer stimuleren (Colbert)"],
+  ["Bastille","Koninklijke gevangenis bestormd 14 juli 1789"],
+  ["Terreur (1793–94)","Robespierre, duizenden geëxecuteerd via guillotine"],
+  ["Collectieve herinnering","Herinneringen voortlevend via materieel + immaterieel erfgoed"],
+  ["Barok","Contrareformatie-kunst: dramatiek, emotie, chiaroscuro — Rubens"],
+  ["Inquisitie","Kerkelijke rechtbank die ketters vervolgde — risico doodstraf"]
+];
+
+const QUIZ=[
+  {q:"Wat was de Spaanse Furie (1576)?",o:["Spanje won een zeeslag","Spaanse soldaten plunderden Antwerpen","De Nederlanden riepen onafhankelijkheid uit","Start van de Tachtigjarige Oorlog"],a:1,ex:"Spaanse soldaten plunderden en verwoestten Antwerpen in 1576. Dit was een keerpunt dat veel mensen naar de noordelijke kant dreef."},
+  {q:"Wat betekent 'L'état c'est moi'?",o:["De staat is heilig","De staat dat ben ik — absolutisme van Lodewijk XIV","De staat is van het volk","De staat is de kerk"],a:1,ex:"Deze uitspraak van Lodewijk XIV symboliseert het absolutisme: hij WAS de staat. Alle macht was in zijn handen."},
+  {q:"Wie stelde de trias politica voor?",o:["John Locke","Rousseau","Montesquieu","Descartes"],a:2,ex:"Montesquieu stelde voor de macht te splitsen in drie: wetgevend (wetten maken), uitvoerend (wetten uitvoeren), rechterlijk (rechtsspraak). Ze houden elkaar in evenwicht."},
+  {q:"Wanneer werd de Bastille bestormd?",o:["14 juli 1776","4 augustus 1789","14 juli 1789","1 september 1792"],a:2,ex:"14 juli 1789 = startpunt van de Franse Revolutie. De Bastille was een symbool van het absolutisme. Dit is tot vandaag de Franse nationale feestdag."},
+  {q:"Wat is volkssoevereiniteit?",o:["De koning heeft absolute macht","De macht berust bij het volk via een parlement","De kerk beslist wie regeert","Alleen de adel heeft stemrecht"],a:1,ex:"Volkssoevereiniteit (Locke + Rousseau): de macht komt van het volk. Als de vorst slecht regeert mag het volk hem afzetten. Revolutionair idee!"},
+  {q:"Wat was het mercantilisme van Colbert?",o:["Vrije handel zonder belastingen","Invoer belasten + uitvoer stimuleren voor meer staatsgeld","Handel beperken tot eigen grenzen","Belastingvrijstelling voor de adel"],a:1,ex:"Minister Colbert van Lodewijk XIV: invoer belasten zodat mensen binnenlands kopen, uitvoer stimuleren zodat geld het land binnenkomt. Doel: de staatskas vullen."},
+  {q:"Wat was het sleutelargument van de Amerikaanse kolonisten?",o:["We willen een eigen koning","No taxation without representation","Godsdienstvrijheid voor iedereen","Groot-Brittannië is te ver weg"],a:1,ex:"De kolonisten betaalden belastingen maar hadden geen vertegenwoordiging in het Britse parlement. Ze mochten niet meepraten over de eigen belastingen — dat was voor hen onaanvaardbaar."},
+  {q:"Wat was de Terreur (1792–1794)?",o:["Aanvallen op de Bastille","Fase onder Robespierre: duizenden burgers guillotineerd","Oorlog tussen Noord en Zuid-Nederland","Inquisitie in de Nederlanden"],a:1,ex:"Robespierre leidde het Comité van Algemeen Welzijn. Iedereen die kritiek had op de revolutie werd als 'vijand' beschouwd en geëxecuteerd. Robespierre zelf eindigde ook onder de guillotine."},
+  {q:"Wat is het verschil tussen materieel en immaterieel erfgoed?",o:["Er is geen verschil","Materieel = tastbaar (gebouwen, schilderijen), immaterieel = niet-tastbaar (verhalen, rituelen)","Immaterieel is waardevoller","Materieel erfgoed is alleen in musea"],a:1,ex:"Collectieve herinnering wordt bewaard via beide soorten erfgoed. Een kasteel = materieel. Het verhaal over hoe dat kasteel veroverd werd = immaterieel. Beide zijn nodig!"},
+  {q:"Wanneer werd de Amerikaanse grondwet met trias politica ingevoerd?",o:["1776","1783","1787","1789"],a:2,ex:"1787: de Amerikaanse grondwet. Dit was de eerste keer dat de verlichtingsidealen van Montesquieu echt in de praktijk werden gebracht: drie afzonderlijke machten die elkaar controleren."}
+];
+
+const OEFENMIX=[
+  {type:"invul",q:"De Vrede van _____ (1648) beëindigde de Tachtigjarige Oorlog.",a:"munster",hint:"Stad in Duitsland",ex:"Vrede van Munster 1648: Noord-NL onafhankelijk en protestant, Zuid-NL bleef Spaans en katholiek."},
+  {type:"invul",q:"Het Concilie van _____ (1545–1563) was het startpunt van de Contrareformatie.",a:"trente",hint:"Stad in Noord-Italië",ex:"Het Concilie van Trente duurde 18 jaar en hervormde de kerk van binnenuit: betere priesters, strengere regels, Jezuïetenorde."},
+  {type:"invul",q:"'No taxation without _____' was het sleutelargument van de Amerikaanse kolonisten.",a:"representation",hint:"Vertegenwoordiging",ex:"De kolonisten betaalden belastingen aan Groot-Brittannië maar hadden geen vertegenwoordiging in het Britse parlement in Londen."},
+  {type:"invul",q:"De scheiding van de drie machten heet de _____ politica.",a:"trias",hint:"Latijns woord voor drie",ex:"Trias politica (Montesquieu): wetgevende + uitvoerende + rechterlijke macht houden elkaar in evenwicht."},
+  {type:"invul",q:"Robespierre leidde het Comité van Algemeen _____ tijdens de Terreur.",a:"welzijn",hint:"Welzijn / Well-being",ex:"Het Comité van Algemeen Welzijn was de machtigste instelling tijdens de Terreur (1792–1794). Paradox: 'welzijn' maar executies."},
+  {type:"datum",jaar:"1566",o:["Start Tachtigjarige Oorlog","Beeldenstorm in de Nederlanden","Spaanse Furie","Vrede van Munster"],a:1,ex:"De Beeldenstorm van 1566: protestanten vernielden katholieke kunst en beelden in kerken. Dit was een directe provocatie van de Spaanse overheersers."},
+  {type:"datum",jaar:"1789",o:["Eerste grondwet van de VS","Bestorming van de Bastille","Vrede van Munster","Start Tachtigjarige Oorlog"],a:1,ex:"14 juli 1789: bestorming van de Bastille = startpunt Franse Revolutie. De Bastille had maar 7 gevangenen maar was symbool van het absolutisme."},
+  {type:"datum",jaar:"1787",o:["Amerikaans onafhankelijkheidsoorlog begint","Declaration of Rights","Grondwet VS met trias politica","Franse Republiek uitgeroepen"],a:2,ex:"De Amerikaanse grondwet van 1787 was de eerste praktische toepassing van Montesquieu's trias politica. Baanbrekend!"},
+  {type:"datum",jaar:"1648",o:["Start Reformatie","Beeldenstorm","Vrede van Munster","Bestorming Bastille"],a:2,ex:"Vrede van Munster 1648: einde Tachtigjarige Oorlog. Noord-NL onafhankelijk en protestant. Zuid-NL (huidig België) bleef Spaans en katholiek."},
+  {type:"datum",jaar:"1517",o:["Beeldenstorm","Start Reformatie door Luther","Vrede van Munster","Spaanse Furie"],a:1,ex:"1517: Luther publiceert zijn 95 stellingen → start van de Reformatie. Dit veranderde Europa voorgoed."},
+  {type:"wnw",stelling:"De trias politica werd voor het eerst in de praktijk gebracht in de Franse grondwet van 1791.",correct:false,ex:"NIET WAAR. Het was de AMERIKAANSE grondwet van 1787 die de trias politica voor het eerst in de praktijk bracht. De Franse grondwet van 1791 volgde daarna."},
+  {type:"wnw",stelling:"Lodewijk XIV was een verlicht despoot die inspraak gaf aan het volk.",correct:false,ex:"NIET WAAR. Lodewijk XIV was een ABSOLUTE vorst ('L'état c'est moi'). Hij gaf het volk geen inspraak. Hij verplichtte de adel aan het hof in Versailles zodat ze geen lokale macht konden uitbouwen."},
+  {type:"wnw",stelling:"De Inquisitie was een kerkelijke rechtbank die ketters vervolgde.",correct:true,ex:"WAAR. De Inquisitie was de repressieve kant van de Contrareformatie. Ketters die hun geloof niet afzwoeren riskeerden de doodstraf."},
+  {type:"wnw",stelling:"In de praktijk golden de verlichtingsidealen van vrijheid en gelijkheid voor alle mensen wereldwijd.",correct:false,ex:"NIET WAAR. In de praktijk golden deze idealen enkel voor blanke, mannelijke, vrije burgers. Verlichtingsdenkers zoals Hume en Voltaire beschouwden Afrikanen als inferieur."},
+  {type:"wnw",stelling:"De Beeldenstorm vond plaats in 1566, twee jaar vóór de start van de Tachtigjarige Oorlog.",correct:true,ex:"WAAR. Beeldenstorm = 1566. Start Tachtigjarige Oorlog = 1568. Twee jaar later. De Beeldenstorm was een van de aanleidingen voor de oorlog."},
+  {type:"koppel",paren:[["Volkssoevereiniteit","De macht berust bij het volk"],["Mercantilisme","Invoer belasten, uitvoer stimuleren"],["Trias politica","Scheiding van drie machten"],["Terreur","Fase van massa-executies onder Robespierre"]],ex:"Volkssoevereiniteit (Locke/Rousseau) → macht bij volk. Mercantilisme (Colbert) → economisch systeem Lodewijk XIV. Trias politica (Montesquieu) → drie machten in evenwicht. Terreur (Robespierre) → dramatische wending van de Franse Revolutie."},
+  {type:"koppel",paren:[["Concilie van Trente","Hervormingen in de katholieke kerk (1545–1563)"],["Barok","Kunst als propaganda voor het katholicisme"],["Inquisitie","Kerkelijke rechtbank die ketters vervolgde"],["Jezuïetenorde","Nieuwe religieuze orde voor kwalitatief onderwijs"]],ex:"Alle vier zijn onderdelen van de Contrareformatie. Twee constructieve aspecten (Trente en Jezuïetenorde) en twee repressieve (Inquisitie en barok als propaganda)."},
+  {type:"mc",q:"Welke filosoof schreef 'Je pense, donc je suis'?",o:["Locke","Rousseau","Descartes","Montesquieu"],a:2,ex:"Descartes (Frans filosoof) schreef 'Ik denk, dus ik ben' — de basis van het rationalisme. Dit vertrouwen in de menselijke rede is de intellectuele basis van de Verlichting."},
+  {type:"mc",q:"Waarom had de derde stand weinig macht in de Franse Staten-Generaal?",o:["Ze waren te arm","Elke stand had één stem, clerus+adel stemden samen tégen de derde stand","Ze kwamen zelden opdagen","De koning koos hun vertegenwoordigers"],a:1,ex:"De Staten-Generaal: elke stand had één stem. Clerus + adel = 2 stemmen tégen derde stand = 1 stem. Altijd verloren, ook al vertegenwoordigden ze 98% van de bevolking!"},
+  {type:"mc",q:"Wat is het verschil tussen materieel en immaterieel erfgoed?",o:["Er is geen verschil","Materieel = tastbaar (gebouwen), immaterieel = niet-tastbaar (verhalen, tradities)","Immaterieel erfgoed is ouder","Materieel erfgoed is niet beschermd"],a:1,ex:"Een schilderij van Rubens = materieel erfgoed. Het verhaal van de Spaanse Furie mondeling doorgegeven = immaterieel erfgoed."}
+];
+
+// ── STATE ────────────────────────────────────────────────────
+
+let xp=0,streak=0,screen='home';
+// leren
+let lH=0,lT=0,lFlip=false,lPhase='topic';
+let mqQs=[],mqIdx=0,mqScore=0,mqAns=false,mqXP=0;
+// quiz
+let qQs=[],qIdx=0,qScore=0,qAns=false;
+// mix
+let mQs=[],mIdx=0,mScore=0,mAns=false;
+let kopSel=null,kopMatch=[],kopDefs=[];
+// tijdlijn
+let tlItems=[],tlChecked=false,tlDragSrc=null;
+// memory
+let memC=[],memF=[],memM=[],memAtt=0,memT=0,memInt=null,memLock=false,memDone=false;
+// resultaat
+let rScore=0,rTotal=0,rXP=0,rType='';
+
+// ── UTILS ────────────────────────────────────────────────────
+
+function sfl(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function sv(){localStorage.setItem('sg_xp',xp);localStorage.setItem('sg_st',streak)}
+function ld(){xp=+localStorage.getItem('sg_xp')||0;streak=+localStorage.getItem('sg_st')||0}
+function addXP(n,lbl){
+  xp+=n;sv();
+  const el=document.querySelector('.xpv');if(el)el.textContent=xp+' XP';
+  pop(n);
+  if(lbl)toast(lbl,'t-xp');
+}
+function updStr(ok){
+  if(ok){
+    streak++;sv();
+    if(streak===3)toast('🔥 3 op rij!','t-st');
+    else if(streak===5)toast('🔥🔥 5 op rij! Ongelooflijk!','t-st');
+    else if(streak===10)toast('🔥🔥🔥 10 op rij! Legendarisch!','t-st');
+  }else{streak=0;sv();}
+  const el=document.querySelector('.stv');if(el)el.textContent='🔥'+streak;
+}
+function toast(msg,cls=''){
+  const c=document.getElementById('toasts');
+  const t=document.createElement('div');
+  t.className='toast '+(cls||'');t.textContent=msg;
+  c.appendChild(t);setTimeout(()=>t.remove(),3300);
+}
+function pop(n){
+  const el=document.createElement('div');
+  el.className='xp-pop';el.textContent='+'+n+' XP';
+  el.style.left=(20+Math.random()*50)+'%';el.style.top='25%';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1200);
+}
+function ftm(s){return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0')}
+function go(s){
+  if(screen==='memory'&&s!=='memory')stopMem();
+  screen=s;
+  if(s==='leren'){lH=0;lT=0;lFlip=false;lPhase='topic';}
+  if(s==='quiz')initQ();
+  if(s==='mix')initMix();
+  if(s==='tijdlijn')initTl();
+  if(s==='memory')initMem();
+  render();
+  if(s==='memory')startMem();
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+
+function render(){
+  const app=document.getElementById('app');
+  let h=topbar();
+  switch(screen){
+    case'home':h+=home();break;
+    case'leren':h+=leren();break;
+    case'quiz':h+=quiz();break;
+    case'mix':h+=mix();break;
+    case'tijdlijn':h+=tl();break;
+    case'memory':h+=mem();break;
+    case'resultaat':h+=res();break;
+  }
+  app.innerHTML=h;
+  bind();
+  if(screen==='tijdlijn')bindTl();
+  if(screen==='memory'){startMem();}
+}
+
+function topbar(){
+  return`<div class="topbar"><span class="topbar-title">StudyGrind — Geschiedenis ⚔️</span><div class="topbar-stats"><span class="stat xpv">✨ ${xp} XP</span><span class="stat stv">🔥${streak}</span></div></div>`;
+}
+
+// ── HOME ─────────────────────────────────────────────────────
+
+function home(){
+  return`<div style="padding-top:20px">
+  <h1 class="sg" style="font-size:1.6rem;margin-bottom:4px">Geschiedenis Examen</h1>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:6px">H4 · H5 · H6 — ${H.reduce((a,c)=>a+c.topics.length,0)} topics · ${QUIZ.length} quizvragen</p>
+  <div class="nav-grid">
+    <div class="nav-btn" onclick="go('leren')"><span class="ic">📚</span><span class="lb">Leren</span><span class="sb">Flashcards per hoofdstuk</span></div>
+    <div class="nav-btn" onclick="go('quiz')"><span class="ic">🧠</span><span class="lb">Quiz</span><span class="sb">10 meerkeuze vragen</span></div>
+    <div class="nav-btn nav-wide" onclick="go('mix')" style="padding:18px 24px;display:flex;align-items:center;gap:16px;text-align:left"><span style="font-size:2.2rem">🔀</span><span><span class="lb" style="display:block;font-size:1rem">Oefenmix</span><span class="sb">5 oefentypes door elkaar</span></span></div>
+    <div class="nav-btn" onclick="go('tijdlijn')"><span class="ic">📅</span><span class="lb">Tijdlijn</span><span class="sb">Orden de geschiedenis</span></div>
+    <div class="nav-btn" onclick="go('memory')"><span class="ic">🃏</span><span class="lb">Memory</span><span class="sb">Begrip ↔ definitie</span></div>
+  </div></div>`;
+}
+
+// ── LEREN ────────────────────────────────────────────────────
+
+function leren(){
+  if(lPhase==='done')return lerenDone();
+  const ch=H[lH];
+  const t=ch.topics[lT];
+  const tot=H.reduce((a,c)=>a+c.topics.length,0);
+  const done=H.slice(0,lH).reduce((a,c)=>a+c.topics.length,0)+lT;
+  const pct=Math.round(done/tot*100);
+  if(lPhase==='mq')return lerenMQ(ch);
+  if(lPhase==='mqdone')return lerenMQDone(ch);
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="frow" style="margin-bottom:10px"><span class="badge ba">${ch.naam}</span><span style="color:var(--muted);font-size:.78rem;margin-left:8px">Topic ${lT+1}/${ch.topics.length}</span></div>
+  <div class="prog-w"><div class="prog-b" style="width:${pct}%"></div></div>
+  <div class="termcard" onclick="lFlip=!lFlip;render()">`;
+  if(!lFlip){
+    h+=`<div class="term-t">${t.term}</div><div style="color:var(--muted);font-size:.8rem;margin-top:10px">Tik om definitie te zien 👆</div>`;
+  }else{
+    h+=`<div class="term-t" style="font-size:1.1rem;margin-bottom:14px">${t.term}</div><div class="def-t">${t.def}</div>${t.ex?`<div class="ex-t">💡 ${t.ex}</div>`:''}`;
+  }
+  h+=`</div><div class="navrow">`;
+  if(lT>0||lH>0)h+=`<button class="btn btn-s" onclick="lerenPrev()">← Vorige</button>`;
+  h+=`<button class="btn btn-p ml-a" onclick="lerenNext()">Volgende →</button></div>
+  <p style="color:var(--muted);font-size:.78rem;text-align:center;margin-top:10px">+2 XP per kaart bekeken</p>`;
+  return h;
+}
+
+function lerenNext(){
+  addXP(2);updStr(true);
+  const ch=H[lH];
+  if(lT<ch.topics.length-1){lT++;lFlip=false;render();}
+  else{
+    mqQs=sfl([...QUIZ]).slice(0,2);mqIdx=0;mqScore=0;mqAns=false;mqXP=0;
+    lPhase='mq';render();
+  }
+}
+function lerenPrev(){
+  if(lT>0){lT--;lFlip=false;render();}
+  else if(lH>0){lH--;lT=H[lH].topics.length-1;lFlip=false;render();}
+}
+
+function lerenMQ(ch){
+  const q=mqQs[mqIdx];
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="mini-q">
+  <div class="mini-h">🎯 Mini-quiz: ${ch.naam}</div>
+  <div class="q-ctr" style="margin-bottom:10px">Vraag ${mqIdx+1}/2</div>
+  <p style="font-size:.95rem;font-weight:600;line-height:1.5">${q.q}</p>
+  <div class="opts">`;
+  const opts=sfl(q.o.map((o,i)=>({t:o,i})));
+  opts.forEach(({t,i})=>{
+    let cls='opt';
+    if(mqAns){cls+=(i===q.a?' ok':' no');cls+=' dis';}
+    h+=`<div class="${cls}" onclick="mqAns||mqAns_(${i},${q.a})">${t}</div>`;
+  });
+  h+=`</div>`;
+  if(mqAns)h+=`<div class="expl">💡 ${q.ex}</div>`;
+  h+=`</div>`;
+  if(mqAns&&mqIdx<1)h+=`<button class="btn btn-p" style="margin-top:12px" onclick="mqNext()">Volgende vraag →</button>`;
+  if(mqAns&&mqIdx===1)h+=`<button class="btn btn-p" style="margin-top:12px" onclick="mqFinish()">Hoofdstuk afsluiten ✓</button>`;
+  return h;
+}
+window.mqAns_=function(sel,correct){
+  const ok=sel===correct;
+  if(ok){mqScore++;mqXP+=10;addXP(10);updStr(true);}else updStr(false);
+  mqAns=true;render();
+};
+function mqNext(){mqIdx++;mqAns=false;render();}
+function mqFinish(){
+  addXP(20,'⭐ Hoofdstuk voltooid! +20 XP');
+  lPhase='mqdone';render();
+}
+
+function lerenMQDone(ch){
+  const stars=mqScore===2?'⭐⭐':'⭐';
+  return`<div style="text-align:center;padding:30px 0">
+  <div style="font-size:3rem;margin-bottom:12px">${mqScore===2?'🎉':'👍'}</div>
+  <h2 class="sg" style="margin-bottom:8px">${ch.naam}</h2>
+  <p style="color:var(--muted);margin-bottom:16px">Mini-quiz: ${mqScore}/2 correct ${stars}</p>
+  <p style="font-size:.9rem;color:var(--amber);font-weight:600;margin-bottom:20px">+${mqXP+20} XP verdiend</p>
+  ${lH<H.length-1
+    ?`<button class="btn btn-p" style="font-size:1rem;padding:14px 28px" onclick="lerenNextH()">Volgend hoofdstuk →</button>`
+    :`<button class="btn btn-p" style="font-size:1rem;padding:14px 28px" onclick="lPhase='done';render()">Alle hoofdstukken klaar! 🏆</button>`
+  }</div>`;
+}
+window.lerenNextH=function(){lH++;lT=0;lFlip=false;lPhase='topic';render();};
+
+function lerenDone(){
+  return`<div style="text-align:center;padding:40px 0">
+  <div style="font-size:3.5rem;margin-bottom:16px">🏆</div>
+  <h2 class="sg" style="font-size:1.6rem;margin-bottom:8px">Alle hoofdstukken voltooid!</h2>
+  <p style="color:var(--muted);margin-bottom:24px">Je hebt alle ${H.reduce((a,c)=>a+c.topics.length,0)} topics doorgenomen.</p>
+  <button class="btn btn-p" style="font-size:1rem;padding:14px 28px" onclick="go('home')">Terug naar menu</button></div>`;
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────
+
+function initQ(){qQs=sfl([...QUIZ]);qIdx=0;qScore=0;qAns=false;}
+function quiz(){
+  if(qIdx>=qQs.length){
+    rScore=qScore;rTotal=qQs.length;rXP=qScore*10;rType='quiz';
+    return res();
+  }
+  const q=qQs[qIdx];
+  const pct=Math.round(qIdx/qQs.length*100);
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="frow" style="margin-bottom:10px"><span class="sec-title">🧠 Quiz</span><span class="q-ctr ml-a">Vraag ${qIdx+1}/${qQs.length}</span></div>
+  <div class="prog-w"><div class="prog-b" style="width:${pct}%"></div></div>
+  <div class="card" style="margin-bottom:12px"><p style="font-size:1rem;font-weight:600;line-height:1.55">${q.q}</p></div>
+  <div class="opts">`;
+  const opts=sfl(q.o.map((o,i)=>({t:o,i})));
+  opts.forEach(({t,i})=>{
+    let cls='opt';
+    if(qAns){cls+=(i===q.a?' ok':' no');cls+=' dis';}
+    h+=`<div class="${cls}" onclick="qAns||qPick(${i},${q.a})">${t}</div>`;
+  });
+  h+=`</div>`;
+  if(qAns){
+    h+=`<div class="expl">💡 ${q.ex}</div>`;
+    h+=`<button class="btn btn-p" style="margin-top:14px;width:100%" onclick="qNext()">Volgende →</button>`;
+  }
+  return h;
+}
+window.qPick=function(sel,correct){
+  const ok=sel===correct;
+  if(ok){qScore++;addXP(10);updStr(true);toast('✓ Goed!','t-ok');}else{updStr(false);toast('✗ Fout','');}
+  qAns=true;render();
+};
+function qNext(){qIdx++;qAns=false;render();}
+
+// ── OEFENMIX ─────────────────────────────────────────────────
+
+function buildMix(){
+  const types=['mc','invul','datum','wnw','koppel'];
+  const byT={};
+  types.forEach(t=>byT[t]=sfl(OEFENMIX.filter(q=>q.type===t)));
+  let sel=[];
+  types.forEach(t=>{sel.push(...byT[t].slice(0,2));byT[t]=byT[t].slice(2);});
+  let rem=types.flatMap(t=>byT[t]);
+  rem=sfl(rem);
+  sel.push(...rem.slice(0,5));
+  return sfl(sel);
+}
+
+function initMix(){mQs=buildMix();mIdx=0;mScore=0;mAns=false;initKop();}
+function initKop(){kopSel=null;kopMatch=[];
+  const q=mQs[mIdx];
+  if(q&&q.type==='koppel')kopDefs=sfl(q.paren.map((p,i)=>({oi:i,t:p[1]})));
+}
+
+function mix(){
+  if(mIdx>=mQs.length){
+    rScore=mScore;rTotal=mQs.length;rXP=mScore*15;rType='mix';
+    return res();
+  }
+  const q=mQs[mIdx];
+  const pct=Math.round(mIdx/mQs.length*100);
+  const lbl={mc:'Meerkeuze',invul:'Invullen',datum:'Datum koppelen',wnw:'Waar of Niet waar',koppel:'Koppelen'};
+  const cls={mc:'mb-mc',invul:'mb-invul',datum:'mb-datum',wnw:'mb-wnw',koppel:'mb-koppel'};
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="frow" style="margin-bottom:10px"><span class="sec-title">🔀 Oefenmix</span><span class="q-ctr ml-a">${mIdx+1}/${mQs.length}</span></div>
+  <div class="prog-w"><div class="prog-b" style="width:${pct}%"></div></div>
+  <span class="mix-badge ${cls[q.type]}">${lbl[q.type]}</span>`;
+  if(q.type==='mc')h+=mixMC(q);
+  else if(q.type==='invul')h+=mixInvul(q);
+  else if(q.type==='datum')h+=mixDatum(q);
+  else if(q.type==='wnw')h+=mixWNW(q);
+  else if(q.type==='koppel')h+=mixKoppel(q);
+  return h;
+}
+
+function mixMC(q){
+  let h=`<div class="card"><p style="font-size:.98rem;font-weight:600;line-height:1.55">${q.q}</p></div><div class="opts">`;
+  const opts=sfl(q.o.map((o,i)=>({t:o,i})));
+  opts.forEach(({t,i})=>{
+    let cls='opt';
+    if(mAns){cls+=(i===q.a?' ok':' no');cls+=' dis';}
+    h+=`<div class="${cls}" onclick="mAns||mMC(${i},${q.a})">${t}</div>`;
+  });
+  h+=`</div>`;
+  if(mAns){h+=`<div class="expl">💡 ${q.ex}</div>`+mixNext();}
+  return h;
+}
+window.mMC=function(sel,correct){
+  const ok=sel===correct;
+  if(ok){mScore++;addXP(15);updStr(true);toast('✓ Goed! +15 XP','t-ok');}else{updStr(false);toast('✗ Fout','');}
+  mAns=true;render();
+};
+
+function mixInvul(q){
+  const parts=q.q.split('_____');
+  let h=`<div class="fill-sent">${parts[0]}<span class="fill-blank" id="fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>${parts[1]||''}</div>`;
+  if(!mAns){
+    h+=`<input class="inp" id="inv" placeholder="Typ je antwoord hier..." onkeydown="if(event.key==='Enter')mInvulCheck()">`;
+    h+=`<div id="hint-wrap"><button class="btn btn-g" style="font-size:.82rem" onclick="document.getElementById('hint-wrap').innerHTML='<p class=hint>💡 Hint: ${q.hint}</p>'">Hint tonen</button></div>`;
+    h+=`<button class="btn btn-p" style="margin-top:8px" onclick="mInvulCheck()">Controleer</button>`;
+  }else{
+    h+=`<div class="expl">✓ Antwoord: <strong>${q.a}</strong><br><br>💡 ${q.ex}</div>`+mixNext();
+  }
+  return h;
+}
+window.mInvulCheck=function(){
+  const el=document.getElementById('inv');
+  if(!el||!el.value.trim())return;
+  const ans=el.value.trim().toLowerCase();
+  const q=mQs[mIdx];
+  const ok=ans.includes(q.a.toLowerCase())||q.a.toLowerCase().includes(ans);
+  if(ok){mScore++;addXP(15);updStr(true);toast('✓ Goed! +15 XP','t-ok');}else{updStr(false);toast('✗ Fout — antwoord: '+q.a,'');}
+  mAns=true;render();
+};
+
+function mixDatum(q){
+  let h=`<div class="datum-big">${q.jaar}</div><div class="opts">`;
+  const opts=sfl(q.o.map((o,i)=>({t:o,i})));
+  opts.forEach(({t,i})=>{
+    let cls='opt';
+    if(mAns){cls+=(i===q.a?' ok':' no');cls+=' dis';}
+    h+=`<div class="${cls}" onclick="mAns||mMC(${i},${q.a})">${t}</div>`;
+  });
+  h+=`</div>`;
+  if(mAns){h+=`<div class="expl">💡 ${q.ex}</div>`+mixNext();}
+  return h;
+}
+
+function mixWNW(q){
+  let h=`<div class="stelling">"${q.stelling}"</div><div class="wnw-row">`;
+  if(!mAns){
+    h+=`<button class="wnw-btn wnw-waar" onclick="mWNW(true,${q.correct})">✓ WAAR</button>`;
+    h+=`<button class="wnw-btn wnw-niet" onclick="mWNW(false,${q.correct})">✗ NIET WAAR</button>`;
+  }else{
+    const wCls=q.correct?'wnw-ok':'';
+    const nCls=!q.correct?'wnw-ok':'';
+    h+=`<button class="wnw-btn wnw-waar dis ${wCls}">✓ WAAR</button>`;
+    h+=`<button class="wnw-btn wnw-niet dis ${nCls}">✗ NIET WAAR</button>`;
+  }
+  h+=`</div>`;
+  if(mAns){h+=`<div class="expl">💡 ${q.ex}</div>`+mixNext();}
+  return h;
+}
+window.mWNW=function(ans,correct){
+  const ok=ans===correct;
+  if(ok){mScore++;addXP(15);updStr(true);toast('✓ Goed! +15 XP','t-ok');}else{updStr(false);toast('✗ Fout','');}
+  mAns=true;render();
+};
+
+function mixKoppel(q){
+  const begrippen=q.paren.map(p=>p[0]);
+  let h=`<p style="color:var(--muted);font-size:.83rem;margin-bottom:8px">Klik begrip → klik de juiste definitie</p>`;
+  h+=`<div class="kop-grid">`;
+  h+=`<div class="kop-sep">Begrippen</div><div class="kop-sep">Definities</div>`;
+  begrippen.forEach((b,i)=>{
+    let cls='kop-item kop-left';
+    if(kopMatch.includes(i))cls+=' kmatched';
+    else if(kopSel===i)cls+=' ksel';
+    h+=`<div class="${cls}" data-li="${i}">${b}</div>`;
+    const d=kopDefs[i];
+    let dcls='kop-item kop-right';
+    if(kopMatch.includes(d.oi))dcls+=' kmatched';
+    h+=`<div class="${dcls}" data-ri="${i}">${d.t}</div>`;
+  });
+  h+=`</div>`;
+  if(mAns){h+=`<div class="expl">💡 ${q.ex}</div>`+mixNext();}
+  return h;
+}
+
+function mixNext(){
+  return`<button class="btn btn-p" style="margin-top:14px;width:100%" onclick="mNext()">Volgende →</button>`;
+}
+function mNext(){mIdx++;mAns=false;initKop();render();}
+
+// ── TIJDLIJN ─────────────────────────────────────────────────
+
+function initTl(){
+  const picked=sfl([...TIJDLIJN]).slice(0,8);
+  tlItems=sfl(picked.map((e,i)=>({...e,origIdx:i,id:i})));
+  tlChecked=false;tlDragSrc=null;
+}
+
+function tl(){
+  const sorted=[...tlItems].sort((a,b)=>a.jaar-b.jaar);
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="sec-title">📅 Tijdlijn</div>
+  <p class="sec-sub">Sleep of gebruik de pijlen om de gebeurtenissen chronologisch te ordenen</p>
+  <div class="tl-list" id="tllist">`;
+  tlItems.forEach((item,i)=>{
+    let cls='tl-item';
+    if(tlChecked){
+      const correctPos=sorted.findIndex(s=>s.jaar===item.jaar);
+      cls+=correctPos===i?' tlok':' tlno';
+    }
+    h+=`<div class="${cls}" draggable="true" data-i="${i}">
+      <div class="tl-nr">${i+1}</div>
+      <div class="tl-arrows">
+        <button class="tl-arr" onclick="tlUp(${i})">▲</button>
+        <button class="tl-arr" onclick="tlDn(${i})">▼</button>
+      </div>
+      <div class="tl-txt">${item.event}</div>
+      ${tlChecked?`<div class="tl-yr">${item.jaar}</div>`:''}
+    </div>`;
+  });
+  h+=`</div>`;
+  if(!tlChecked){
+    h+=`<button class="btn btn-p" style="width:100%;margin-top:4px" onclick="tlCheck()">Controleer! ✓</button>`;
+  }else{
+    const correct=tlItems.filter((item,i)=>sorted[i].jaar===item.jaar).length;
+    const earnedXP=correct*5;
+    h+=`<div class="card" style="text-align:center;margin-top:12px">
+      <p style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700">${correct}/8 correct ✓</p>
+      <p style="color:var(--amber);font-size:.9rem;margin-top:4px">+${earnedXP} XP verdiend</p>
+    </div>
+    <div class="navrow" style="margin-top:12px">
+      <button class="btn btn-s" onclick="initTl();render()">Opnieuw</button>
+      <button class="btn btn-p ml-a" onclick="go('home')">Menu</button>
+    </div>`;
+    h+=`<p style="color:var(--muted);font-size:.82rem;margin-top:10px">Correcte volgorde:</p><div class="tl-list">`;
+    sorted.forEach((item,i)=>{
+      h+=`<div class="tl-item tlok"><div class="tl-nr">${i+1}</div><div class="tl-txt">${item.event}</div><div class="tl-yr">${item.jaar}</div></div>`;
+    });
+    h+=`</div>`;
+  }
+  return h;
+}
+
+window.tlUp=function(i){if(i===0)return;[tlItems[i],tlItems[i-1]]=[tlItems[i-1],tlItems[i]];render();};
+window.tlDn=function(i){if(i===tlItems.length-1)return;[tlItems[i],tlItems[i+1]]=[tlItems[i+1],tlItems[i]];render();};
+window.tlCheck=function(){
+  tlChecked=true;
+  const sorted=[...tlItems].sort((a,b)=>a.jaar-b.jaar);
+  const correct=tlItems.filter((item,i)=>sorted[i].jaar===item.jaar).length;
+  addXP(correct*5,'📅 Tijdlijn: +'+(correct*5)+' XP');
+  render();
+};
+
+function bindTl(){
+  const items=document.querySelectorAll('.tl-item[draggable]');
+  items.forEach((el,i)=>{
+    el.addEventListener('dragstart',e=>{tlDragSrc=i;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    el.addEventListener('dragend',()=>{el.classList.remove('dragging');document.querySelectorAll('.tl-item').forEach(e=>e.classList.remove('dragover'));});
+    el.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';el.classList.add('dragover');});
+    el.addEventListener('dragleave',()=>el.classList.remove('dragover'));
+    el.addEventListener('drop',e=>{
+      e.preventDefault();el.classList.remove('dragover');
+      if(tlDragSrc===null||tlDragSrc===i)return;
+      const tmp=tlItems[tlDragSrc];tlItems[tlDragSrc]=tlItems[i];tlItems[i]=tmp;
+      tlDragSrc=null;render();
+    });
+  });
+}
+
+// ── MEMORY ───────────────────────────────────────────────────
+
+function initMem(){
+  const pairs=sfl([...MEMORY_DATA]).slice(0,6);
+  let cards=[];
+  pairs.forEach((p,pi)=>{
+    cards.push({id:0,pi,type:'t',txt:p[0]});
+    cards.push({id:0,pi,type:'d',txt:p[1]});
+  });
+  cards=sfl(cards).map((c,i)=>({...c,id:i}));
+  memC=cards;memF=[];memM=[];memAtt=0;memT=0;memLock=false;memDone=false;
+}
+function startMem(){
+  stopMem();
+  memInt=setInterval(()=>{
+    if(!memDone){memT++;const el=document.getElementById('mt');if(el)el.textContent=ftm(memT);}
+  },1000);
+}
+function stopMem(){if(memInt){clearInterval(memInt);memInt=null;}}
+
+function mem(){
+  let h=`<button class="back" onclick="go('home')">← Home</button>
+  <div class="frow"><span class="sec-title">🃏 Memory</span></div>
+  <div class="mem-stats">
+    <span>Pogingen: <span id="ma">${memAtt}</span></span>
+    <span>Gevonden: <span>${memM.length/2|0}/6</span></span>
+    <span>Tijd: <span id="mt">${ftm(memT)}</span></span>
+  </div>
+  <div class="mem-grid">`;
+  memC.forEach(c=>{
+    const flipped=memF.includes(c.id)||memM.includes(c.id);
+    const matched=memM.includes(c.id);
+    let cls='mc';
+    if(matched)cls+=' mmatch';
+    else if(flipped)cls+=' mflip';
+    h+=`<div class="${cls}" id="mc${c.id}" onclick="mClick(${c.id})">${flipped||matched?c.txt:''}</div>`;
+  });
+  h+=`</div><p style="color:var(--muted);font-size:.8rem;text-align:center">+10 XP per match gevonden</p>`;
+  return h;
+}
+
+window.mClick=function(id){
+  if(memLock)return;
+  if(memM.includes(id)||memF.includes(id))return;
+  if(memF.length>=2)return;
+  memF.push(id);
+  const el=document.getElementById('mc'+id);
+  if(el){el.classList.remove('mc');el.classList.add('mc','mflip');el.textContent=memC.find(c=>c.id===id).txt;}
+  if(memF.length===2){
+    memAtt++;
+    const el2=document.getElementById('ma');if(el2)el2.textContent=memAtt;
+    const [a,b]=memF;
+    const ca=memC.find(c=>c.id===a);const cb=memC.find(c=>c.id===b);
+    if(ca.pi===cb.pi){
+      memM.push(a,b);memF=[];
+      [a,b].forEach(id2=>{
+        const e=document.getElementById('mc'+id2);
+        if(e){e.className='mc mmatch';}
+      });
+      addXP(10);updStr(true);
+      if(memM.length===memC.length){
+        memDone=true;stopMem();
+        setTimeout(()=>{
+          rScore=6;rTotal=6;rXP=60;rType='memory';
+          screen='resultaat';render();
+        },700);
+      }
+    }else{
+      memLock=true;updStr(false);
+      [a,b].forEach(id2=>{const e=document.getElementById('mc'+id2);if(e)e.classList.add('mwrong');});
+      setTimeout(()=>{
+        [a,b].forEach(id2=>{
+          const e=document.getElementById('mc'+id2);
+          if(e){e.className='mc';e.textContent='';}
+        });
+        memF=[];memLock=false;
+      },900);
+    }
+  }
+};
+
+// ── RESULTAAT ────────────────────────────────────────────────
+
+function res(){
+  const pct=rTotal?Math.round(rScore/rTotal*100):0;
+  const r=70,circ=2*Math.PI*r;
+  const offset=circ*(1-pct/100);
+  const label={quiz:'Quiz',mix:'Oefenmix',memory:'Memory',tijdlijn:'Tijdlijn'};
+  const star=pct>=80?'🌟':pct>=60?'👍':'💪';
+  return`<div class="res-wrap">
+  <div style="font-size:2.5rem;margin-bottom:8px">${star}</div>
+  <h2 class="sg" style="font-size:1.4rem;margin-bottom:6px">${label[rType]||'Resultaat'} — Klaar!</h2>
+  <svg width="180" height="180" viewBox="0 0 180 180" style="margin:16px auto;display:block">
+    <circle cx="90" cy="90" r="${r}" fill="none" stroke="#252535" stroke-width="12"/>
+    <circle cx="90" cy="90" r="${r}" fill="none" stroke="${pct>=80?'#22C55E':pct>=60?'#F59E0B':'#EF4444'}" stroke-width="12"
+      stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"
+      stroke-linecap="round" transform="rotate(-90 90 90)" style="transition:stroke-dashoffset .8s"/>
+    <text x="90" y="82" text-anchor="middle" fill="#F0F0F8" font-size="28" font-weight="700" font-family="Space Grotesk,sans-serif">${rScore}/${rTotal}</text>
+    <text x="90" y="106" text-anchor="middle" fill="#7878A0" font-size="13" font-family="Inter,sans-serif">${pct}%</text>
+  </svg>
+  <div class="res-stats">
+    <div class="res-stat"><div class="res-val" style="color:var(--green)">${rScore}</div><div class="res-lbl">Goed</div></div>
+    <div class="res-stat"><div class="res-val" style="color:var(--red)">${rTotal-rScore}</div><div class="res-lbl">Fout</div></div>
+    <div class="res-stat"><div class="res-val" style="color:var(--amber)">+${rXP}</div><div class="res-lbl">XP verdiend</div></div>
+  </div>
+  <div class="navrow" style="justify-content:center;gap:12px;margin-top:4px">
+    <button class="btn btn-s" onclick="go(rType==='quiz'?'quiz':rType==='mix'?'mix':rType==='memory'?'memory':'tijdlijn')">🔄 Opnieuw</button>
+    <button class="btn btn-p" onclick="go('home')">🏠 Menu</button>
+  </div></div>`;
+}
+
+// ── EVENT BINDING ─────────────────────────────────────────────
+
+function bind(){
+  // Koppel click handling in mix
+  document.querySelectorAll('.kop-left').forEach(el=>{
+    el.addEventListener('click',()=>{
+      if(mAns)return;
+      const i=+el.dataset.li;
+      if(kopMatch.includes(i))return;
+      kopSel=(kopSel===i)?null:i;
+      document.querySelectorAll('.kop-left').forEach((e,j)=>{
+        if(kopMatch.includes(+e.dataset.li))return;
+        e.classList.toggle('ksel',+e.dataset.li===kopSel);
+      });
+    });
+  });
+  document.querySelectorAll('.kop-right').forEach(el=>{
+    el.addEventListener('click',()=>{
+      if(mAns||kopSel===null)return;
+      const j=+el.dataset.ri;
+      const d=kopDefs[j];
+      if(kopMatch.includes(d.oi))return;
+      if(d.oi===kopSel){
+        kopMatch.push(kopSel);
+        kopSel=null;
+        // update DOM
+        document.querySelectorAll('.kop-left').forEach(e=>{
+          if(kopMatch.includes(+e.dataset.li))e.className='kop-item kop-left kmatched';
+          else e.classList.remove('ksel');
+        });
+        document.querySelectorAll('.kop-right').forEach((e,jj)=>{
+          if(kopMatch.includes(kopDefs[jj].oi))e.className='kop-item kop-right kmatched';
+        });
+        if(kopMatch.length===4){
+          mScore++;mAns=true;addXP(15);updStr(true);toast('✓ Alle koppelingen goed! +15 XP','t-ok');render();}
+      }else{
+        el.classList.add('shake');
+        document.querySelectorAll('.kop-left').forEach(e=>e.classList.remove('ksel'));
+        kopSel=null;
+        setTimeout(()=>el.classList.remove('shake'),400);
+      }
+    });
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+
+ld();render();
+</script>
+</body>
+</html>
