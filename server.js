@@ -91,53 +91,81 @@ PLANNING_DONE:id — markeert een taak als afgerond.
 Gebruik commando's alleen als ze echt nodig zijn. Reageer vriendelijk en professioneel.`;
 }
 
-// ── Command parser (extracts embedded commands from Claude response) ───────────
+// ── Command parser (strips commands from Claude response and executes them) ────
 
 async function parseAndExecuteCommands(text, planning) {
   const lines = text.split('\n');
-  const commands = [];
+  const fileCommands = [];   // raw command strings to execute after parsing
+  const executedNames = [];  // simple names for the response metadata
   const cleanLines = [];
-  let extraInfo = {};
+  const extraInfo = {};
 
   for (const line of lines) {
     const trimmed = line.trim();
 
     if (trimmed.startsWith('PLANNING_ADD:')) {
       const parts = trimmed.split(':');
-      const taak = parts[1] || '';
-      const datum = parts[2] || '';
       const newTask = {
         id: Date.now().toString(),
-        taak,
-        datum,
+        taak: parts[1] || '',
+        datum: parts[2] || '',
         prioriteit: 'normaal',
         gedaan: false
       };
       planning.push(newTask);
       savePlanning(planning);
-      commands.push('PLANNING_ADD');
+      executedNames.push('PLANNING_ADD');
       extraInfo.newTask = newTask;
 
     } else if (trimmed.startsWith('PLANNING_DONE:')) {
       const id = trimmed.split(':')[1];
       const task = planning.find(t => t.id === id);
-      if (task) {
-        task.gedaan = true;
-        savePlanning(planning);
-        commands.push('PLANNING_DONE');
-      }
+      if (task) { task.gedaan = true; savePlanning(planning); }
+      executedNames.push('PLANNING_DONE');
 
-    } else if (trimmed.startsWith('MAKE_WORD:') || trimmed.startsWith('MAKE_EXCEL:') ||
-               trimmed.startsWith('MAKE_PPT:') || trimmed.startsWith('OPEN_FILE:') ||
-               trimmed.startsWith('TAKE_SCREENSHOT:')) {
-      commands.push(trimmed);
-      cleanLines.push(line);
+    } else if (
+      trimmed.startsWith('MAKE_WORD:') || trimmed.startsWith('MAKE_EXCEL:') ||
+      trimmed.startsWith('MAKE_PPT:')  || trimmed.startsWith('OPEN_FILE:')  ||
+      trimmed.startsWith('TAKE_SCREENSHOT:')
+    ) {
+      // Strip command line from spoken/shown text, queue for execution
+      fileCommands.push(trimmed);
+
     } else {
       cleanLines.push(line);
     }
   }
 
-  return { cleanText: cleanLines.join('\n').trim(), commands, extraInfo };
+  // Execute file/screen commands
+  for (const cmd of fileCommands) {
+    try {
+      if (cmd.startsWith('MAKE_WORD:')) {
+        const parts = cmd.split(':');
+        await runPython(['make_word', parts[1], parts.slice(2).join(':')]);
+        executedNames.push('MAKE_WORD');
+      } else if (cmd.startsWith('MAKE_EXCEL:')) {
+        const parts = cmd.split(':');
+        await runPython(['make_excel', parts[1], parts.slice(2).join(':')]);
+        executedNames.push('MAKE_EXCEL');
+      } else if (cmd.startsWith('MAKE_PPT:')) {
+        const parts = cmd.split(':');
+        await runPython(['make_pptx', parts[1], parts.slice(2).join(':')]);
+        executedNames.push('MAKE_PPT');
+      } else if (cmd.startsWith('OPEN_FILE:')) {
+        const filePath = cmd.split(':').slice(1).join(':');
+        exec(`start "" "${filePath}"`, () => {});
+        executedNames.push('OPEN_FILE');
+      } else if (cmd.startsWith('TAKE_SCREENSHOT:')) {
+        const result = await runPython(['take_screenshot']);
+        extraInfo.base64 = result.base64;
+        executedNames.push('TAKE_SCREENSHOT');
+      }
+    } catch (e) {
+      console.error('Command error:', cmd, e.message);
+    }
+  }
+
+  return { cleanText: cleanLines.join('\n').trim(), commands: executedNames, extraInfo };
 }
 
 // ── Routes ────────────────────────────────────────────────────────────────────
@@ -318,34 +346,9 @@ app.post('/api/chat', async (req, res) => {
     const rawText = response.content[0].text;
     const { cleanText, commands, extraInfo } = await parseAndExecuteCommands(rawText, planning);
 
-    // Execute file commands from Claude's response
-    const executedCommands = [];
-    for (const cmd of commands) {
-      if (cmd.startsWith('MAKE_WORD:')) {
-        const parts = cmd.split(':');
-        try { await runPython(['make_word', parts[1], parts.slice(2).join(':')]); executedCommands.push('MAKE_WORD'); } catch {}
-      } else if (cmd.startsWith('MAKE_EXCEL:')) {
-        const parts = cmd.split(':');
-        try { await runPython(['make_excel', parts[1], parts.slice(2).join(':')]); executedCommands.push('MAKE_EXCEL'); } catch {}
-      } else if (cmd.startsWith('MAKE_PPT:')) {
-        const parts = cmd.split(':');
-        try { await runPython(['make_pptx', parts[1], parts.slice(2).join(':')]); executedCommands.push('MAKE_PPT'); } catch {}
-      } else if (cmd.startsWith('OPEN_FILE:')) {
-        const filePath = cmd.split(':').slice(1).join(':');
-        exec(`start "" "${filePath}"`, () => {});
-        executedCommands.push('OPEN_FILE');
-      } else if (cmd.startsWith('TAKE_SCREENSHOT:')) {
-        try {
-          const result = await runPython(['take_screenshot']);
-          extraInfo.base64 = result.base64;
-          executedCommands.push('TAKE_SCREENSHOT');
-        } catch {}
-      }
-    }
-
     res.json({
       response: cleanText,
-      commands: executedCommands,
+      commands,
       planning: loadPlanning(),
       ...extraInfo
     });
