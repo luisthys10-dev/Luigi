@@ -981,12 +981,15 @@ function renderCars(cars){
 
   cars.forEach((c, i) => {
     const delay = (i % 6) * 0.06;
-    const catStr = c.cats.join(' ');
-    const initial = c.merk.charAt(0).toUpperCase();
-    const foto = getCarFoto(c, i);
+    const catStr = (c.cats||[]).join(' ');
+    const initial = (c.merk||'?').charAt(0).toUpperCase();
 
-    const imgHTML = `<img src="${foto}" alt="${c.merk} ${c.model}" loading="lazy" width="640" height="420"
-      onerror="carImgErr(this,'${initial}','${c.merk.replace(/'/g,'&#39;')}')">`;
+    // Only use <img> when there's a real photo URL; otherwise render placeholder directly
+    const hasFoto = c.foto && c.foto.length > 10 && !c.foto.startsWith('data:');
+    const imgHTML = hasFoto
+      ? `<img src="${c.foto}" alt="${c.merk} ${c.model}" loading="lazy" width="640" height="420"
+           onerror="carImgErr(this,'${initial}','${(c.merk||'').replace(/'/g,'&#39;')}')">`
+      : `<div class="car-placeholder"><span class="car-placeholder-letter">${initial}</span><span class="car-placeholder-sub">${c.merk||''}</span><span class="car-placeholder-note">Foto op aanvraag</span></div>`;
 
     const fuel = (c.brandstof||'').toLowerCase();
     const isEl = fuel.includes('elektr');
@@ -1007,12 +1010,12 @@ function renderCars(cars){
           ${fuelBadge}
         </div>
         <div class="car-body">
-          <div class="car-merk">${c.merk}</div>
-          <div class="car-model">${c.model}</div>
+          <div class="car-merk">${c.merk||''}</div>
+          <div class="car-model">${c.model||''}</div>
           <div class="car-year">${c.jaar || ''}</div>
           <div class="car-price">${c.prijs ? fmtPrice(c.prijs) : 'Prijs op aanvraag'}</div>
           <div class="car-specs">${kmPill}${fuelPill}${pkPill}</div>
-          <a href="${c.url}" target="_blank" rel="noopener" class="car-as-link">
+          <a href="${c.url||'#'}" target="_blank" rel="noopener" class="car-as-link">
             Bekijk op AutoScout →
           </a>
         </div>
