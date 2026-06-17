@@ -128,11 +128,18 @@ nav.scrolled{
 #home{
   position:relative;height:100vh;min-height:700px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;overflow:hidden;
+  background:var(--black);
+}
+.hero-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 40%;opacity:.35;z-index:0;pointer-events:none;
+}
+.hero-img-overlay{
+  position:absolute;inset:0;z-index:1;
   background:
+    linear-gradient(to bottom, rgba(10,10,10,.3) 0%, rgba(10,10,10,.1) 40%, rgba(10,10,10,.7) 80%, rgba(10,10,10,1) 100%),
     radial-gradient(ellipse 80% 60% at 10% 20%, rgba(201,168,76,.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 90% 90%, rgba(201,168,76,.04) 0%, transparent 55%),
-    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(25,25,25,.8) 0%, transparent 80%),
-    var(--black);
+    radial-gradient(ellipse 60% 80% at 90% 90%, rgba(201,168,76,.04) 0%, transparent 55%);
 }
 .hero-bg-lines{
   position:absolute;inset:0;pointer-events:none;overflow:hidden;
@@ -685,8 +692,10 @@ footer{
 
 <!-- ─── HERO ─── -->
 <section id="home">
+  <img class="hero-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260617_094030_7732e813-deb3-4893-b4fa-58f26d497af0.png" alt="Premium autoshow" loading="eager">
+  <div class="hero-img-overlay"></div>
   <div class="hero-bg-lines"></div>
-  <div class="hero-content">
+  <div class="hero-content" style="position:relative;z-index:2">
     <p class="hero-eyebrow">Nijlen · Kempen · Sinds 1994</p>
     <div class="hero-headline">
       <div class="hero-line"><span>PREMIUM</span></div>
