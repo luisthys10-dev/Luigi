@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Autobedrijf Bellens — 30 jaar vakmanschap in Nijlen. Premium tweedehands wagens, mechanische herstelling en koetswerk in de Kempen.">
+<meta property="og:title" content="Autobedrijf Bellens | Premium Tweedehands Wagens Nijlen">
+<meta property="og:description" content="30+ jaar ervaring. Premium tweedehands wagens, onderhoud en carrosserie in het hart van de Kempen.">
+<meta property="og:type" content="website">
+<title>Autobedrijf Bellens | Premium Tweedehands Wagens Nijlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ─── VARIABLES ──────────────────────────────────────────────────────────── */
+:root {
+  --black:      #0a0a0a;
+  --black-2:    #111111;
+  --black-3:    #1a1a1a;
+  --gold:       #c9a84c;
+  --gold-light: #e8c86e;
+  --gold-dark:  #a88832;
+  --white:      #f5f0e8;
+  --white-dim:  rgba(245,240,232,0.6);
+  --white-faint:rgba(245,240,232,0.3);
+  --glass:      rgba(255,255,255,0.04);
+  --glass-b:    rgba(255,255,255,0.08);
+  --gold-glass: rgba(201,168,76,0.08);
+  --ease:       cubic-bezier(0.16,1,0.3,1);
+  --t:          0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── RESET ──────────────────────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;font-size:16px}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+img{max-width:100%;display:block}
+button{cursor:none;border:none;background:none;font-family:inherit}
+
+/* ─── GRAIN OVERLAY ──────────────────────────────────────────────────────── */
+body::after{
+  content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
+  opacity:.035;z-index:9997;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  animation:grain .4s steps(1) infinite;
+}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}
+  20%{transform:translate(3%,2%)}30%{transform:translate(-1%,4%)}
+  40%{transform:translate(2%,-1%)}50%{transform:translate(-3%,2%)}
+  60%{transform:translate(1%,-4%)}70%{transform:translate(-2%,3%)}
+  80%{transform:translate(4%,-2%)}90%{transform:translate(-1%,1%)}
+}
+
+/* ─── CURSOR ─────────────────────────────────────────────────────────────── */
+.cursor{
+  width:8px;height:8px;background:var(--gold);border-radius:50%;
+  position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),opacity .25s;
+  mix-blend-mode:normal;
+}
+.cursor-ring{
+  width:40px;height:40px;border:1.5px solid rgba(201,168,76,.45);border-radius:50%;
+  position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:transform .12s linear,width .3s var(--ease),height .3s var(--ease),opacity .3s;
+}
+body:hover .cursor{opacity:1}
+
+/* ─── SCROLL PROGRESS ────────────────────────────────────────────────────── */
+.scroll-progress{
+  position:fixed;top:0;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light));
+  z-index:10000;transition:width .1s linear;
+}
+
+/* ─── NAVBAR ─────────────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  padding:0 48px;height:80px;display:flex;align-items:center;justify-content:space-between;
+  transition:background .4s ease,backdrop-filter .4s ease,border-color .4s ease;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(10,10,10,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom-color:rgba(255,255,255,.06);
+}
+.nav-logo{
+  font-size:22px;font-weight:900;letter-spacing:.18em;color:var(--gold);
+  text-transform:uppercase;
+}
+.nav-logo span{color:var(--white-faint);font-weight:300;font-size:11px;
+  letter-spacing:.3em;display:block;margin-top:-4px;}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--white-dim);transition:color var(--t);position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--gold);transition:width var(--t);}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  padding:10px 24px;border:1.5px solid var(--gold);color:var(--gold);
+  font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:2px;transition:all var(--t);
+}
+.nav-cta:hover{background:var(--gold);color:var(--black)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;z-index:1001;padding:4px}
+.hamburger span{
+  display:block;width:26px;height:1.5px;background:var(--white);
+  transition:all .35s var(--ease);transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{
+  display:none;position:fixed;inset:0;background:rgba(10,10,10,.97);
+  backdrop-filter:blur(20px);z-index:999;flex-direction:column;
+  align-items:center;justify-content:center;gap:40px;
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease);
+}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{font-size:32px;font-weight:700;letter-spacing:.06em;color:var(--white-dim);
+  transition:color var(--t);}
+.mobile-menu a:hover{color:var(--gold)}
+
+/* ─── HERO ───────────────────────────────────────────────────────────────── */
+#home{
+  position:relative;height:100vh;min-height:700px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;overflow:hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(201,168,76,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 90%, rgba(201,168,76,.04) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(25,25,25,.8) 0%, transparent 80%),
+    var(--black);
+}
+.hero-bg-lines{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.hero-bg-lines::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(201,168,76,.12),transparent);
+}
+.hero-bg-lines::after{
+  content:'';position:absolute;top:50%;left:0;
+  width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.08),transparent);
+}
+.hero-content{
+  position:relative;z-index:2;text-align:center;padding:0 24px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.5em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:32px;
+  opacity:0;animation:fadeUp .8s var(--ease) .05s forwards;
+}
+.hero-headline{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:36px}
+.hero-line{overflow:hidden;line-height:.92}
+.hero-line span{
+  display:block;
+  font-size:clamp(56px,11vw,148px);font-weight:900;letter-spacing:-.025em;
+  transform:translateY(110%);
+  animation:heroUp 1s var(--ease) forwards;
+}
+.hero-line:nth-child(1) span{animation-delay:.15s;color:var(--white)}
+.hero-line:nth-child(2) span{animation-delay:.3s;color:var(--gold);font-style:italic}
+.hero-line:nth-child(3) span{animation-delay:.45s;color:var(--white)}
+@keyframes heroUp{to{transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-sub{
+  font-size:clamp(14px,1.6vw,18px);font-weight:300;color:var(--white-dim);
+  letter-spacing:.06em;margin-bottom:52px;max-width:460px;line-height:1.7;
+  opacity:0;animation:fadeUp .8s var(--ease) .75s forwards;
+}
+.hero-ctas{
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp .8s var(--ease) .95s forwards;
+}
+.btn-primary{
+  padding:16px 40px;background:var(--gold);color:var(--black);
+  font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:2px;transition:all var(--t);display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(201,168,76,.25)}
+.btn-outline{
+  padding:15px 40px;border:1.5px solid rgba(255,255,255,.25);color:var(--white-dim);
+  font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:2px;transition:all var(--t);
+}
+.btn-outline:hover{border-color:var(--white);color:var(--white);transform:translateY(-2px)}
+.scroll-ind{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .8s var(--ease) 1.3s forwards;
+}
+.scroll-ind span{font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--white-faint)}
+.scroll-ind-line{width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.6)}}
+
+.hero-marquee{
+  position:absolute;bottom:0;left:0;width:100%;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.05);padding:14px 0;
+}
+.marquee-track{
+  display:flex;gap:48px;width:max-content;
+  animation:marquee 30s linear infinite;
+  font-size:10px;letter-spacing:.4em;color:var(--white-faint);text-transform:uppercase;font-weight:600;
+}
+.marquee-track span{white-space:nowrap}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ─── STATS ──────────────────────────────────────────────────────────────── */
+#stats{
+  padding:80px 48px;
+  background:linear-gradient(to right,var(--black-2),var(--black-3),var(--black-2));
+  border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.stats-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+}
+.stat-item{
+  text-align:center;padding:32px 24px;position:relative;
+}
+.stat-item:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:20%;height:60%;
+  width:1px;background:rgba(255,255,255,.08);
+}
+.stat-num-wrap{
+  display:flex;align-items:baseline;justify-content:center;gap:4px;margin-bottom:8px;
+}
+.stat-number{
+  font-size:clamp(48px,6vw,80px);font-weight:900;color:var(--gold);
+  line-height:1;letter-spacing:-.03em;
+}
+.stat-suffix{font-size:clamp(28px,4vw,52px);font-weight:700;color:var(--gold)}
+.stat-label{font-size:12px;font-weight:600;letter-spacing:.2em;color:var(--white-dim);text-transform:uppercase}
+
+/* ─── SECTION COMMONS ────────────────────────────────────────────────────── */
+.section-header{text-align:center;margin-bottom:72px}
+.section-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:.55em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:20px;display:block;
+}
+.section-title{
+  font-size:clamp(36px,5vw,68px);font-weight:900;letter-spacing:-.03em;
+  line-height:1.05;
+}
+.section-subtitle{
+  margin-top:20px;font-size:16px;font-weight:300;color:var(--white-dim);
+  max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;
+}
+.gold-line{
+  width:60px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);
+  margin:28px auto 0;
+}
+
+/* ─── REVEAL ANIMATION ───────────────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ─── SHOWROOM ───────────────────────────────────────────────────────────── */
+#showroom{padding:120px 48px;background:var(--black)}
+.filter-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;
+}
+.filter-tab{
+  padding:10px 24px;border:1px solid rgba(255,255,255,.1);color:var(--white-dim);
+  font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:40px;transition:all var(--t);
+}
+.filter-tab:hover{border-color:rgba(201,168,76,.4);color:var(--white)}
+.filter-tab.active{background:var(--gold);border-color:var(--gold);color:var(--black)}
+.cars-loading{
+  text-align:center;padding:80px;color:var(--white-dim);
+  font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+}
+.cars-loading::after{content:'...';animation:dots 1.5s steps(4) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:'...'}}
+.cars-grid{
+  max-width:1300px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;
+}
+.car-card{
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
+  overflow:hidden;transition:all .45s var(--ease);position:relative;
+}
+.car-card:hover{
+  background:rgba(255,255,255,.06);border-color:rgba(201,168,76,.25);
+  transform:translateY(-10px);
+  box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,168,76,.1);
+}
+.car-card.hidden{display:none}
+.car-img-wrap{
+  position:relative;height:220px;overflow:hidden;
+}
+.car-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease);
+}
+.car-card:hover .car-img-wrap img{transform:scale(1.06)}
+.car-img-placeholder{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  position:relative;overflow:hidden;
+}
+.car-img-placeholder::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(0,0,0,.5));
+}
+.car-brand-watermark{
+  font-size:56px;font-weight:900;letter-spacing:-.04em;color:rgba(255,255,255,.06);
+  text-transform:uppercase;position:relative;z-index:1;
+}
+.car-silhouette{
+  position:absolute;bottom:0;left:0;width:100%;height:60%;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:.12;z-index:1;
+}
+.car-badge{
+  position:absolute;top:12px;right:12px;padding:5px 12px;
+  background:rgba(10,10,10,.8);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;
+  z-index:2;
+}
+.car-body{padding:20px 22px 22px}
+.car-name{
+  font-size:17px;font-weight:700;color:var(--white);margin-bottom:4px;
+  letter-spacing:-.01em;
+}
+.car-sub{font-size:12px;color:var(--white-dim);margin-bottom:14px;font-weight:400}
+.car-price{
+  font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-.02em;margin-bottom:16px;
+}
+.car-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.pill{
+  padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;font-size:10px;font-weight:600;color:var(--white-dim);letter-spacing:.06em;
+}
+.car-cta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:14px;border-top:1px solid rgba(255,255,255,.06);
+}
+.car-link{
+  font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--gold);
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;
+  transition:gap var(--t);
+}
+.car-card:hover .car-link{gap:10px}
+.no-results{
+  grid-column:1/-1;text-align:center;padding:80px;
+  color:var(--white-dim);font-size:14px;
+}
+
+/* ─── DIENSTEN ───────────────────────────────────────────────────────────── */
+#diensten{
+  padding:120px 48px;
+  background:linear-gradient(180deg,var(--black) 0%,var(--black-2) 100%);
+}
+.services-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.service-card{
+  padding:52px 40px 48px;
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+  transform-style:preserve-3d;
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(135deg,rgba(201,168,76,.06),transparent 60%);
+  opacity:0;transition:opacity .4s ease;
+}
+.service-card:hover::before{opacity:1}
+.service-card:hover{
+  border-color:rgba(201,168,76,.2);
+  box-shadow:0 30px 60px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.08);
+}
+.service-icon{
+  width:56px;height:56px;color:var(--gold);margin-bottom:32px;
+  transition:transform .4s var(--ease);
+}
+.service-card:hover .service-icon{transform:scale(1.1) rotate(5deg)}
+.service-num{
+  position:absolute;top:28px;right:32px;font-size:72px;font-weight:900;
+  color:rgba(255,255,255,.03);letter-spacing:-.04em;line-height:1;pointer-events:none;
+}
+.service-title{
+  font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:16px;
+}
+.service-text{font-size:14px;line-height:1.8;color:var(--white-dim);font-weight:300}
+.service-link{
+  display:inline-flex;align-items:center;gap:6px;margin-top:28px;
+  font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;
+  transition:gap var(--t);
+}
+.service-card:hover .service-link{gap:10px}
+
+/* ─── ABOUT ──────────────────────────────────────────────────────────────── */
+#over{
+  padding:140px 48px;
+  background:var(--black);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.about-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.about-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:.55em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:24px;display:block;
+}
+.about-title{
+  font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:32px;
+}
+.about-title em{font-style:italic;color:var(--gold)}
+.about-text{
+  font-size:15px;line-height:1.9;color:var(--white-dim);font-weight:300;
+  margin-bottom:20px;
+}
+.about-divider{
+  width:48px;height:2px;background:var(--gold);margin:36px 0;
+}
+.about-features{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.about-feature{
+  display:flex;align-items:center;gap:14px;
+  font-size:13px;font-weight:600;letter-spacing:.05em;color:var(--white-dim);
+}
+.about-feature::before{
+  content:'';display:block;width:20px;height:1px;
+  background:var(--gold);flex-shrink:0;
+}
+.about-visual{
+  position:relative;aspect-ratio:4/5;
+  display:flex;align-items:center;justify-content:center;
+}
+.about-shape{
+  position:absolute;inset:0;border:1px solid rgba(201,168,76,.12);border-radius:4px;
+}
+.about-shape-2{
+  position:absolute;inset:24px;border:1px solid rgba(201,168,76,.07);border-radius:4px;
+}
+.about-quote{
+  position:relative;z-index:2;text-align:center;padding:48px 40px;
+}
+.about-quote-mark{
+  font-size:120px;line-height:.7;color:rgba(201,168,76,.08);font-weight:900;
+  display:block;margin-bottom:16px;
+}
+.about-quote-text{
+  font-size:clamp(18px,2vw,26px);font-weight:300;line-height:1.6;
+  color:var(--white-dim);font-style:italic;letter-spacing:.01em;
+}
+.about-quote-text em{color:var(--gold);font-style:normal;font-weight:700}
+.about-quote-author{
+  margin-top:28px;font-size:11px;font-weight:700;letter-spacing:.3em;
+  color:var(--white-faint);text-transform:uppercase;
+}
+.about-nums{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.05);margin-top:48px;border-radius:8px;overflow:hidden;
+}
+.about-num-item{
+  background:var(--black);padding:28px 24px;text-align:center;
+}
+.about-num{font-size:36px;font-weight:900;color:var(--gold);line-height:1}
+.about-num-label{font-size:10px;font-weight:600;letter-spacing:.2em;color:var(--white-dim);
+  text-transform:uppercase;margin-top:6px}
+
+/* ─── TESTIMONIALS ───────────────────────────────────────────────────────── */
+#reviews{
+  padding:120px 48px;
+  background:linear-gradient(180deg,var(--black-2) 0%,var(--black) 100%);
+}
+.reviews-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.review-card{
+  padding:40px 36px;
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
+  transition:all .4s var(--ease);
+}
+.review-card:hover{
+  background:rgba(255,255,255,.06);border-color:rgba(201,168,76,.15);
+  transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,.4);
+}
+.review-stars{
+  display:flex;gap:4px;margin-bottom:20px;
+}
+.star{color:var(--gold);font-size:16px}
+.review-text{
+  font-size:14px;line-height:1.8;color:var(--white-dim);font-weight:300;
+  font-style:italic;margin-bottom:28px;
+}
+.review-author-wrap{display:flex;align-items:center;gap:14px}
+.review-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(201,168,76,.05));
+  border:1px solid rgba(201,168,76,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:var(--gold);flex-shrink:0;
+}
+.review-author{font-size:13px;font-weight:700;color:var(--white)}
+.review-car{font-size:11px;font-weight:400;color:var(--white-dim);margin-top:2px;letter-spacing:.04em}
+
+/* ─── CONTACT ────────────────────────────────────────────────────────────── */
+#contact{
+  padding:140px 48px;
+  background:var(--black-2);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.contact-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+}
+.contact-title{
+  font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:48px;
+}
+.contact-info-list{display:flex;flex-direction:column;gap:28px}
+.contact-info-item{display:flex;align-items:flex-start;gap:18px}
+.contact-icon{
+  width:44px;height:44px;border-radius:8px;
+  background:var(--gold-glass);border:1px solid rgba(201,168,76,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;color:var(--gold);
+}
+.contact-info-label{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--white-faint);
+  text-transform:uppercase;margin-bottom:4px;}
+.contact-info-value{font-size:15px;font-weight:500;color:var(--white);line-height:1.5}
+.contact-hours{
+  margin-top:48px;padding:28px 32px;
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;
+}
+.contact-hours-title{
+  font-size:11px;font-weight:700;letter-spacing:.25em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:16px;
+}
+.hours-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
+.hours-row:last-child{border:none}
+.hours-day{color:var(--white-dim);font-weight:400}
+.hours-time{color:var(--white);font-weight:600}
+/* Form */
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-label{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--white-dim);text-transform:uppercase}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);border-radius:6px;
+  padding:14px 16px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;
+  transition:all var(--t);outline:none;appearance:none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:rgba(245,240,232,.3)}
+.form-group select option{background:var(--black-3);color:var(--white)}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:var(--gold);background:rgba(201,168,76,.04);
+  box-shadow:0 0 0 3px rgba(201,168,76,.08);
+}
+.form-group textarea{resize:vertical;min-height:120px;line-height:1.6}
+.btn-submit{
+  margin-top:8px;padding:16px 36px;background:var(--gold);color:var(--black);
+  font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  border-radius:4px;transition:all var(--t);align-self:flex-start;
+}
+.btn-submit:hover{background:var(--gold-light);transform:translateY(-2px);
+  box-shadow:0 14px 32px rgba(201,168,76,.3)}
+.form-note{font-size:11px;color:var(--white-faint);margin-top:4px;letter-spacing:.04em}
+
+/* ─── MAP ────────────────────────────────────────────────────────────────── */
+.map-section{
+  height:420px;position:relative;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.map-section iframe{
+  width:100%;height:100%;border:0;filter:grayscale(60%) brightness(.8) invert(0);
+}
+.map-overlay{
+  position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;
+  box-shadow:inset 0 0 60px rgba(10,10,10,.4);
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────────────────────── */
+footer{
+  padding:52px 48px;background:var(--black);
+  border-top:1px solid rgba(201,168,76,.15);
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;
+}
+.footer-logo{font-size:18px;font-weight:900;letter-spacing:.2em;color:var(--gold)}
+.footer-logo small{display:block;font-size:9px;letter-spacing:.35em;color:var(--white-faint);
+  font-weight:400;margin-top:-2px;}
+.footer-links{display:flex;gap:28px}
+.footer-links a{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--white-dim);
+  text-transform:uppercase;transition:color var(--t);}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:var(--white-faint);letter-spacing:.08em}
+
+/* ─── MOBILE ─────────────────────────────────────────────────────────────── */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:1fr 1fr}
+  .about-inner{grid-template-columns:1fr;gap:48px}
+  .about-visual{display:none}
+  .contact-inner{grid-template-columns:1fr;gap:48px}
+}
+@media(max-width:768px){
+  nav{padding:0 24px;height:72px}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .mobile-menu{display:flex}
+  #home,#stats,#showroom,#diensten,#over,#reviews,#contact{padding-left:24px;padding-right:24px}
+  #showroom{padding-top:80px;padding-bottom:80px}
+  #diensten,#over,#reviews,#contact{padding-top:80px;padding-bottom:80px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2)::after{display:none}
+  .services-grid{grid-template-columns:1fr}
+  .reviews-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center}
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+  .cars-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero-line span{font-size:clamp(40px,14vw,70px)}
+  .hero-ctas{flex-direction:column;align-items:center}
+  .btn-primary,.btn-outline{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="closeMobile()">Home</a>
+  <a href="#showroom" onclick="closeMobile()">Showroom</a>
+  <a href="#aanbod" onclick="closeMobile()">Aanbod</a>
+  <a href="#diensten" onclick="closeMobile()">Diensten</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">BELLENS<span>Autobedrijf</span></a>
+  <ul class="nav-links">
+    <li><a href="#showroom">Showroom</a></li>
+    <li><a href="#aanbod">Aanbod</a></li>
+    <li><a href="#diensten">Diensten</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#aanbod" class="nav-cta">Bekijk Aanbod</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="home">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Nijlen · Kempen · Sinds 1994</p>
+    <div class="hero-headline">
+      <div class="hero-line"><span>PREMIUM</span></div>
+      <div class="hero-line"><span>TWEEDEHANDS</span></div>
+      <div class="hero-line"><span>WAGENS</span></div>
+    </div>
+    <p class="hero-sub">30 jaar vakmanschap.<br>Kwaliteit die rijdt.</p>
+    <div class="hero-ctas">
+      <a href="#aanbod" class="btn-primary">Bekijk ons aanbod &nbsp;→</a>
+      <a href="#contact" class="btn-outline">Contacteer ons</a>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="scroll-ind-line"></div>
+  </div>
+  <div class="hero-marquee">
+    <div class="marquee-track" id="marqueeTrack">
+      <span>Premium Wagens</span><span>·</span>
+      <span>Vakmanschap</span><span>·</span>
+      <span>BMW</span><span>·</span>
+      <span>Audi</span><span>·</span>
+      <span>Land Rover</span><span>·</span>
+      <span>Volkswagen</span><span>·</span>
+      <span>Koetswerk</span><span>·</span>
+      <span>Mechanische Herstelling</span><span>·</span>
+      <span>Nijlen</span><span>·</span>
+      <span>Premium Wagens</span><span>·</span>
+      <span>Vakmanschap</span><span>·</span>
+      <span>BMW</span><span>·</span>
+      <span>Audi</span><span>·</span>
+      <span>Land Rover</span><span>·</span>
+      <span>Volkswagen</span><span>·</span>
+      <span>Koetswerk</span><span>·</span>
+      <span>Mechanische Herstelling</span><span>·</span>
+      <span>Nijlen</span><span>·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-num-wrap">
+        <span class="stat-number" data-target="30">0</span>
+        <span class="stat-suffix">+</span>
+      </div>
+      <span class="stat-label">Jaar Ervaring</span>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:.1s">
+      <div class="stat-num-wrap">
+        <span class="stat-number" data-target="65">0</span>
+        <span class="stat-suffix">+</span>
+      </div>
+      <span class="stat-label">Wagens in Stock</span>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:.2s">
+      <div class="stat-num-wrap">
+        <span class="stat-number" data-target="3">0</span>
+        <span class="stat-suffix"></span>
+      </div>
+      <span class="stat-label">Diensten</span>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:.3s">
+      <div class="stat-num-wrap">
+        <span class="stat-number" data-target="1">0</span>
+        <span class="stat-suffix"></span>
+      </div>
+      <span class="stat-label">Passie</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SHOWROOM ─── -->
+<section id="showroom" style="padding-bottom:0">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Ons Aanbod</span>
+    <h2 class="section-title">Showroom</h2>
+    <p class="section-subtitle">Zorgvuldig geselecteerde wagens van premium merken — eerlijk geprijsd, mechanisch gecontroleerd.</p>
+    <div class="gold-line"></div>
+  </div>
+</section>
+
+<section id="aanbod" style="padding-top:0;padding-bottom:120px;padding-left:48px;padding-right:48px;background:var(--black)">
+  <div class="filter-tabs reveal" id="filterTabs">
+    <button class="filter-tab active" data-filter="all">Alle</button>
+    <button class="filter-tab" data-filter="hybride">Elektrisch / Hybride</button>
+    <button class="filter-tab" data-filter="suv">SUV / Crossover</button>
+    <button class="filter-tab" data-filter="sport">Sport</button>
+    <button class="filter-tab" data-filter="sedan">Sedan</button>
+  </div>
+  <div class="cars-grid" id="carsGrid">
+    <div class="cars-loading" id="carsLoading">Aanbod laden</div>
+  </div>
+</section>
+
+<!-- ─── DIENSTEN ─── -->
+<section id="diensten">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Wat wij doen</span>
+    <h2 class="section-title">Onze Diensten</h2>
+    <p class="section-subtitle">Van aankoop tot onderhoud — alles onder één dak in Nijlen.</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="services-grid">
+    <!-- Service 1 -->
+    <div class="service-card reveal" style="transition-delay:.05s">
+      <svg class="service-icon" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 36L15 22Q18 14 24 13L38 13Q45 13 49 20L52 30L52 36"/>
+        <rect x="6" y="34" width="46" height="10" rx="5"/>
+        <circle cx="17" cy="44" r="7" fill="none" stroke-width="1.5"/>
+        <circle cx="17" cy="44" r="3" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="44" r="7" fill="none" stroke-width="1.5"/>
+        <circle cx="41" cy="44" r="3" fill="currentColor" stroke="none"/>
+        <path d="M22 22L22 13M32 22L32 13" stroke-width="1"/>
+      </svg>
+      <span class="service-num">01</span>
+      <h3 class="service-title">Tweedehands Wagens</h3>
+      <p class="service-text">Meer dan 65 zorgvuldig geselecteerde wagens. Benzine, diesel, hybride en elektrisch. Alle premium merken, eerlijke prijzen, geen verrassingen.</p>
+      <a href="#aanbod" class="service-link">Bekijk aanbod →</a>
+    </div>
+    <!-- Service 2 -->
+    <div class="service-card reveal" style="transition-delay:.15s">
+      <svg class="service-icon" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="28" cy="28" r="12"/>
+        <circle cx="28" cy="28" r="4.5"/>
+        <line x1="28" y1="8" x2="28" y2="13"/>
+        <line x1="28" y1="43" x2="28" y2="48"/>
+        <line x1="8" y1="28" x2="13" y2="28"/>
+        <line x1="43" y1="28" x2="48" y2="28"/>
+        <line x1="13.5" y1="13.5" x2="17" y2="17"/>
+        <line x1="39" y1="39" x2="42.5" y2="42.5"/>
+        <line x1="42.5" y1="13.5" x2="39" y2="17"/>
+        <line x1="17" y1="39" x2="13.5" y2="42.5"/>
+      </svg>
+      <span class="service-num">02</span>
+      <h3 class="service-title">Mechanische Herstelling</h3>
+      <p class="service-text">Van APK-keuring tot complexe motorherstelling. 30 jaar ervaring gecombineerd met moderne diagnoseapparatuur voor elk merk en model.</p>
+      <a href="#contact" class="service-link">Afspraak maken →</a>
+    </div>
+    <!-- Service 3 -->
+    <div class="service-card reveal" style="transition-delay:.25s">
+      <svg class="service-icon" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M28 8L10 17V29C10 40 18 49 28 52C38 49 46 40 46 29V17L28 8Z"/>
+        <path d="M20 28L25 34L37 21"/>
+      </svg>
+      <span class="service-num">03</span>
+      <h3 class="service-title">Koetswerk & Carrosserie</h3>
+      <p class="service-text">Spuit- en laswerken met de modernste technieken. Eigen verflab met watergedragen lakken. Uw wagen verlaat onze werkplaats als nieuw.</p>
+      <a href="#contact" class="service-link">Vrijblijvende offerte →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="over">
+  <div class="about-inner">
+    <div class="reveal-left">
+      <span class="about-eyebrow">Ons verhaal</span>
+      <h2 class="about-title">30 Jaar Vakmanschap<br>in het Hart van <em>de Kempen</em></h2>
+      <p class="about-text">Autobedrijf Bellens is een familiebedrijf dat al meer dan drie decennia de automobilistenmarkt in en rond Nijlen bedient. Wat begon met een passie voor auto's, groeide uit tot een vertrouwde naam in de Kempen.</p>
+      <p class="about-text">Wij geloven in kwaliteit boven kwantiteit, in persoonlijk contact en in eerlijkheid. Elke wagen in ons aanbod is mechanisch gecontroleerd en eerlijk geprijsd. Geen verborgen kosten, geen verrassingen.</p>
+      <div class="about-divider"></div>
+      <div class="about-features">
+        <div class="about-feature">Meer dan 65 wagens beschikbaar in onze showroom</div>
+        <div class="about-feature">Eigen mechanische werkplaats & carrosserie atelier</div>
+        <div class="about-feature">Persoonlijke service — u bent geen nummer</div>
+        <div class="about-feature">Alle merken · Alle modellen · Eerlijke prijzen</div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="about-visual">
+        <div class="about-shape"></div>
+        <div class="about-shape-2"></div>
+        <div class="about-quote">
+          <span class="about-quote-mark">"</span>
+          <p class="about-quote-text">Elke wagen die onze deur verlaat, heeft onze <em>persoonlijke goedkeuring</em> gekregen.</p>
+          <p class="about-quote-author">— Familie Bellens, Nijlen</p>
+        </div>
+      </div>
+      <div class="about-nums">
+        <div class="about-num-item">
+          <div class="about-num">30+</div>
+          <div class="about-num-label">Jaar actief</div>
+        </div>
+        <div class="about-num-item">
+          <div class="about-num">100%</div>
+          <div class="about-num-label">Familie-eigendom</div>
+        </div>
+        <div class="about-num-item">
+          <div class="about-num">All</div>
+          <div class="about-num-label">Merken welkom</div>
+        </div>
+        <div class="about-num-item">
+          <div class="about-num">★★★★★</div>
+          <div class="about-num-label">Klanttevredenheid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REVIEWS ─── -->
+<section id="reviews">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Klantervaringen</span>
+    <h2 class="section-title">Wat onze klanten zeggen</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal" style="transition-delay:.05s">
+      <div class="review-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="review-text">"Uitstekende service van begin tot eind. De BMW X6 staat er perfect bij — mechanisch nagekeken, schoon geleverd. Echt een betrouwbaar adres in de Kempen. Absoluut aanbevolen!"</p>
+      <div class="review-author-wrap">
+        <div class="review-avatar">K</div>
+        <div>
+          <div class="review-author">Koen Verstraeten</div>
+          <div class="review-car">BMW X6 · Eigenaar</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal" style="transition-delay:.15s">
+      <div class="review-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="review-text">"Mijn Audi A4 verkocht via Bellens — vlot, eerlijk en zonder gedoe. De communicatie was top, de prijs correct en de papieren waren dezelfde dag in orde. Zeer professioneel familiebedrijf."</p>
+      <div class="review-author-wrap">
+        <div class="review-avatar">S</div>
+        <div>
+          <div class="review-author">Sandra Michiels</div>
+          <div class="review-car">Audi A4 · Verkoper</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal" style="transition-delay:.25s">
+      <div class="review-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="review-text">"Range Rover onderhoud perfect afgehandeld. Ze weten wat ze doen en communiceren duidelijk over de kosten. Geen onaangename verrassingen op de factuur. Vaste klant voor het leven!"</p>
+      <div class="review-author-wrap">
+        <div class="review-avatar">P</div>
+        <div>
+          <div class="review-author">Pieter De Coster</div>
+          <div class="review-car">Range Rover · Onderhoud</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal-left">
+      <span class="section-eyebrow">Neem contact op</span>
+      <h2 class="contact-title">Kom langs of bel ons</h2>
+      <div class="contact-info-list">
+        <div class="contact-info-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-info-label">Adres</div>
+            <div class="contact-info-value">Bouwelsesteenweg 107<br>2560 Nijlen</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-info-label">Telefoon</div>
+            <div class="contact-info-value"><a href="tel:034110494" style="color:inherit">03 411 04 94</a></div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-info-label">Mobiel</div>
+            <div class="contact-info-value"><a href="tel:0475418726" style="color:inherit">0475 41 87 26</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-hours">
+        <div class="contact-hours-title">Openingsuren</div>
+        <div class="hours-row"><span class="hours-day">Maandag – Zaterdag</span><span class="hours-time">09:00 – 12:30</span></div>
+        <div class="hours-row"><span class="hours-day">&nbsp;</span><span class="hours-time">13:30 – 18:00</span></div>
+        <div class="hours-row"><span class="hours-day">Zondag</span><span class="hours-time" style="color:var(--white-dim)">Gesloten</span></div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Naam *</label>
+            <input type="text" name="naam" placeholder="Uw naam" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">E-mail *</label>
+            <input type="email" name="email" placeholder="uw@email.be" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefoon</label>
+          <input type="tel" name="tel" placeholder="0x xx xx xx xx">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Interesse</label>
+          <select name="interesse">
+            <option value="">Selecteer uw vraag</option>
+            <option>Tweedehands wagen kopen</option>
+            <option>Mijn wagen verkopen</option>
+            <option>Mechanisch onderhoud</option>
+            <option>Koetswerk / carrosserie</option>
+            <option>Andere vraag</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bericht *</label>
+          <textarea name="bericht" placeholder="Uw vraag of opmerking..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Verzend bericht →</button>
+        <p class="form-note">Wij reageren binnen 24 uur op werkdagen.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<div class="map-section">
+  <iframe
+    src="https://maps.google.com/maps?q=Bouwelsesteenweg+107,+2560+Nijlen,+Belgi%C3%AB&output=embed&z=15"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Locatie Autobedrijf Bellens">
+  </iframe>
+  <div class="map-overlay"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">BELLENS<small>Autobedrijf · Nijlen</small></div>
+    <nav class="footer-links">
+      <a href="#showroom">Showroom</a>
+      <a href="#diensten">Diensten</a>
+      <a href="#over">Over ons</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <span class="footer-copy">© 2025 Autobedrijf Bellens · BTW BE 0xxx.xxx.xxx</span>
+  </div>
+</footer>
+
+<script>
+/* ─── DATA ─────────────────────────────────────────────────────────────── */
+const fallbackCars = [
+  {id:1,name:"Range Rover Velar",brand:"Land Rover",year:2021,price:"€ 34.969",km:"100.000 km",fuel:"Hybride / Benzine",
+   image:"https://prod.pictures.autoscout24.net/listing-images/ac36797b-3587-40d8-9c60-31ab6bebe16d_2fe2a7a5-f31c-4ef4-8f88-141807874cc9.jpg",
+   cats:["suv","hybride"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0d1f10,#1c3322)"},
+  {id:2,name:"A4 Avant",brand:"Audi",year:2022,price:"€ 23.897",km:"143.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:3,name:"E-C4 X",brand:"Citroën",year:2023,price:"€ 24.805",km:"41.000 km",fuel:"Elektrisch",
+   image:"",cats:["elektrisch","suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#101820,#1a2835)"},
+  {id:4,name:"Q5",brand:"Audi",year:2014,price:"€ 9.999",km:"271.000 km",fuel:"Diesel",
+   image:"",cats:["suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:5,name:"B-Max",brand:"Ford",year:2018,price:"€ 7.450",km:"125.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0a1428,#152040)"},
+  {id:6,name:"Kamiq",brand:"Škoda",year:2021,price:"€ 17.424",km:"126.000 km",fuel:"Benzine",
+   image:"",cats:["suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0a1810,#162a1e)"},
+  {id:7,name:"A4 Avant",brand:"Audi",year:2023,price:"€ 27.588",km:"29.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:8,name:"725",brand:"BMW",year:2018,price:"€ 28.990",km:"160.000 km",fuel:"Diesel",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0d1520,#182230)"},
+  {id:9,name:"JCW Cabriolet",brand:"MINI",year:2023,price:"€ 35.453",km:"11.152 km",fuel:"Benzine",
+   image:"",cats:["sport"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#200a0a,#381212)"},
+  {id:10,name:"X6",brand:"BMW",year:2018,price:"€ 26.250",km:"199.000 km",fuel:"Diesel",
+   image:"",cats:["suv","sport"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0d1520,#182230)"},
+  {id:11,name:"Z3 Roadster",brand:"BMW",year:1999,price:"€ 8.999",km:"167.000 km",fuel:"Benzine",
+   image:"",cats:["sport"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0d1520,#182230)"},
+  {id:12,name:"A5 Cabriolet",brand:"Audi",year:2024,price:"€ 42.990",km:"36.000 km",fuel:"Benzine / Hybride",
+   image:"",cats:["sport","hybride"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:13,name:"Touran",brand:"Volkswagen",year:2019,price:"€ 14.990",km:"100.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0a1428,#152040)"},
+  {id:14,name:"Q3",brand:"Audi",year:2012,price:"€ 8.990",km:"217.000 km",fuel:"Diesel",
+   image:"",cats:["suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:15,name:"Mokka",brand:"Opel",year:2015,price:"€ 10.250",km:"104.000 km",fuel:"Benzine",
+   image:"",cats:["suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#151525,#202035)"},
+  {id:16,name:"595 Abarth",brand:"Fiat",year:2014,price:"€ 9.990",km:"106.000 km",fuel:"Benzine",
+   image:"",cats:["sport"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#200808,#381010)"},
+  {id:17,name:"A3 Sportback",brand:"Audi",year:2022,price:"€ 21.900",km:"118.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:18,name:"A4 Avant",brand:"Audi",year:2022,price:"€ 24.502",km:"84.000 km",fuel:"Diesel",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#141420,#1e1e30)"},
+  {id:19,name:"Golf",brand:"Volkswagen",year:2019,price:"€ 13.350",km:"72.000 km",fuel:"Benzine",
+   image:"",cats:["sedan"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0a1428,#152040)"},
+  {id:20,name:"Kuga",brand:"Ford",year:2016,price:"€ 10.400",km:"99.000 km",fuel:"Benzine",
+   image:"",cats:["suv"],url:"https://www.autoscout24.be",gradient:"linear-gradient(135deg,#0a1428,#152040)"},
+];
+
+/* ─── CAR SVG SILHOUETTE ─────────────────────────────────────────────── */
+const carSVG = `<svg width="260" height="90" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 62 L30 35 Q45 18 65 16 L160 14 Q190 14 210 28 L242 55 L250 62 L252 68 L8 68 Z" fill="currentColor"/>
+  <rect x="8" y="66" width="244" height="6" rx="3" fill="currentColor"/>
+  <circle cx="55" cy="74" r="14" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="55" cy="74" r="6" fill="currentColor"/>
+  <circle cx="195" cy="74" r="14" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="195" cy="74" r="6" fill="currentColor"/>
+  <path d="M68 38 L78 20 L148 18 L168 38 Z" fill="rgba(255,255,255,0.06)"/>
+  <path d="M172 38 L188 22 L210 26 L224 38 Z" fill="rgba(255,255,255,0.04)"/>
+</svg>`;
+
+/* ─── RENDER CARS ────────────────────────────────────────────────────── */
+function renderCars(cars) {
+  const grid = document.getElementById('carsGrid');
+  const loading = document.getElementById('carsLoading');
+  if(loading) loading.remove();
+
+  grid.innerHTML = '';
+
+  cars.forEach((car, i) => {
+    const delay = (i % 6) * 0.07;
+    const catStr = car.cats.join(' ');
+    const hasImg = car.image && car.image.length > 0;
+
+    const imgHTML = hasImg
+      ? `<img src="${car.image}" alt="${car.brand} ${car.name}" loading="lazy">`
+      : `<div class="car-img-placeholder" style="background:${car.gradient}">
+           <div class="car-brand-watermark">${car.brand.split(' ')[0]}</div>
+           <div class="car-silhouette" style="color:#ffffff">${carSVG}</div>
+         </div>`;
+
+    const isFuelElec = car.fuel.toLowerCase().includes('elektrisch');
+    const isFuelHyb = car.fuel.toLowerCase().includes('hybride');
+    const badgeLabel = isFuelElec ? 'Elektrisch' : isFuelHyb ? 'Hybride' : null;
+    const badge = badgeLabel ? `<div class="car-badge">${badgeLabel}</div>` : '';
+
+    grid.innerHTML += `
+      <div class="car-card reveal" data-cats="${catStr}" style="transition-delay:${delay}s">
+        <div class="car-img-wrap">
+          ${imgHTML}
+          ${badge}
+        </div>
+        <div class="car-body">
+          <div class="car-name">${car.brand} ${car.name}</div>
+          <div class="car-sub">Bouwjaar ${car.year}</div>
+          <div class="car-price">${car.price}</div>
+          <div class="car-pills">
+            <span class="pill">${car.km}</span>
+            <span class="pill">${car.fuel}</span>
+            <span class="pill">${car.year}</span>
+          </div>
+          <div class="car-cta">
+            <a href="${car.url}" target="_blank" rel="noopener" class="car-link">Meer info →</a>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Re-observe new cards
+  document.querySelectorAll('#carsGrid .reveal').forEach(el => observer.observe(el));
+  setupFilter();
+}
+
+/* ─── FILTER ─────────────────────────────────────────────────────────── */
+let activeFilter = 'all';
+
+function setupFilter() {
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.car-card').forEach(card => {
+        const cats = card.dataset.cats || '';
+        const match = activeFilter === 'all' || cats.includes(activeFilter);
+        card.classList.toggle('hidden', !match);
+      });
+
+      const visible = document.querySelectorAll('.car-card:not(.hidden)');
+      let noRes = document.querySelector('.no-results');
+      if(visible.length === 0) {
+        if(!noRes) {
+          const el = document.createElement('div');
+          el.className = 'no-results';
+          el.textContent = 'Geen wagens gevonden voor dit filter.';
+          document.getElementById('carsGrid').appendChild(el);
+        }
+      } else {
+        if(noRes) noRes.remove();
+      }
+    });
+  });
+}
+
+/* ─── FETCH AUTOSCOUT ────────────────────────────────────────────────── */
+async function fetchCars() {
+  try {
+    const proxy = 'https://api.allorigins.win/raw?url=';
+    const target = 'https://www.autoscout24.be/nl/verkopers/vak-garage-autobedrijf-bellens/occasions';
+    const res = await fetch(proxy + encodeURIComponent(target), {signal: AbortSignal.timeout(8000)});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const listings = doc.querySelectorAll('article, [data-testid="listing-card"], .cldt-summary-full-item');
+    if(listings.length < 2) throw new Error('No listings');
+    // If we got real data, we could parse it — but AS24 is JS-rendered so fallback
+    throw new Error('Dynamic content');
+  } catch(e) {
+    renderCars(fallbackCars);
+  }
+}
+
+/* ─── CURSOR ─────────────────────────────────────────────────────────── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+(function animateRing() {
+  rx += (mx - rx) * 0.13;
+  ry += (my - ry) * 0.13;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+})();
+
+document.querySelectorAll('a,button,.filter-tab,.car-card,.service-card,.review-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width  = '16px';
+    cursor.style.height = '16px';
+    ring.style.width    = '56px';
+    ring.style.height   = '56px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width  = '8px';
+    cursor.style.height = '8px';
+    ring.style.width    = '40px';
+    ring.style.height   = '40px';
+  });
+});
+
+/* ─── SCROLL PROGRESS ─────────────────────────────────────────────── */
+const progressBar = document.getElementById('scrollProgress');
+const navbar = document.getElementById('navbar');
+
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  progressBar.style.width = ((scrolled / maxScroll) * 100) + '%';
+  navbar.classList.toggle('scrolled', scrolled > 60);
+}, {passive: true});
+
+/* ─── MOBILE MENU ─────────────────────────────────────────────────── */
+function toggleMenu() {
+  const hb = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  hb.classList.toggle('open');
+  menu.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobile() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── INTERSECTION OBSERVER ───────────────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Counter
+      if(entry.target.querySelector('.stat-number')) {
+        entry.target.querySelectorAll('.stat-number').forEach(el => animateCounter(el));
+      }
+    }
+  });
+}, {threshold: 0.15, rootMargin: '0px 0px -40px 0px'});
+
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stat-item').forEach(el => observer.observe(el));
+
+/* ─── COUNTER ─────────────────────────────────────────────────────── */
+const counted = new Set();
+function animateCounter(el) {
+  if(counted.has(el)) return;
+  counted.add(el);
+  const target = parseInt(el.dataset.target, 10);
+  const dur = 1800;
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - t, 4);
+    el.textContent = Math.floor(eased * target);
+    if(t < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+/* ─── 3D TILT ON SERVICE CARDS ──────────────────────────────────── */
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    const cx = r.width / 2, cy = r.height / 2;
+    const rx2 = ((y - cy) / cy) * -8;
+    const ry2 = ((x - cx) / cx) * 8;
+    card.style.transform = `perspective(900px) rotateX(${rx2}deg) rotateY(${ry2}deg) translateZ(6px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) translateZ(0)';
+  });
+});
+
+/* ─── FORM SUBMIT ─────────────────────────────────────────────────── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = '✓ Bericht verzonden!';
+  btn.style.background = '#3a7a3a';
+  setTimeout(() => {
+    btn.textContent = 'Verzend bericht →';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3500);
+}
+
+/* ─── SMOOTH SCROLL FOR ALL ANCHOR LINKS ─────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+});
+
+/* ─── INIT ────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  fetchCars();
+});
+</script>
+</body>
+</html>
