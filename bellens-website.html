@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<!-- bellens-cars.js wordt ingeladen als het in dezelfde map staat als dit HTML-bestand -->
+<script src="bellens-cars.js" onerror="console.log('bellens-cars.js niet gevonden, gebruik fallback data')"></script>
 <style>
 /* ── VARIABLES ─────────────────────────────────────────────────── */
 :root{
@@ -253,62 +255,85 @@ nav.scrolled{
 .ft:hover{color:var(--text)}
 .ft.active{color:var(--text);border-bottom-color:var(--blue)}
 .cars-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
-  max-width:1320px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  max-width:1360px;margin:0 auto;
 }
 .car-card{
-  background:var(--card);position:relative;overflow:hidden;
-  border:1px solid rgba(27,58,92,.2);border-radius:12px;
-  transition:all .45s var(--ease);
-  box-shadow:0 6px 24px rgba(0,0,0,.28);
+  background:rgba(15,28,46,.75);position:relative;overflow:hidden;
+  border:1px solid rgba(27,58,92,.25);border-radius:16px;
+  transition:all .5s var(--ease);
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
 }
 .car-card:hover{
-  border-color:rgba(43,108,176,.45);
-  transform:translateY(-8px);
-  box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(43,108,176,.1);
+  border-color:rgba(43,108,176,.5);
+  transform:translateY(-10px);
+  box-shadow:0 32px 72px rgba(0,0,0,.6),0 0 0 1px rgba(43,108,176,.12);
+  background:rgba(15,28,46,.95);
 }
 .car-card.hidden{display:none}
 .car-img-wrap{
-  position:relative;height:250px;overflow:hidden;background:var(--navy);
+  position:relative;height:260px;overflow:hidden;background:var(--navy);
 }
 .car-img-wrap img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .75s var(--ease);display:block;
+  width:100%;height:100%;object-fit:cover;object-position:center 55%;
+  transition:transform .8s var(--ease);display:block;
 }
-.car-card:hover .car-img-wrap img{transform:scale(1.05)}
+.car-card:hover .car-img-wrap img{transform:scale(1.06)}
+.car-img-fuel-badge{
+  position:absolute;top:14px;left:14px;
+  padding:5px 12px;border-radius:20px;font-size:10px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.badge-el{background:rgba(43,108,176,.35);border:1px solid rgba(43,108,176,.5);color:#7EC8E3}
+.badge-hy{background:rgba(39,103,73,.35);border:1px solid rgba(39,103,73,.5);color:#6FCFA0}
 .car-placeholder{
   width:100%;height:100%;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:12px;
-  background:linear-gradient(145deg,#0F1C2E 0%,#162840 60%,#1B3A5C 100%);
+  align-items:center;justify-content:center;gap:16px;
+  background:linear-gradient(145deg,#0d1825 0%,#0F1C2E 50%,#1B3A5C 100%);
+  position:relative;overflow:hidden;
+}
+.car-placeholder::before{
+  content:'';position:absolute;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(43,108,176,.08),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
 }
 .car-placeholder-letter{
-  font-size:72px;font-weight:900;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:1px rgba(43,108,176,.35);
-  user-select:none;line-height:1;
+  font-size:80px;font-weight:900;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(43,108,176,.25);
+  user-select:none;line-height:1;position:relative;
 }
 .car-placeholder-sub{
-  font-size:9px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;
-  color:rgba(43,108,176,.4);
+  font-size:9px;font-weight:600;letter-spacing:.55em;text-transform:uppercase;
+  color:rgba(43,108,176,.35);position:relative;
 }
-.car-body{padding:28px 30px 30px}
+.car-placeholder-note{
+  font-size:9px;color:rgba(154,165,177,.3);letter-spacing:.1em;
+  position:absolute;bottom:16px;
+}
+.car-body{padding:24px 28px 28px}
 .car-merk{
   font-size:10px;font-weight:600;letter-spacing:.38em;text-transform:uppercase;
-  color:var(--text-d);margin-bottom:8px;
+  color:var(--text-d);margin-bottom:6px;
 }
 .car-model{
-  font-size:21px;font-weight:600;letter-spacing:-.01em;color:var(--text);margin-bottom:16px;line-height:1.2;
+  font-size:20px;font-weight:600;letter-spacing:-.015em;color:var(--text);
+  margin-bottom:0;line-height:1.2;
 }
+.car-year{font-size:13px;color:var(--text-d);font-weight:300;margin-bottom:16px;margin-top:2px}
 .car-price{
-  font-size:28px;font-weight:600;color:var(--blue);letter-spacing:-.02em;margin-bottom:14px;
+  font-size:30px;font-weight:700;color:var(--blue);letter-spacing:-.03em;margin-bottom:14px;
 }
 .car-specs{
-  font-size:12px;color:var(--text-d);font-weight:400;letter-spacing:.04em;margin-bottom:22px;
-  line-height:1.8;
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;
 }
-.car-specs span{
-  display:inline-block;
+.spec-pill{
+  padding:4px 10px;background:rgba(27,58,92,.4);border:1px solid rgba(27,58,92,.6);
+  border-radius:20px;font-size:10px;font-weight:500;color:var(--text-d);letter-spacing:.04em;
 }
-.car-specs .sep{margin:0 6px;opacity:.4}
+.spec-pill.fuel-el{background:rgba(43,108,176,.12);border-color:rgba(43,108,176,.25);color:#7EC8E3}
+.spec-pill.fuel-hy{background:rgba(39,103,73,.12);border-color:rgba(39,103,73,.25);color:#6FCFA0}
 .car-as-link{
   font-size:11px;font-weight:500;letter-spacing:.1em;color:var(--blue);
   text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;
@@ -916,7 +941,7 @@ const CAR_DATA = [
 function fmtKm(n){return n.toLocaleString('nl-BE') + ' km'}
 function fmtPrice(n){return '€ ' + n.toLocaleString('nl-BE')}
 function carImgErr(img,initial,merk){
-  img.parentElement.innerHTML=`<div class="car-placeholder"><span class="car-placeholder-letter">${initial}</span><span class="car-placeholder-sub">${merk}</span></div>`;
+  img.parentElement.innerHTML=`<div class="car-placeholder"><span class="car-placeholder-letter">${initial}</span><span class="car-placeholder-sub">${merk}</span><span class="car-placeholder-note">Foto op aanvraag</span></div>`;
 }
 
 /* ── CAR FOTO HELPER ─────────────────────────────────────────────────── */
@@ -963,19 +988,30 @@ function renderCars(cars){
     const imgHTML = `<img src="${foto}" alt="${c.merk} ${c.model}" loading="lazy" width="640" height="420"
       onerror="carImgErr(this,'${initial}','${c.merk.replace(/'/g,'&#39;')}')">`;
 
+    const fuel = (c.brandstof||'').toLowerCase();
+    const isEl = fuel.includes('elektr');
+    const isHy = fuel.includes('hybri');
+    const fuelBadge = isEl
+      ? `<span class="car-img-fuel-badge badge-el">Elektrisch</span>`
+      : isHy ? `<span class="car-img-fuel-badge badge-hy">Hybride</span>` : '';
+
+    const fuelPillClass = isEl ? ' fuel-el' : isHy ? ' fuel-hy' : '';
+    const kmPill   = c.km   ? `<span class="spec-pill">${fmtKm(c.km)}</span>` : '';
+    const fuelPill = c.brandstof ? `<span class="spec-pill${fuelPillClass}">${c.brandstof}</span>` : '';
+    const pkPill   = c.pk   ? `<span class="spec-pill">${c.pk} pk</span>` : '';
+
     grid.insertAdjacentHTML('beforeend', `
       <div class="car-card reveal" data-cats="${catStr}" style="transition-delay:${delay}s">
-        <div class="car-img-wrap">${imgHTML}</div>
+        <div class="car-img-wrap">
+          ${imgHTML}
+          ${fuelBadge}
+        </div>
         <div class="car-body">
           <div class="car-merk">${c.merk}</div>
           <div class="car-model">${c.model}</div>
-          <div class="car-price">${fmtPrice(c.prijs)}</div>
-          <div class="car-specs">
-            <span>${fmtKm(c.km)}</span><span class="sep">|</span>
-            <span>${c.jaar}</span><span class="sep">|</span>
-            <span>${c.brandstof}</span><span class="sep">|</span>
-            <span>${c.pk} pk</span>
-          </div>
+          <div class="car-year">${c.jaar || ''}</div>
+          <div class="car-price">${c.prijs ? fmtPrice(c.prijs) : 'Prijs op aanvraag'}</div>
+          <div class="car-specs">${kmPill}${fuelPill}${pkPill}</div>
           <a href="${c.url}" target="_blank" rel="noopener" class="car-as-link">
             Bekijk op AutoScout →
           </a>
@@ -1121,7 +1157,17 @@ function handleForm(e){
 }
 
 /* ── INIT ─────────────────────────────────────────────────────────────── */
-window.addEventListener('DOMContentLoaded', loadCars);
+/* ── INIT ────────────────────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  // Gebruik scraped data als beschikbaar (gegenereerd door scrape-bellens-local.js)
+  if (window.BELLENS_SCRAPED_CARS && window.BELLENS_SCRAPED_CARS.length > 0) {
+    console.log('[Bellens] Scraped data geladen:', window.BELLENS_SCRAPED_CARS.length, 'auto's');
+    renderCars(window.BELLENS_SCRAPED_CARS);
+  } else {
+    // Geen scraped data — probeer AS24 te fetchen (werkt vanuit browser), anders fallback
+    loadCars();
+  }
+});
 </script>
 </body>
 </html>
