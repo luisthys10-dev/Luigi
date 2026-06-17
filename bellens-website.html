@@ -253,47 +253,57 @@ nav.scrolled{
 .ft:hover{color:var(--text)}
 .ft.active{color:var(--text);border-bottom-color:var(--blue)}
 .cars-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
-  max-width:1400px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+  max-width:1320px;margin:0 auto;
 }
 .car-card{
   background:var(--card);position:relative;overflow:hidden;
-  border:1px solid rgba(27,58,92,.3);
-  transition:border-color var(--t);
+  border:1px solid rgba(27,58,92,.2);border-radius:12px;
+  transition:all .45s var(--ease);
+  box-shadow:0 6px 24px rgba(0,0,0,.28);
 }
-.car-card:hover{border-color:rgba(43,108,176,.4)}
+.car-card:hover{
+  border-color:rgba(43,108,176,.45);
+  transform:translateY(-8px);
+  box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(43,108,176,.1);
+}
 .car-card.hidden{display:none}
 .car-img-wrap{
-  position:relative;height:220px;overflow:hidden;background:var(--navy);
+  position:relative;height:250px;overflow:hidden;background:var(--navy);
 }
 .car-img-wrap img{
   width:100%;height:100%;object-fit:cover;
-  transition:transform .7s var(--ease);display:block;
+  transition:transform .75s var(--ease);display:block;
 }
-.car-card:hover .car-img-wrap img{transform:scale(1.03)}
+.car-card:hover .car-img-wrap img{transform:scale(1.05)}
 .car-placeholder{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  background:var(--navy);
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(145deg,#0F1C2E 0%,#162840 60%,#1B3A5C 100%);
 }
 .car-placeholder-letter{
-  font-size:80px;font-weight:900;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:1px var(--navy-m);
+  font-size:72px;font-weight:900;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(43,108,176,.35);
   user-select:none;line-height:1;
 }
-.car-body{padding:24px 28px 28px}
+.car-placeholder-sub{
+  font-size:9px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;
+  color:rgba(43,108,176,.4);
+}
+.car-body{padding:28px 30px 30px}
 .car-merk{
-  font-size:10px;font-weight:600;letter-spacing:.35em;text-transform:uppercase;
-  color:var(--text-d);margin-bottom:6px;
+  font-size:10px;font-weight:600;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--text-d);margin-bottom:8px;
 }
 .car-model{
-  font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--text);margin-bottom:14px;
+  font-size:21px;font-weight:600;letter-spacing:-.01em;color:var(--text);margin-bottom:16px;line-height:1.2;
 }
 .car-price{
-  font-size:26px;font-weight:600;color:var(--blue);letter-spacing:-.02em;margin-bottom:12px;
+  font-size:28px;font-weight:600;color:var(--blue);letter-spacing:-.02em;margin-bottom:14px;
 }
 .car-specs{
-  font-size:12px;color:var(--text-d);font-weight:400;letter-spacing:.03em;margin-bottom:20px;
-  line-height:1.6;
+  font-size:12px;color:var(--text-d);font-weight:400;letter-spacing:.04em;margin-bottom:22px;
+  line-height:1.8;
 }
 .car-specs span{
   display:inline-block;
@@ -532,7 +542,7 @@ footer{background:var(--dark);padding:52px 6vw}
   nav{padding:0 5vw;height:68px}
   .nav-links,.nav-contact{display:none}
   .hb{display:flex}
-  .cars-grid{grid-template-columns:1fr;gap:2px}
+  .cars-grid{grid-template-columns:1fr;gap:20px}
   .cf-row{grid-template-columns:1fr}
   .footer-inner{flex-direction:column;text-align:center}
   .footer-links{justify-content:center}
@@ -905,6 +915,39 @@ const CAR_DATA = [
 /* ── FORMAT HELPERS ───────────────────────────────────────────────────── */
 function fmtKm(n){return n.toLocaleString('nl-BE') + ' km'}
 function fmtPrice(n){return '€ ' + n.toLocaleString('nl-BE')}
+function carImgErr(img,initial,merk){
+  img.parentElement.innerHTML=`<div class="car-placeholder"><span class="car-placeholder-letter">${initial}</span><span class="car-placeholder-sub">${merk}</span></div>`;
+}
+
+/* ── CAR FOTO HELPER ─────────────────────────────────────────────────── */
+// Per-car fallback images via loremflickr (consistent via lock param)
+const CAR_FOTO_FALLBACKS = [
+  'https://loremflickr.com/640/420/range-rover,suv,luxury?lock=201',    // Range Rover Velar
+  null,                                                                    // Audi A4 – has real URL
+  'https://loremflickr.com/640/420/electric,car,citroën?lock=203',       // Citroën E-C4 X
+  'https://loremflickr.com/640/420/audi,q5,suv?lock=204',               // Audi Q5
+  'https://loremflickr.com/640/420/ford,compact,car?lock=205',           // Ford B-Max
+  'https://loremflickr.com/640/420/skoda,suv,car?lock=206',             // Škoda Kamiq
+  'https://loremflickr.com/640/420/audi,wagon,estate?lock=207',         // Audi A4 Avant 2023
+  'https://loremflickr.com/640/420/bmw,sedan,luxury?lock=208',          // BMW 725
+  'https://loremflickr.com/640/420/mini,convertible,sport?lock=209',    // MINI JCW Cabrio
+  'https://loremflickr.com/640/420/bmw,x6,suv?lock=210',               // BMW X6
+  'https://loremflickr.com/640/420/bmw,roadster,classic?lock=211',      // BMW Z3
+  'https://loremflickr.com/640/420/audi,cabriolet,sport?lock=212',      // Audi A5 Cabriolet
+  'https://loremflickr.com/640/420/volkswagen,van,family?lock=213',     // VW Touran
+  'https://loremflickr.com/640/420/audi,q3,compact,suv?lock=214',      // Audi Q3
+  'https://loremflickr.com/640/420/opel,suv,compact?lock=215',         // Opel Mokka
+  'https://loremflickr.com/640/420/fiat,abarth,sport?lock=216',        // Fiat 595 Abarth
+  'https://loremflickr.com/640/420/audi,a3,hatchback?lock=217',        // Audi A3 Sportback
+  'https://loremflickr.com/640/420/audi,a4,diesel?lock=218',           // Audi A4 TDi
+  'https://loremflickr.com/640/420/volkswagen,golf,car?lock=219',      // VW Golf
+  'https://loremflickr.com/640/420/ford,kuga,suv?lock=220',            // Ford Kuga
+];
+
+function getCarFoto(c, idx){
+  if(c.foto && c.foto.length > 0) return c.foto;
+  return CAR_FOTO_FALLBACKS[idx] || `https://loremflickr.com/640/420/car,automobile?lock=${300+idx}`;
+}
 
 /* ── RENDER CARS ──────────────────────────────────────────────────────── */
 function renderCars(cars){
@@ -915,11 +958,10 @@ function renderCars(cars){
     const delay = (i % 6) * 0.06;
     const catStr = c.cats.join(' ');
     const initial = c.merk.charAt(0).toUpperCase();
-    const hasFoto = c.foto && c.foto.length > 0;
+    const foto = getCarFoto(c, i);
 
-    const imgHTML = hasFoto
-      ? `<img src="${c.foto}" alt="${c.merk} ${c.model}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'car-placeholder\\'><span class=\\'car-placeholder-letter\\'>${initial}</span></div>'">`
-      : `<div class="car-placeholder"><span class="car-placeholder-letter">${initial}</span></div>`;
+    const imgHTML = `<img src="${foto}" alt="${c.merk} ${c.model}" loading="lazy" width="640" height="420"
+      onerror="carImgErr(this,'${initial}','${c.merk.replace(/'/g,'&#39;')}')">`;
 
     grid.insertAdjacentHTML('beforeend', `
       <div class="car-card reveal" data-cats="${catStr}" style="transition-delay:${delay}s">
