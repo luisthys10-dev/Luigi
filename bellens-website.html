@@ -1023,38 +1023,11 @@ function renderCars(cars){
   grid.querySelectorAll('.reveal').forEach(el => io.observe(el));
 }
 
-/* ── FETCH AUTOSCOUT ──────────────────────────────────────────────────── */
-async function loadCars(){
-  try{
-    const proxy = 'https://api.allorigins.win/raw?url=';
-    const target = 'https://www.autoscout24.be/nl/verkopers/vak-garage-autobedrijf-bellens/occasions';
-    const res = await fetch(proxy + encodeURIComponent(target), {signal: AbortSignal.timeout(8000)});
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const html = await res.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    // AS24 is largely JS-rendered; check for static listing elements
-    const articles = doc.querySelectorAll('article,[data-testid="listing-card"]');
-    if(articles.length < 2) throw new Error('No static listings found');
-
-    const parsed = Array.from(articles).slice(0,20).map(a => {
-      const imgEl   = a.querySelector('img');
-      const titleEl = a.querySelector('h2');
-      const priceEl = a.querySelector('[data-testid="price-label"]') || a.querySelector('.cldt-price');
-      const linkEl  = a.querySelector('a[href]');
-      return {
-        merk:   titleEl?.textContent?.split(' ')[0] || '',
-        model:  titleEl?.textContent?.split(' ').slice(1).join(' ') || '',
-        jaar:   0, km:0, prijs:0, brandstof:'', pk:0, cats:[],
-        foto:   imgEl?.src || imgEl?.dataset?.src || '',
-        url:    linkEl?.href || target
-      };
-    }).filter(c => c.merk);
-
-    if(parsed.length > 0){ renderCars(parsed); return; }
-    throw new Error('No parseable cars');
-  }catch(e){
-    renderCars(CAR_DATA);
-  }
+/* ── LOAD CARS ────────────────────────────────────────────────────────── */
+function loadCars(){
+  // AS24 is JS-rendered — direct fetch won't return car data.
+  // Use scraped data (bellens-cars.js) or the built-in fallback dataset.
+  renderCars(CAR_DATA);
 }
 
 /* ── FILTER ───────────────────────────────────────────────────────────── */
