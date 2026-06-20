@@ -80,153 +80,54 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;color:inhe
 .road-dash-strip.go::before{animation-play-state:running}
 @keyframes dashAnim{to{transform:translateX(-130px)}}
 
-/* ── PHASE 1: CAR APPROACHING ── */
-#phase-approach{
+/* ── VIDEO PHASES ── */
+.vid-phase{
   position:absolute;inset:0;
-  display:flex;align-items:flex-end;justify-content:center;
-  padding-bottom:33%;
+  opacity:0;pointer-events:none;
+  transition:opacity .8s;
+}
+.vid-phase.show{opacity:1}
+.vid-phase video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  pointer-events:none;
+}
+
+/* ── PHASE 4: EXPLODE LABELS ── */
+#explode-labels{
+  position:absolute;inset:0;
+  pointer-events:none;
+}
+.ep-pin{
+  position:absolute;
+  transform:translate(-50%,-50%);
   opacity:0;transition:opacity .5s;
 }
-#phase-approach.show{opacity:1}
-
-/* Speed lines radiating from center */
-#speed-lines{
-  position:absolute;inset:0;
-  pointer-events:none;
-  opacity:0;transition:opacity .4s;
+#phase-explode.show .ep-pin{opacity:1}
+.ep-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 4px rgba(59,130,246,.25),0 0 20px rgba(59,130,246,.6);
+  margin:0 auto 6px;
+  animation:pinPulse 2s ease-in-out infinite;
 }
-#speed-lines.show{opacity:1}
-.sl{
-  position:absolute;top:50%;left:50%;
-  height:2px;background:linear-gradient(90deg,transparent,rgba(148,163,184,.12),transparent);
-  transform-origin:left center;
+@keyframes pinPulse{0%,100%{box-shadow:0 0 0 4px rgba(59,130,246,.25),0 0 20px rgba(59,130,246,.6)}50%{box-shadow:0 0 0 8px rgba(59,130,246,.15),0 0 40px rgba(59,130,246,.9)}}
+.ep-card{
+  background:rgba(4,9,15,.82);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(59,130,246,.3);
+  border-radius:8px;
+  padding:8px 12px;
+  min-width:110px;
+  text-align:center;
+  transform:translateY(4px);
+  transition:transform .5s var(--ease),box-shadow .5s;
 }
-
-/* The approaching car SVG wrapper */
-#car-approach-wrap{
-  position:absolute;
-  bottom:33%;
-  left:50%;
-  transform:translateX(-50%) scale(0.04) perspective(800px) translateZ(0px);
-  transform-origin:bottom center;
-  filter:drop-shadow(0 0 60px rgba(59,130,246,.3));
-  transition:filter .3s;
-  will-change:transform;
-}
-/* Headlight cones */
-#headlight-left,#headlight-right{
-  position:absolute;
-  bottom:0;
-  width:0;height:0;
-  border-bottom:none;
-  opacity:0;transition:opacity .4s;
-  pointer-events:none;
-}
-#headlight-left{
-  right:50%;
-  border-right:400px solid transparent;
-  border-left:none;
-  border-top:600px solid rgba(255,255,160,.04);
-  transform-origin:right bottom;
-  transform:rotate(5deg);
-  filter:blur(20px);
-}
-#headlight-right{
-  left:50%;
-  border-left:400px solid transparent;
-  border-right:none;
-  border-top:600px solid rgba(255,255,160,.04);
-  transform-origin:left bottom;
-  transform:rotate(-5deg);
-  filter:blur(20px);
-}
-#headlight-left.glow,#headlight-right.glow{opacity:1}
-
-/* ── PHASE 2: WHEEL CLOSE-UP ── */
-#phase-wheel{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .6s;
-}
-#phase-wheel.show{opacity:1}
-#wheel-svg-wrap{
-  width:min(70vw,70vh);height:min(70vw,70vh);
-}
-#wheel-svg-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;animation:tireSpin .6s linear infinite paused}
-#phase-wheel.show #wheel-svg-wrap img{animation-play-state:running}
-.tire-spin{
-  transform-box:fill-box;transform-origin:center;
-  animation:tireSpin .4s linear infinite paused;
-}
-#phase-wheel.show .tire-spin{animation-play-state:running}
-@keyframes tireSpin{to{transform:rotate(360deg)}}
-
-/* road blur behind wheel */
-#wheel-road-blur{
-  position:absolute;bottom:0;left:0;right:0;height:40%;
-  background:linear-gradient(180deg,transparent,rgba(6,14,24,.9));
-  pointer-events:none;
-}
-
-/* ── PHASE 3: 3D ROTATING CAR ── */
-#phase-3d{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .6s;
-  perspective:1200px;
-}
-#phase-3d.show{opacity:1}
-#car3d-wrap{
-  transform-style:preserve-3d;
-  animation:rotate3d 8s linear infinite paused;
-  width:min(700px,80vw);
-}
-#phase-3d.show #car3d-wrap{animation-play-state:running}
-@keyframes rotate3d{
-  0%{transform:rotateY(0deg) rotateX(5deg)}
-  100%{transform:rotateY(360deg) rotateX(5deg)}
-}
-#car3d-wrap img{width:100%;height:auto;display:block;border-radius:8px}
-/* Dramatic glow behind rotating car */
-#car3d-glow{
-  position:absolute;
-  width:500px;height:300px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(59,130,246,.18),transparent 70%);
-  filter:blur(40px);pointer-events:none;
-  animation:glowPulse 3s ease-in-out infinite;
-}
-@keyframes glowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
-
-/* ── PHASE 4: EXPLODED DIAGRAM ── */
-#phase-explode{
-  position:absolute;inset:0;
-  opacity:0;pointer-events:none;transition:opacity .6s;
-}
-#phase-explode.show{opacity:1}
-.ep{
-  position:absolute;
-  transition:transform 1.2s var(--ease),opacity .8s;
-  opacity:0;
-}
-#phase-explode.show .ep{opacity:1}
-/* Each part gets positioned via JS */
-.ep-label{
-  position:absolute;
-  white-space:nowrap;
-  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--accent);
-  opacity:0;transition:opacity .6s .4s;
-  display:flex;align-items:center;gap:8px;
-}
-#phase-explode.show .ep-label{opacity:1}
-.ep-line{
-  display:block;height:1px;
-  background:linear-gradient(90deg,var(--accent),transparent);
-  width:0;transition:width .8s var(--ease) .5s;
-}
-#phase-explode.show .ep-line{width:48px}
-.ep-name{font-size:12px;font-weight:700;color:var(--white)}
-.ep-desc{font-size:10px;color:var(--silver);font-weight:400;margin-top:2px;letter-spacing:.04em}
+#phase-explode.show .ep-card{transform:translateY(0)}
+.ep-card:hover{box-shadow:0 0 20px rgba(59,130,246,.4)}
+.ep-name{font-size:11px;font-weight:700;color:var(--white);letter-spacing:.06em;text-transform:uppercase}
+.ep-desc{font-size:9px;color:var(--silver);margin-top:2px;letter-spacing:.03em}
 
 /* ══════════════════════════════════════════════
    CONTENT OVERLAY
@@ -537,50 +438,28 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
      FIXED BACKGROUND CANVAS
 ══════════════════════════════════════════ -->
 <div id="bg-canvas">
-  <div id="bg-stars"></div>
-  <div id="bg-road">
-    <div class="road-dash-strip" id="roadDash"></div>
-  </div>
-  <div id="headlight-left"></div>
-  <div id="headlight-right"></div>
 
-  <!-- PHASE 1: Approaching car -->
-  <div id="phase-approach" class="show">
-    <div id="speed-lines"></div>
-    <div id="car-approach-wrap">
-      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145517_39075f46-83d3-412a-9308-00225329f1e9.png"
-        alt="Luxury silver sports car" style="width:min(800px,90vw);height:auto;display:block;filter:drop-shadow(0 0 60px rgba(59,130,246,.4))">
+  <!-- PHASE 1: Car driving toward camera (video) -->
+  <div id="phase-approach" class="vid-phase show">
+    <video id="vid-approach" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150543_169b9739-25f7-47ab-b68b-20aeb722f338.mp4"
+      muted playsinline preload="auto"></video>
+  </div>
+
+  <!-- PHASE 2: 3D rotating car (video) -->
+  <div id="phase-3d" class="vid-phase">
+    <video id="vid-3d" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150558_02191326-1169-44d8-9011-fdb211d444a0.mp4"
+      muted playsinline preload="auto"></video>
+  </div>
+
+  <!-- PHASE 3: Exploded car (video) + label overlay -->
+  <div id="phase-explode" class="vid-phase">
+    <video id="vid-explode" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150608_d013dc65-10ae-49da-858a-c6a23c6e64f8.mp4"
+      muted playsinline preload="auto"></video>
+    <div id="explode-labels">
+      <!-- Pins injected by JS -->
     </div>
   </div>
 
-  <!-- PHASE 2: Wheel close-up -->
-  <div id="phase-wheel">
-    <div id="wheel-road-blur"></div>
-    <div id="wheel-svg-wrap">
-      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145558_1ec108be-e00c-4e12-bf1d-ad6b0f7afa19.png"
-        alt="Chrome alloy wheel" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-    </div>
-    <!-- Speed motion blur ground -->
-    <div style="position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(180deg,transparent,rgba(4,9,15,.95))"></div>
-    <!-- Blurred road streaks -->
-    <div style="position:absolute;bottom:25%;left:0;right:0;height:6px;
-      background:repeating-linear-gradient(90deg,rgba(240,200,30,.3) 0,rgba(240,200,30,.3) 40px,transparent 40px,transparent 120px);
-      animation:dashAnim .3s linear infinite;filter:blur(3px)"></div>
-  </div>
-
-  <!-- PHASE 3: 3D Rotating car -->
-  <div id="phase-3d">
-    <div id="car3d-glow"></div>
-    <div id="car3d-wrap">
-      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145553_a2b77351-d786-403e-9f05-689e7874b88e.png"
-        alt="Luxury silver car side view" style="width:100%;height:auto;display:block;filter:drop-shadow(0 20px 80px rgba(59,130,246,.35))">
-    </div>
-  </div>
-
-  <!-- PHASE 4: Exploded diagram -->
-  <div id="phase-explode">
-    <!-- Parts injected by JS -->
-  </div>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -873,31 +752,24 @@ function renderCars(){
    SCROLL BACKGROUND ANIMATION
 ══════════════════════════════════════════════ */
 
-// Phase breakpoints (0..1 of total scroll)
+// Phase scroll breakpoints (0..1)
 const PH={
-  APPROACH_START: 0,
-  APPROACH_END:   0.22,
-  WHEEL_START:    0.20,
-  WHEEL_PEAK:     0.28,
-  WHEEL_END:      0.38,
-  CAR3D_START:    0.36,
-  CAR3D_PEAK:     0.44,
-  CAR3D_END:      0.56,
-  EXPLODE_START:  0.54,
-  EXPLODE_END:    0.78,
+  APPROACH_START: 0,    APPROACH_END:  0.30,
+  ROT3D_START:    0.28, ROT3D_END:     0.58,
+  EXPLODE_START:  0.56, EXPLODE_END:   0.88,
 };
 
-// Exploded parts definition
-const PARTS=[
-  {id:'p-engine',  label:'Motor',        desc:'2.0 TSI Turbomotor',  cx:0.52, cy:0.38, dx:-0.18, dy:-0.16},
-  {id:'p-roof',    label:'Dak',          desc:'Panoramadak in glas', cx:0.50, cy:0.22, dx: 0.00, dy:-0.18},
-  {id:'p-wfl',     label:'Voorwiel L.',  desc:'225/40 R18 Michelin', cx:0.25, cy:0.72, dx:-0.22, dy: 0.14},
-  {id:'p-wfr',     label:'Voorwiel R.',  desc:'225/40 R18 Michelin', cx:0.75, cy:0.72, dx: 0.22, dy: 0.14},
-  {id:'p-doorl',   label:'Deur links',   desc:'Staal met versterking',cx:0.32, cy:0.52, dx:-0.24, dy: 0.0},
-  {id:'p-doorr',   label:'Deur rechts',  desc:'Staal met versterking',cx:0.68, cy:0.52, dx: 0.24, dy: 0.0},
-  {id:'p-wind',    label:'Voorruit',     desc:'Gelaagd veiligheidsglas',cx:0.50, cy:0.30, dx: 0.0, dy:-0.14},
-  {id:'p-exhaust', label:'Uitlaat',      desc:'Sport dubbele uitlaat', cx:0.20, cy:0.60, dx:-0.18, dy: 0.10},
-  {id:'p-hl',      label:'Koplampen',    desc:'Full-LED Matrix',      cx:0.80, cy:0.42, dx: 0.20, dy:-0.08},
+// Label pins for explode phase
+const PINS=[
+  {id:'pin-motor',   label:'Motor',       desc:'2.0 TSI Turbomotor',    cx:52, cy:42},
+  {id:'pin-dak',     label:'Dak',         desc:'Panorama glasdak',       cx:50, cy:20},
+  {id:'pin-wfl',     label:'Voorwiel L.', desc:'225/40 R18 Michelin',    cx:22, cy:74},
+  {id:'pin-wfr',     label:'Voorwiel R.', desc:'225/40 R18 Michelin',    cx:78, cy:74},
+  {id:'pin-doorl',   label:'Deur links',  desc:'Versterkt staal',        cx:32, cy:54},
+  {id:'pin-doorr',   label:'Deur rechts', desc:'Versterkt staal',        cx:68, cy:54},
+  {id:'pin-ruit',    label:'Voorruit',    desc:'Gelaagd veiligheidsglas',cx:50, cy:32},
+  {id:'pin-uitlaat', label:'Uitlaat',     desc:'Sport dubbele uitlaat',  cx:18, cy:64},
+  {id:'pin-koplamp', label:'Koplampen',   desc:'Full-LED Matrix',        cx:82, cy:44},
 ];
 
 function lerp(a,b,t){return a+(b-a)*t}
@@ -906,154 +778,75 @@ function invlerp(a,b,v){return clamp01((v-a)/(b-a))}
 function smoothstep(t){return t*t*(3-2*t)}
 
 let lastScroll=-1;
-let explodeBuilt=false;
+let pinsBuilt=false;
 
-function buildExplodeLayer(){
-  if(explodeBuilt)return;
-  explodeBuilt=true;
-  const layer=document.getElementById('phase-explode');
-  const vw=window.innerWidth, vh=window.innerHeight;
-  // Center car silhouette
-  const carSvg=document.createElement('div');
-  carSvg.style.cssText=`position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,85vw);opacity:.3;`;
-  carSvg.innerHTML='<img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145553_a2b77351-d786-403e-9f05-689e7874b88e.png" style="width:100%;height:auto;display:block;filter:saturate(0) brightness(0.6) sepia(1) hue-rotate(180deg)">';
-  layer.appendChild(carSvg);
-
-  PARTS.forEach(part=>{
+function buildPins(){
+  if(pinsBuilt)return; pinsBuilt=true;
+  const layer=document.getElementById('explode-labels');
+  PINS.forEach(pin=>{
     const el=document.createElement('div');
-    el.className='ep';el.id=part.id;
-    // Position label
-    const lx=part.cx*100, ly=part.cy*100;
-    el.style.cssText=`left:${lx}%;top:${ly}%;transform:translate(-50%,-50%);`;
-    // dot
-    const dot=document.createElement('div');
-    dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(59,130,246,.6);margin:0 auto 8px';
-    // label
-    const labelEl=document.createElement('div');
-    labelEl.className='ep-label';
-    labelEl.style.cssText='flex-direction:column;align-items:center;text-align:center;';
-    labelEl.innerHTML=`<span class="ep-line" style="width:0;height:1px;background:var(--accent);margin-bottom:6px;transition:width .8s var(--ease) .5s"></span><span class="ep-name">${part.label}</span><span class="ep-desc">${part.desc}</span>`;
-    el.appendChild(dot);el.appendChild(labelEl);
+    el.className='ep-pin'; el.id=pin.id;
+    el.style.left=pin.cx+'%'; el.style.top=pin.cy+'%';
+    el.innerHTML=`<div class="ep-dot"></div><div class="ep-card"><div class="ep-name">${pin.label}</div><div class="ep-desc">${pin.desc}</div></div>`;
     layer.appendChild(el);
-    // store offset for animation
-    el._dx=part.dx*100;el._dy=part.dy*100;
   });
+}
+
+// Video elements
+const vidApproach = document.getElementById('vid-approach');
+const vid3d       = document.getElementById('vid-3d');
+const vidExplode  = document.getElementById('vid-explode');
+
+function scrub(video, t){
+  // t is 0..1 within the phase
+  if(!video || !video.duration) return;
+  const target = clamp01(t) * video.duration;
+  if(Math.abs(video.currentTime - target) > 0.05) video.currentTime = target;
+}
+
+function phaseOpacity(p, start, end){
+  const fadeW = 0.04;
+  if(p < start) return 0;
+  if(p > end)   return 0;
+  const fadeIn  = clamp01((p - start) / fadeW);
+  const fadeOut = clamp01((end - p)   / fadeW);
+  return Math.min(fadeIn, fadeOut);
 }
 
 function animBg(){
   const scrollY=window.scrollY;
-  if(Math.abs(scrollY-lastScroll)<0.5&&lastScroll!==-1)return;
+  if(Math.abs(scrollY-lastScroll)<0.3&&lastScroll!==-1)return;
   lastScroll=scrollY;
 
   const maxScroll=document.body.scrollHeight-window.innerHeight;
   const p=clamp01(scrollY/maxScroll);
 
-  // progress bar
   document.getElementById('spb').style.width=(p*100)+'%';
-
-  // Nav scroll
   document.getElementById('mainNav').classList.toggle('sc',scrollY>40);
 
-  // ── PHASE 1: APPROACH ──
-  const aP=invlerp(PH.APPROACH_START,PH.APPROACH_END,p);
-  const aSmooth=smoothstep(aP);
-  const approachEl=document.getElementById('phase-approach');
-  const carWrap=document.getElementById('car-approach-wrap');
-  const hlL=document.getElementById('headlight-left');
-  const hlR=document.getElementById('headlight-right');
-  const bgStars=document.getElementById('bg-stars');
-  const bgRoad=document.getElementById('bg-road');
-  const roadDash=document.getElementById('roadDash');
-  const speedLines=document.getElementById('speed-lines');
+  // ── PHASE 1: APPROACH VIDEO ──
+  const aOp = p < PH.APPROACH_END + 0.04 ? clamp01(1-(p-PH.APPROACH_END)/0.06) : 0;
+  const aEl  = document.getElementById('phase-approach');
+  aEl.style.opacity = p <= PH.APPROACH_END ? 1 : aOp;
+  scrub(vidApproach, invlerp(PH.APPROACH_START, PH.APPROACH_END, p));
 
-  // Approach visible 0→0.28
-  const approachOpacity = p<0.26 ? 1 : clamp01(1-(p-0.26)/0.06);
-  approachEl.style.opacity=approachOpacity;
-  bgStars.classList.toggle('show', p<0.3);
-  bgRoad.classList.toggle('show', p>0.02 && p<0.35);
+  // ── PHASE 2: 3D ROTATION VIDEO ──
+  const rOp = phaseOpacity(p, PH.ROT3D_START, PH.ROT3D_END);
+  const rEl  = document.getElementById('phase-3d');
+  rEl.style.opacity = rOp;
+  rEl.style.pointerEvents = rOp > 0 ? 'none' : 'none';
+  scrub(vid3d, invlerp(PH.ROT3D_START, PH.ROT3D_END, p));
 
-  // Car scale: from 0.03 (far away) to 2.5 (fills screen / blows past)
-  const scale=lerp(0.03,2.8,aSmooth);
-  // Slight upward drift as car approaches (driving toward you)
-  const yShift=lerp(40,-20,aSmooth);
-  carWrap.style.transform=`translateX(-50%) translateY(${yShift}px) scale(${scale})`;
-  carWrap.style.filter=`drop-shadow(0 0 ${lerp(0,120,aSmooth)}px rgba(59,130,246,${lerp(0,.4,aSmooth)}))`;
-
-  // Motion blur at high speeds
-  const blurAmt=aP>0.7 ? (aP-0.7)*30 : 0;
-  carWrap.style.filter+= blurAmt>0 ? ` blur(${blurAmt}px)` : '';
-
-  // Headlights visible when car is somewhat close
-  const hlOpacity=clamp01((aP-0.1)/0.3)*approachOpacity;
-  hlL.style.opacity=hlOpacity;hlR.style.opacity=hlOpacity;
-  hlL.classList.toggle('glow',aP>0.1);hlR.classList.toggle('glow',aP>0.1);
-
-  // Speed lines intensify as car approaches
-  speedLines.style.opacity=lerp(0,0.6,Math.min(1,aP*3))*approachOpacity;
-  roadDash.classList.toggle('go', p>0.02 && p<0.35);
-
-  // ── PHASE 2: WHEEL ──
-  const wStart=p>PH.WHEEL_START, wEnd=p<PH.WHEEL_END;
-  const wP=invlerp(PH.WHEEL_START,PH.WHEEL_END,p);
-  const wSmooth=smoothstep(clamp01(wP<0.5?wP*2:1-(wP-0.5)*2));
-  const phWheel=document.getElementById('phase-wheel');
-  phWheel.style.opacity=wStart&&wEnd ? wSmooth : '0';
-  phWheel.style.pointerEvents=wStart&&wEnd?'all':'none';
-  // Zoom the wheel in/out
-  const wScale=lerp(0.6,1,wSmooth);
-  document.getElementById('wheel-svg-wrap').style.transform=`scale(${wScale})`;
-
-  // ── PHASE 3: 3D ROTATE ──
-  const r3Start=p>PH.CAR3D_START,r3End=p<PH.CAR3D_END;
-  const r3P=invlerp(PH.CAR3D_START,PH.CAR3D_END,p);
-  const r3Smooth=smoothstep(clamp01(r3P<0.5?r3P*2:1-(r3P-0.5)*2));
-  const ph3d=document.getElementById('phase-3d');
-  ph3d.style.opacity=r3Start&&r3End ? r3Smooth : '0';
-  ph3d.style.pointerEvents=r3Start&&r3End?'all':'none';
-  ph3d.classList.toggle('show',r3Start&&r3End&&r3Smooth>0.1);
-
-  // ── PHASE 4: EXPLODE ──
-  buildExplodeLayer();
-  const exP=invlerp(PH.EXPLODE_START,PH.EXPLODE_END,p);
-  const exSmooth=smoothstep(clamp01(exP<0.8?exP/0.8:1-(exP-0.8)/0.2));
-  const phEx=document.getElementById('phase-explode');
-  phEx.style.opacity=p>PH.EXPLODE_START&&p<PH.EXPLODE_END ? exSmooth : '0';
-  phEx.style.pointerEvents=p>PH.EXPLODE_START&&p<PH.EXPLODE_END?'all':'none';
-
-  // Animate each part outward
-  const spread=smoothstep(clamp01(exP<0.6?exP/0.6:1));
-  PARTS.forEach(part=>{
-    const el=document.getElementById(part.id);
-    if(!el)return;
-    const tx=el._dx*spread;
-    const ty=el._dy*spread;
-    el.style.transform=`translate(calc(-50% + ${tx}vw), calc(-50% + ${ty}vh))`;
-    el.style.opacity=exSmooth;
-    // Show label line
-    const line=el.querySelector('.ep-line');
-    if(line) line.style.width=spread>0.5?'48px':'0';
-  });
+  // ── PHASE 3: EXPLODE VIDEO + PINS ──
+  buildPins();
+  const eOp = phaseOpacity(p, PH.EXPLODE_START, PH.EXPLODE_END);
+  const eEl  = document.getElementById('phase-explode');
+  eEl.style.opacity = eOp;
+  eEl.classList.toggle('show', eOp > 0.05);
+  scrub(vidExplode, invlerp(PH.EXPLODE_START, PH.EXPLODE_END, p));
 }
 
 window.addEventListener('scroll',animBg,{passive:true});
-
-/* Speed lines init */
-(function buildSpeedLines(){
-  const container=document.getElementById('speed-lines');
-  for(let i=0;i<24;i++){
-    const line=document.createElement('div');
-    line.className='sl';
-    const angle=(i/24)*360;
-    const len=80+Math.random()*200;
-    line.style.cssText=`
-      left:50%;top:50%;
-      width:${len}px;height:${1+Math.random()}px;
-      transform:rotate(${angle}deg);
-      opacity:${0.3+Math.random()*0.4};
-    `;
-    container.appendChild(line);
-  }
-})();
 
 /* ══ REVEAL OBSERVER ══ */
 const revObs=new IntersectionObserver(entries=>{
