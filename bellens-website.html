@@ -3,880 +3,524 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Autobedrijf Bellens — Nijlen. Persoonlijk geselecteerde tweedehandswagens, mechanische herstelling en koetswerk. Depuis 1993.">
-<meta property="og:title" content="Autobedrijf Bellens · Nijlen · Sinds 1993">
-<meta property="og:description" content="Elke wagen persoonlijk gecontroleerd. Meer dan 30 jaar expertise in Nijlen.">
-<meta property="og:type" content="website">
 <title>Autobedrijf Bellens · Nijlen · Sinds 1993</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════════
-   VARIABLES  — Donkerblauw & Zilver
-═══════════════════════════════════════════════════════ */
 :root{
-  --bg:        #080e1a;
-  --navy:      #0f172a;
-  --navy-md:   #1e293b;
-  --navy-lt:   #2d3f55;
-  --silver:    #94a3b8;
-  --silver-lt: #cbd5e1;
-  --white:     #f1f5f9;
-  --accent:    #3b82f6;
-  --accent-dk: #2563eb;
-  --gold:      #f59e0b;
-  --text:      #e2e8f0;
-  --muted:     #64748b;
-  --card-bg:   rgba(30,41,59,0.85);
-  --ease:      cubic-bezier(0.16,1,0.3,1);
-  --t:         0.3s cubic-bezier(0.4,0,0.2,1);
+  --bg:#04090f;--navy:#0f172a;--navy2:#1e293b;
+  --accent:#3b82f6;--accent2:#2563eb;
+  --silver:#94a3b8;--white:#f1f5f9;--muted:#64748b;
+  --gold:#f59e0b;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --t:0.3s cubic-bezier(0.4,0,0.2,1);
 }
-
-/* ═══════════════════════════════════════════════════════
-   RESET
-═══════════════════════════════════════════════════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Inter',sans-serif;overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
+html{overflow-x:hidden}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}
 img{max-width:100%;display:block}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 
-/* ═══════════════════════════════════════════════════════
-   SCROLL PROGRESS BAR
-═══════════════════════════════════════════════════════ */
-#spb{
-  position:fixed;top:0;left:0;height:2px;width:0%;
-  background:linear-gradient(90deg,var(--accent),var(--gold));
-  z-index:10001;transition:width .1s linear;
-}
+/* ── SCROLL PROGRESS ── */
+#spb{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));z-index:10001}
 
-/* ═══════════════════════════════════════════════════════
-   CUSTOM CURSOR
-═══════════════════════════════════════════════════════ */
-.cur-dot{
-  width:6px;height:6px;background:var(--accent);border-radius:50%;
-  position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);transition:transform .05s;
-}
-.cur-ring{
-  width:32px;height:32px;border:1.5px solid rgba(59,130,246,.4);
-  border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
-  transform:translate(-50%,-50%);transition:left .12s var(--ease),top .12s var(--ease),
-    width .3s var(--ease),height .3s var(--ease),border-color .3s;
-}
-.cur-ring.hovered{width:56px;height:56px;border-color:rgba(59,130,246,.7)}
+/* ── CURSOR ── */
+.cur-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cur-ring{width:30px;height:30px;border:1.5px solid rgba(59,130,246,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),border-color .3s}
+.cur-ring.h{width:52px;height:52px;border-color:rgba(59,130,246,.7)}
 @media(hover:none){.cur-dot,.cur-ring{display:none}}
 
-/* ═══════════════════════════════════════════════════════
-   MOBILE MENU
-═══════════════════════════════════════════════════════ */
-.mm{
-  position:fixed;inset:0;background:var(--navy);z-index:990;
-  display:flex;flex-direction:column;align-items:flex-start;
-  justify-content:center;padding:0 10vw;gap:8px;
-  opacity:0;pointer-events:none;transition:opacity .5s var(--ease);
+/* ══════════════════════════════════════════════
+   FIXED BACKGROUND CANVAS
+══════════════════════════════════════════════ */
+#bg-canvas{
+  position:fixed;inset:0;z-index:0;
+  background:var(--bg);
+  overflow:hidden;
 }
+
+/* Stars */
+#bg-stars{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 25% 8%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1.5px 1.5px at 42% 5%,rgba(255,255,255,.75),transparent),
+    radial-gradient(1px 1px at 63% 11%,rgba(255,255,255,.55),transparent),
+    radial-gradient(1.5px 1.5px at 80% 7%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1px 1px at 92% 20%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 18% 28%,rgba(255,255,255,.4),transparent),
+    radial-gradient(1px 1px at 52% 22%,rgba(255,255,255,.55),transparent),
+    radial-gradient(1px 1px at 72% 32%,rgba(255,255,255,.4),transparent),
+    radial-gradient(1.5px 1.5px at 36% 18%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 88% 36%,rgba(255,255,255,.45),transparent),
+    radial-gradient(1px 1px at 6% 42%,rgba(255,255,255,.35),transparent);
+  opacity:0;transition:opacity .8s;
+}
+#bg-stars.show{opacity:1}
+
+/* Ground / road */
+#bg-road{
+  position:absolute;bottom:0;left:0;right:0;
+  height:35%;
+  background:linear-gradient(180deg,#061018 0%,#0a1825 40%,#060e18 100%);
+  border-top:2px solid rgba(59,130,246,.15);
+  opacity:0;transition:opacity .6s;
+}
+#bg-road.show{opacity:1}
+.road-dash-strip{
+  position:absolute;top:18%;left:0;right:0;height:4px;overflow:hidden;
+}
+.road-dash-strip::before{
+  content:'';position:absolute;inset:0;width:200%;
+  background:repeating-linear-gradient(90deg,rgba(240,200,30,.45) 0,rgba(240,200,30,.45) 65px,transparent 65px,transparent 130px);
+  animation:dashAnim .45s linear infinite paused;
+}
+.road-dash-strip.go::before{animation-play-state:running}
+@keyframes dashAnim{to{transform:translateX(-130px)}}
+
+/* ── PHASE 1: CAR APPROACHING ── */
+#phase-approach{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:33%;
+  opacity:0;transition:opacity .5s;
+}
+#phase-approach.show{opacity:1}
+
+/* Speed lines radiating from center */
+#speed-lines{
+  position:absolute;inset:0;
+  pointer-events:none;
+  opacity:0;transition:opacity .4s;
+}
+#speed-lines.show{opacity:1}
+.sl{
+  position:absolute;top:50%;left:50%;
+  height:2px;background:linear-gradient(90deg,transparent,rgba(148,163,184,.12),transparent);
+  transform-origin:left center;
+}
+
+/* The approaching car SVG wrapper */
+#car-approach-wrap{
+  position:absolute;
+  bottom:33%;
+  left:50%;
+  transform:translateX(-50%) scale(0.04) perspective(800px) translateZ(0px);
+  transform-origin:bottom center;
+  filter:drop-shadow(0 0 60px rgba(59,130,246,.3));
+  transition:filter .3s;
+  will-change:transform;
+}
+/* Headlight cones */
+#headlight-left,#headlight-right{
+  position:absolute;
+  bottom:0;
+  width:0;height:0;
+  border-bottom:none;
+  opacity:0;transition:opacity .4s;
+  pointer-events:none;
+}
+#headlight-left{
+  right:50%;
+  border-right:400px solid transparent;
+  border-left:none;
+  border-top:600px solid rgba(255,255,160,.04);
+  transform-origin:right bottom;
+  transform:rotate(5deg);
+  filter:blur(20px);
+}
+#headlight-right{
+  left:50%;
+  border-left:400px solid transparent;
+  border-right:none;
+  border-top:600px solid rgba(255,255,160,.04);
+  transform-origin:left bottom;
+  transform:rotate(-5deg);
+  filter:blur(20px);
+}
+#headlight-left.glow,#headlight-right.glow{opacity:1}
+
+/* ── PHASE 2: WHEEL CLOSE-UP ── */
+#phase-wheel{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .6s;
+}
+#phase-wheel.show{opacity:1}
+#wheel-svg-wrap{
+  width:min(70vw,70vh);height:min(70vw,70vh);
+}
+#wheel-svg-wrap svg{width:100%;height:100%}
+.tire-spin{
+  transform-box:fill-box;transform-origin:center;
+  animation:tireSpin .4s linear infinite paused;
+}
+#phase-wheel.show .tire-spin{animation-play-state:running}
+@keyframes tireSpin{to{transform:rotate(360deg)}}
+
+/* road blur behind wheel */
+#wheel-road-blur{
+  position:absolute;bottom:0;left:0;right:0;height:40%;
+  background:linear-gradient(180deg,transparent,rgba(6,14,24,.9));
+  pointer-events:none;
+}
+
+/* ── PHASE 3: 3D ROTATING CAR ── */
+#phase-3d{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .6s;
+  perspective:1200px;
+}
+#phase-3d.show{opacity:1}
+#car3d-wrap{
+  transform-style:preserve-3d;
+  animation:rotate3d 8s linear infinite paused;
+  width:min(700px,80vw);
+}
+#phase-3d.show #car3d-wrap{animation-play-state:running}
+@keyframes rotate3d{
+  0%{transform:rotateY(0deg) rotateX(5deg)}
+  100%{transform:rotateY(360deg) rotateX(5deg)}
+}
+#car3d-wrap svg{width:100%;height:auto;display:block}
+/* Dramatic glow behind rotating car */
+#car3d-glow{
+  position:absolute;
+  width:500px;height:300px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(59,130,246,.18),transparent 70%);
+  filter:blur(40px);pointer-events:none;
+  animation:glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+
+/* ── PHASE 4: EXPLODED DIAGRAM ── */
+#phase-explode{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;transition:opacity .6s;
+}
+#phase-explode.show{opacity:1}
+.ep{
+  position:absolute;
+  transition:transform 1.2s var(--ease),opacity .8s;
+  opacity:0;
+}
+#phase-explode.show .ep{opacity:1}
+/* Each part gets positioned via JS */
+.ep-label{
+  position:absolute;
+  white-space:nowrap;
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);
+  opacity:0;transition:opacity .6s .4s;
+  display:flex;align-items:center;gap:8px;
+}
+#phase-explode.show .ep-label{opacity:1}
+.ep-line{
+  display:block;height:1px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  width:0;transition:width .8s var(--ease) .5s;
+}
+#phase-explode.show .ep-line{width:48px}
+.ep-name{font-size:12px;font-weight:700;color:var(--white)}
+.ep-desc{font-size:10px;color:var(--silver);font-weight:400;margin-top:2px;letter-spacing:.04em}
+
+/* ══════════════════════════════════════════════
+   CONTENT OVERLAY
+══════════════════════════════════════════════ */
+#site-content{
+  position:relative;z-index:10;
+  /* transparent — sections have their own bg */
+}
+
+/* shared section glass */
+.section-glass{
+  background:rgba(4,9,15,.7);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;height:72px;
+  padding:0 6vw;display:flex;align-items:center;justify-content:space-between;
+  transition:background .4s,backdrop-filter .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.sc{background:rgba(4,9,15,.88);backdrop-filter:blur(24px);border-bottom-color:rgba(255,255,255,.06)}
+.nav-logo{display:flex;flex-direction:column;line-height:1}
+.nl1{font-size:16px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--white)}
+.nl2{font-size:9px;font-weight:400;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:12px;color:var(--silver);letter-spacing:.05em;transition:color var(--t)}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{padding:9px 22px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:.08em;border-radius:3px;transition:all var(--t)}
+.nav-cta:hover{background:var(--accent2);transform:translateY(-1px)}
+.hb{display:none;flex-direction:column;gap:5px;padding:6px}
+.hb span{display:block;width:22px;height:1.5px;background:var(--white);transition:all .35s var(--ease);transform-origin:center}
+.hb.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hb.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hb.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* mobile menu */
+.mm{position:fixed;inset:0;background:rgba(4,9,15,.97);z-index:990;backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 10vw;gap:8px;
+  opacity:0;pointer-events:none;transition:opacity .4s}
 .mm.open{opacity:1;pointer-events:all}
-.mm a{
-  font-size:clamp(28px,7vw,56px);font-weight:900;letter-spacing:-.02em;
-  color:rgba(226,232,240,.3);transition:color .3s,transform .4s var(--ease);
-  transform:translateX(-24px);display:block;padding:4px 0;
-}
-.mm.open a{transform:translateX(0);color:rgba(226,232,240,.85)}
+.mm a{font-size:clamp(28px,7vw,52px);font-weight:900;letter-spacing:-.02em;color:rgba(241,245,249,.3);
+  transition:color .3s,transform .4s var(--ease);transform:translateX(-20px);display:block;padding:4px 0}
+.mm.open a{transform:translateX(0);color:rgba(241,245,249,.85)}
 .mm a:hover{color:var(--white)!important}
 .mm a:nth-child(1){transition-delay:.05s}
 .mm a:nth-child(2){transition-delay:.1s}
 .mm a:nth-child(3){transition-delay:.15s}
 .mm a:nth-child(4){transition-delay:.2s}
 .mm a:nth-child(5){transition-delay:.25s}
-.mm-info{margin-top:48px;font-size:12px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase}
 
-/* ═══════════════════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════════════════ */
-nav{
-  position:fixed;top:0;left:0;width:100%;z-index:1000;height:72px;
-  padding:0 6vw;display:flex;align-items:center;justify-content:space-between;
-  transition:background .5s,backdrop-filter .5s,border-color .5s;
-  border-bottom:1px solid transparent;
-}
-nav.sc{
-  background:rgba(8,14,26,.9);backdrop-filter:blur(24px);
-  border-bottom-color:rgba(255,255,255,.06);
-}
-.nav-logo{
-  display:flex;flex-direction:column;line-height:1;
-}
-.nl-1{font-size:16px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--white)}
-.nl-2{font-size:9px;font-weight:400;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-top:2px}
-.nav-links{display:flex;align-items:center;gap:40px}
-.nav-links a{font-size:12px;font-weight:400;color:var(--silver);letter-spacing:.05em;transition:color var(--t)}
-.nav-links a:hover{color:var(--white)}
-.nav-cta{
-  padding:10px 24px;background:var(--accent);color:#fff;
-  font-size:11px;font-weight:600;letter-spacing:.08em;border-radius:3px;
-  transition:all var(--t);
-}
-.nav-cta:hover{background:var(--accent-dk);transform:translateY(-1px)}
-.hb{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer}
-.hb span{display:block;width:22px;height:1.5px;background:var(--white);transition:all .35s var(--ease);transform-origin:center}
-.hb.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.hb.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.hb.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.vi{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv-l.vi{opacity:1;transform:none}
+.rv-r{opacity:0;transform:translateX(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv-r.vi{opacity:1;transform:none}
+[data-d="1"]{transition-delay:.1s}[data-d="2"]{transition-delay:.2s}
+[data-d="3"]{transition-delay:.3s}[data-d="4"]{transition-delay:.4s}
 
-/* ═══════════════════════════════════════════════════════
-   REVEAL ANIMATIONS
-═══════════════════════════════════════════════════════ */
-.rv{opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.rv.vi{opacity:1;transform:translateY(0)}
-.rv-l{opacity:0;transform:translateX(-32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.rv-l.vi{opacity:1;transform:translateX(0)}
-.rv-r{opacity:0;transform:translateX(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.rv-r.vi{opacity:1;transform:translateX(0)}
-.rv-s{opacity:0;transform:scale(.96);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.rv-s.vi{opacity:1;transform:scale(1)}
-[data-d="1"]{transition-delay:.1s}
-[data-d="2"]{transition-delay:.2s}
-[data-d="3"]{transition-delay:.3s}
-[data-d="4"]{transition-delay:.4s}
-[data-d="5"]{transition-delay:.5s}
+/* chips & titles */
+.chip{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.45em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.section-title{font-size:clamp(30px,5vw,60px);font-weight:900;letter-spacing:-.03em;line-height:1.05;color:var(--white)}
+.section-title em{font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;color:var(--silver)}
 
-/* ═══════════════════════════════════════════════════════
-   SECTION HELPERS
-═══════════════════════════════════════════════════════ */
-.chip{
-  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.45em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:20px;
-}
-.section-title{
-  font-size:clamp(32px,5vw,62px);font-weight:900;letter-spacing:-.03em;
-  line-height:1.05;color:var(--white);
-}
-.section-title em{
-  font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;
-  color:var(--silver);
-}
-
-/* ═══════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════ */
+/* ── HERO ── */
 #hero{
-  position:relative;min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;overflow:hidden;
-  padding:0 6vw;background:var(--bg);
+  height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:0 6vw;text-align:center;position:relative;
 }
-
-/* Starfield/grid background */
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);
-  background-size:80px 80px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
-  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
-}
-.hero-glow1{
-  position:absolute;top:20%;left:50%;transform:translate(-50%,-50%);
-  width:min(800px,100vw);height:min(800px,100vw);border-radius:50%;
-  background:radial-gradient(circle,rgba(30,41,59,.8),transparent 65%);
-  pointer-events:none;
-}
-.hero-glow2{
-  position:absolute;top:60%;right:-5%;width:500px;height:500px;border-radius:50%;
-  background:radial-gradient(circle,rgba(59,130,246,.07),transparent 65%);
-  pointer-events:none;animation:pulse2 8s ease-in-out infinite;
-}
-.hero-glow3{
-  position:absolute;top:30%;left:-5%;width:400px;height:400px;border-radius:50%;
-  background:radial-gradient(circle,rgba(245,158,11,.04),transparent 65%);
-  pointer-events:none;animation:pulse2 10s ease-in-out infinite reverse;
-}
-@keyframes pulse2{0%,100%{opacity:.5}50%{opacity:1}}
-
-.hero-inner{
-  position:relative;z-index:2;text-align:center;max-width:1200px;
-}
+.hero-inner{position:relative;z-index:2;max-width:1100px}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
-  padding:7px 16px;background:rgba(59,130,246,.1);
-  border:1px solid rgba(59,130,246,.25);border-radius:100px;
-  font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--silver);
-  margin-bottom:40px;
-  opacity:0;animation:fadeUp .8s var(--ease) .2s forwards;
+  padding:7px 16px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);
+  border-radius:100px;font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--silver);
+  margin-bottom:40px;opacity:0;animation:fadeUp .8s var(--ease) .3s forwards;
 }
-.hero-badge::before{
-  content:'';width:6px;height:6px;border-radius:50%;
-  background:var(--accent);animation:blink 2s ease-in-out infinite;
-}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-.hero-headline{margin-bottom:28px}
-.hl{overflow:hidden;line-height:.9}
-.hl span{
-  display:block;
-  font-size:clamp(54px,10vw,136px);font-weight:900;letter-spacing:-.04em;
-  transform:translateY(110%);animation:slideUp 1s var(--ease) forwards;
-}
-.hl:nth-child(1) span{animation-delay:.35s;color:var(--white)}
-.hl:nth-child(2) span{
-  animation-delay:.52s;
-  font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;
-  color:var(--silver);font-size:clamp(46px,8.5vw,116px);
-}
-.hl:nth-child(3) span{animation-delay:.69s;color:var(--white)}
+.hl-wrap{overflow:hidden;line-height:.92}
+.hl-wrap span{display:block;font-size:clamp(52px,10vw,134px);font-weight:900;letter-spacing:-.04em;
+  transform:translateY(110%);animation:slideUp 1s var(--ease) forwards}
+.hl-wrap:nth-child(1) span{animation-delay:.4s;color:var(--white)}
+.hl-wrap:nth-child(2) span{animation-delay:.55s;font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;color:var(--silver);font-size:clamp(44px,8.5vw,114px)}
+.hl-wrap:nth-child(3) span{animation-delay:.7s;color:var(--white)}
 @keyframes slideUp{to{transform:translateY(0)}}
-
-.hero-sub{
-  font-size:14px;font-weight:300;color:var(--muted);letter-spacing:.12em;
-  text-transform:uppercase;margin-bottom:52px;
-  opacity:0;animation:fadeUp .8s var(--ease) 1s forwards;
-}
+.hero-sub{font-size:11px;font-weight:300;color:var(--muted);letter-spacing:.35em;text-transform:uppercase;
+  margin:28px 0 52px;opacity:0;animation:fadeUp .8s var(--ease) 1s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-.hero-ctas{
-  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
-  opacity:0;animation:fadeUp .8s var(--ease) 1.15s forwards;
-}
-.btn-primary{
-  padding:16px 40px;background:var(--accent);color:#fff;
-  font-size:13px;font-weight:600;letter-spacing:.06em;border-radius:4px;
-  transition:all var(--t);
-}
-.btn-primary:hover{background:var(--accent-dk);transform:translateY(-2px);box-shadow:0 16px 40px rgba(59,130,246,.3)}
-.btn-ghost{
-  padding:15px 40px;border:1px solid rgba(148,163,184,.3);color:var(--silver);
-  font-size:13px;font-weight:400;letter-spacing:.06em;border-radius:4px;
-  transition:all var(--t);
-}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .8s var(--ease) 1.15s forwards}
+.btn-primary{padding:16px 40px;background:var(--accent);color:#fff;font-size:13px;font-weight:600;letter-spacing:.06em;border-radius:4px;transition:all var(--t)}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 16px 40px rgba(59,130,246,.3)}
+.btn-ghost{padding:15px 40px;border:1px solid rgba(148,163,184,.3);color:var(--silver);font-size:13px;letter-spacing:.06em;border-radius:4px;transition:all var(--t)}
 .btn-ghost:hover{border-color:rgba(148,163,184,.7);color:var(--white);transform:translateY(-2px)}
-
-.hero-stats{
-  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
-  display:flex;gap:64px;
-  opacity:0;animation:fadeUp .8s var(--ease) 1.4s forwards;
-}
-.hs-item{text-align:center}
-.hs-num{font-size:28px;font-weight:900;color:var(--white);letter-spacing:-.03em}
-.hs-label{font-size:9px;font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
-
-.scroll-cue{
-  position:absolute;bottom:44px;right:6vw;
+.scroll-cue{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:8px;
-  opacity:0;animation:fadeUp .8s var(--ease) 1.6s forwards;
-}
+  opacity:0;animation:fadeUp .8s var(--ease) 1.5s forwards}
 .scroll-cue span{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
-.scroll-line{
-  width:1px;height:48px;
-  background:linear-gradient(to bottom,var(--accent),transparent);
-  animation:linePulse 2.4s ease-in-out infinite;
-}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--accent),transparent);
+  animation:linePulse 2.4s ease-in-out infinite}
 @keyframes linePulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.25;transform:scaleY(.4)}}
 
-/* ═══════════════════════════════════════════════════════
-   SCROLL CAR SCENE (sticky parallax)
-═══════════════════════════════════════════════════════ */
-#car-scene{
-  position:relative;
-  height:350vh;
-}
-.car-sticky{
-  position:sticky;top:0;height:100vh;
-  overflow:hidden;
-  background:#030810;
+/* ── SPACER SECTIONS (let background animate) ── */
+.bg-spacer{height:80vh;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.bg-spacer-label{
+  font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;
+  color:rgba(59,130,246,.3);
 }
 
-/* Night sky layers */
-.scene-sky{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,#030810 0%,#06111f 50%,#0a1a30 70%,#060d1a 100%);
-}
-.scene-stars{
-  position:absolute;inset:0;pointer-events:none;
-}
-.scene-stars::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    radial-gradient(1px 1px at 8% 15%,rgba(255,255,255,.75),transparent),
-    radial-gradient(1px 1px at 22% 8%,rgba(255,255,255,.6),transparent),
-    radial-gradient(1.5px 1.5px at 40% 5%,rgba(255,255,255,.8),transparent),
-    radial-gradient(1px 1px at 60% 12%,rgba(255,255,255,.55),transparent),
-    radial-gradient(1.5px 1.5px at 78% 6%,rgba(255,255,255,.7),transparent),
-    radial-gradient(1px 1px at 90% 20%,rgba(255,255,255,.5),transparent),
-    radial-gradient(1px 1px at 15% 30%,rgba(255,255,255,.45),transparent),
-    radial-gradient(1px 1px at 50% 22%,rgba(255,255,255,.6),transparent),
-    radial-gradient(1px 1px at 70% 28%,rgba(255,255,255,.4),transparent),
-    radial-gradient(1.5px 1.5px at 35% 18%,rgba(255,255,255,.65),transparent),
-    radial-gradient(1px 1px at 85% 35%,rgba(255,255,255,.5),transparent),
-    radial-gradient(1px 1px at 5% 40%,rgba(255,255,255,.35),transparent);
-}
-
-/* Horizon glow */
-.scene-horizon{
-  position:absolute;bottom:38%;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent 0%,rgba(59,130,246,.2) 20%,rgba(100,160,246,.4) 50%,rgba(59,130,246,.2) 80%,transparent 100%);
-  box-shadow:0 0 40px 10px rgba(59,130,246,.06);
-}
-
-/* Road */
-.scene-road{
-  position:absolute;bottom:0;left:0;right:0;
-  height:38%;
-  background:linear-gradient(180deg,#071525 0%,#0b1e30 30%,#08141f 100%);
-  border-top:2px solid rgba(59,130,246,.2);
-}
-.road-edge{
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(200,220,255,.4) 15%,rgba(200,220,255,.4) 85%,transparent);
-}
-.road-dashes{
-  position:absolute;top:22%;left:0;right:0;height:4px;overflow:hidden;
-}
-.road-dashes::before{
-  content:'';position:absolute;inset:0;width:200%;
-  background:repeating-linear-gradient(90deg,
-    rgba(240,200,30,.5) 0px,rgba(240,200,30,.5) 70px,
-    transparent 70px,transparent 140px);
-  animation:dashMove .5s linear infinite paused;
-}
-.road-dashes.moving::before{animation-play-state:running}
-@keyframes dashMove{to{transform:translateX(-140px)}}
-
-/* Shadow glow under car on road */
-.car-ground-glow{
-  position:absolute;
-  bottom:38%;left:0;
-  width:400px;height:30px;
-  border-radius:50%;
-  background:radial-gradient(ellipse,rgba(59,130,246,.22),transparent 70%);
-  filter:blur(6px);
-  pointer-events:none;
-  will-change:transform;
-  transform:translateX(-200vw) translateX(-200px);
-}
-
-/* The car itself */
-.car-wrap{
-  position:absolute;
-  bottom:38%;left:0;
-  /* JS will set transform: translateX() */
-  transform:translateX(-130vw);
-  will-change:transform;
-}
-.car-wrap svg{
-  width:clamp(300px,40vw,560px);
-  height:auto;display:block;
-}
-/* Wheel rotation */
-.w-spin{
-  transform-box:fill-box;transform-origin:center;
-  animation:wSpin .35s linear infinite paused;
-}
-.car-wrap.driving .w-spin{animation-play-state:running}
-@keyframes wSpin{to{transform:rotate(360deg)}}
-
-/* Headlight beam */
-.scene-beam{
-  position:absolute;bottom:38%;left:0;
-  pointer-events:none;will-change:transform;
-  transform:translateX(-200vw);
-}
-.beam-cone{
-  position:absolute;left:0;bottom:0;
-  width:0;height:0;
-  border-left:none;
-  border-right:600px solid rgba(255,255,160,.045);
-  border-top:30px solid transparent;
-  border-bottom:12px solid transparent;
-  filter:blur(8px);
-  transform-origin:left center;
-}
-.beam-cone-wide{
-  position:absolute;left:0;bottom:0;
-  width:0;height:0;
-  border-right:900px solid rgba(255,255,160,.025);
-  border-top:55px solid transparent;
-  border-bottom:18px solid transparent;
-  filter:blur(16px);
-  transform:rotate(-3deg);
-  transform-origin:left center;
-}
-
-/* scene text overlay */
-.car-scene-text{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  text-align:center;pointer-events:none;z-index:2;
-  width:90%;max-width:800px;
-}
-.cst-chip{
-  font-size:10px;font-weight:600;letter-spacing:.45em;text-transform:uppercase;
-  color:var(--accent);opacity:0;transition:opacity .8s .2s;
-}
-.cst-title{
-  font-size:clamp(28px,4.5vw,52px);font-weight:900;letter-spacing:-.03em;
-  color:var(--white);line-height:1.1;margin:12px 0;
-  opacity:0;transition:opacity .8s .35s;
-}
-.cst-sub{
-  font-size:14px;color:var(--silver);font-weight:300;
-  opacity:0;transition:opacity .8s .5s;
-}
-.car-scene-text.show .cst-chip,
-.car-scene-text.show .cst-title,
-.car-scene-text.show .cst-sub{opacity:1}
-
-/* scene text overlay */
-
-
-/* ═══════════════════════════════════════════════════════
-   BRAND FILTER SECTION
-═══════════════════════════════════════════════════════ */
-#aanbod{padding:120px 6vw 80px;background:var(--bg)}
-.aanbod-header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  flex-wrap:wrap;gap:24px;margin-bottom:60px;
-}
-.ah-left .section-title{margin-bottom:0}
-.ah-right{font-size:13px;color:var(--muted);font-weight:300}
-
-/* Brand logo filter row */
-.brand-filter{
-  display:flex;flex-wrap:wrap;gap:10px;margin-bottom:48px;align-items:center;
-}
+/* ── AANBOD ── */
+#aanbod{padding:100px 6vw 80px}
+#aanbod .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw}
+.aanbod-header{margin-bottom:56px}
+.brand-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px}
 .brand-btn{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 16px;background:var(--navy-md);
-  border:1px solid rgba(255,255,255,.08);border-radius:100px;
-  font-size:11px;font-weight:500;color:var(--silver);letter-spacing:.04em;
-  cursor:pointer;transition:all var(--t);
-  white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+  padding:7px 14px;background:rgba(30,41,59,.7);border:1px solid rgba(255,255,255,.08);
+  border-radius:100px;font-size:11px;font-weight:500;color:var(--silver);
+  cursor:pointer;transition:all var(--t);white-space:nowrap;
 }
-.brand-btn:hover{border-color:rgba(59,130,246,.4);color:var(--white);background:rgba(59,130,246,.08)}
-.brand-btn.active{
-  background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.5);
-  color:var(--white);
-}
-.brand-btn img{width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1);opacity:.7}
-.brand-btn.active img{opacity:1}
-.brand-btn svg{width:20px;height:14px;flex-shrink:0}
-
-/* Result count */
-.result-count{
-  font-size:12px;color:var(--muted);letter-spacing:.08em;margin-bottom:32px;
-}
-
-/* ═══════════════════════════════════════════════════════
-   CARS GRID
-═══════════════════════════════════════════════════════ */
-.cars-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:28px;
-  max-width:1400px;
-}
+.brand-btn:hover{border-color:rgba(59,130,246,.4);color:var(--white)}
+.brand-btn.active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.5);color:var(--white)}
+.brand-btn svg{width:18px;height:14px;flex-shrink:0}
+.result-count{font-size:12px;color:var(--muted);margin-bottom:28px}
+.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
 .car-card{
-  background:var(--card-bg);border:1px solid rgba(255,255,255,.07);
-  border-radius:16px;overflow:hidden;
-  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease);
-  cursor:pointer;position:relative;
-  transform-style:preserve-3d;
+  background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;overflow:hidden;cursor:pointer;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s;
+  backdrop-filter:blur(8px);
 }
-.car-card:hover{
-  transform:translateY(-10px) rotateX(2deg);
-  border-color:rgba(59,130,246,.4);
-  box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.1),inset 0 1px 0 rgba(255,255,255,.07);
-}
+.car-card:hover{transform:translateY(-8px);border-color:rgba(59,130,246,.4);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .car-card.hidden{display:none}
-
-/* Shine effect */
-.car-card::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);
-  opacity:0;transition:opacity .4s,transform .4s var(--ease);
-  transform:translateX(-100%);border-radius:16px;pointer-events:none;
-}
-.car-card:hover::after{
-  opacity:1;transform:translateX(100%);
-}
-
-.car-img-wrap{
-  position:relative;height:240px;overflow:hidden;
-  background:var(--navy);
-}
-.car-img-wrap img{
-  width:100%;height:100%;object-fit:cover;object-position:center 60%;
-  transition:transform .8s var(--ease);display:block;
-}
+.car-img-wrap{position:relative;height:220px;overflow:hidden;background:var(--navy)}
+.car-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 60%;transition:transform .8s var(--ease)}
 .car-card:hover .car-img-wrap img{transform:scale(1.07)}
-
-/* fuel badge */
-.fuel-badge{
-  position:absolute;top:14px;right:14px;
-  padding:4px 10px;border-radius:100px;
-  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  backdrop-filter:blur(10px);
-}
+.fuel-badge{position:absolute;top:12px;right:12px;padding:4px 10px;border-radius:100px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;backdrop-filter:blur(10px)}
 .badge-benzine{background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#fca5a5}
 .badge-diesel{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);color:#fcd34d}
 .badge-elektrisch{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#86efac}
 .badge-hybride{background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#93c5fd}
-
-/* new badge */
-.new-badge{
-  position:absolute;top:14px;left:14px;
-  padding:4px 12px;background:var(--accent);
-  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:#fff;border-radius:100px;
-}
-
-.car-body{padding:22px 24px 26px}
-.car-brand-line{
-  display:flex;align-items:center;gap:8px;margin-bottom:6px;
-}
-.car-brand-logo{width:18px;height:14px;object-fit:contain;filter:brightness(0) invert(1);opacity:.5}
-.car-brand-name{
-  font-size:9px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);
-}
-.car-model{
-  font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--white);
-  margin-bottom:2px;line-height:1.2;
-}
-.car-version{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:16px}
-.car-price{
-  font-size:28px;font-weight:900;color:var(--accent);
-  letter-spacing:-.03em;margin-bottom:14px;
-  line-height:1;
-}
-.car-price sup{font-size:14px;font-weight:500;vertical-align:top;margin-top:4px}
-.car-specs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.spec-pill{
-  padding:4px 10px;background:rgba(30,41,59,.8);
-  border:1px solid rgba(255,255,255,.06);border-radius:100px;
-  font-size:10px;font-weight:500;color:var(--silver);letter-spacing:.03em;
-}
-.car-cta{
-  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--accent);display:flex;align-items:center;gap:6px;
-  transition:gap var(--t),color var(--t);
-}
+.new-badge{position:absolute;top:12px;left:12px;padding:4px 10px;background:var(--accent);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;border-radius:100px}
+.car-body{padding:20px 22px 24px}
+.car-brand-name{font-size:9px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.car-model{font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--white);margin-bottom:1px}
+.car-version{font-size:12px;color:var(--muted);margin-bottom:14px}
+.car-price{font-size:26px;font-weight:900;color:var(--accent);letter-spacing:-.03em;margin-bottom:12px}
+.car-specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.spec-pill{padding:3px 9px;background:rgba(30,41,59,.8);border:1px solid rgba(255,255,255,.06);border-radius:100px;font-size:10px;font-weight:500;color:var(--silver)}
+.car-cta{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:6px;transition:gap var(--t)}
 .car-card:hover .car-cta{gap:12px}
+.aanbod-footer{text-align:center;margin-top:52px;padding-top:52px;border-top:1px solid rgba(255,255,255,.05)}
+.aanbod-footer p{font-size:13px;color:var(--muted);margin-bottom:20px}
 
-/* placeholder card */
-.car-placeholder{
-  width:100%;height:100%;
-  background:linear-gradient(135deg,#0d1625,#1a2d45,#0d1625);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.car-placeholder::before{
-  content:'';position:absolute;width:250px;height:250px;border-radius:50%;
-  background:radial-gradient(circle,rgba(59,130,246,.06),transparent 70%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-}
-.car-ph-letter{
-  font-size:72px;font-weight:900;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:1px rgba(59,130,246,.2);
-  user-select:none;position:relative;line-height:1;
-}
-
-/* aanbod footer */
-.aanbod-footer{
-  text-align:center;margin-top:60px;padding-top:60px;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-.aanbod-footer p{font-size:13px;color:var(--muted);margin-bottom:24px;font-weight:300}
-
-/* ═══════════════════════════════════════════════════════
-   FILOSOFIE / TRUST STRIP
-═══════════════════════════════════════════════════════ */
-#filosofie{padding:120px 6vw;background:var(--white);color:var(--navy)}
-
-.fil-intro{text-align:center;max-width:860px;margin:0 auto 80px}
-.fil-intro .chip{color:var(--accent-dk)}
-.fil-intro .section-title{color:var(--navy)}
-.fil-intro .section-title em{color:var(--navy-lt)}
-.fil-intro p{
-  font-size:16px;line-height:1.8;color:#475569;max-width:60ch;margin:24px auto 0;
-}
-
-.fil-cols{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:60px;
-  max-width:1100px;margin:0 auto;
-}
-.fc{border-top:2px solid rgba(14,20,24,.1);padding-top:32px}
-.fc-num{
-  font-size:10px;font-weight:700;letter-spacing:.4em;color:var(--accent-dk);
-  margin-bottom:20px;display:flex;align-items:center;gap:12px;
-}
-.fc-num-line{display:block;height:1px;background:var(--accent-dk);width:0;transition:width 1.2s var(--ease)}
-.fc.vi .fc-num-line{width:36px}
-.fc-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:12px;letter-spacing:-.01em}
-.fc-text{font-size:14px;line-height:1.85;color:#64748b;max-width:30ch}
-
-/* trust badges row */
-.trust-strip{
-  display:flex;justify-content:center;flex-wrap:wrap;gap:32px;
-  margin-top:80px;padding-top:80px;
-  border-top:1px solid rgba(14,20,24,.08);
-}
+/* ── FILOSOFIE ── */
+#filosofie{padding:0 6vw 100px}
+#filosofie .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw}
+.fil-intro{max-width:860px;margin:0 auto 72px;text-align:center}
+.fil-intro p{font-size:15px;line-height:1.85;color:var(--silver);max-width:58ch;margin:20px auto 0}
+.fil-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;max-width:1100px;margin:0 auto}
+.fc{border-top:2px solid rgba(255,255,255,.08);padding-top:28px}
+.fc-num{font-size:10px;font-weight:700;letter-spacing:.4em;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.fc-line{display:block;height:1px;background:var(--accent);width:0;transition:width 1.2s var(--ease)}
+.fc.vi .fc-line{width:32px}
+.fc-title{font-size:19px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:-.01em}
+.fc-text{font-size:13px;line-height:1.85;color:var(--silver)}
+.trust-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:28px;margin-top:64px;padding-top:64px;border-top:1px solid rgba(255,255,255,.06)}
 .tb{display:flex;align-items:center;gap:10px}
-.tb-icon{
-  width:40px;height:40px;border-radius:10px;
-  background:rgba(59,130,246,.1);display:flex;align-items:center;justify-content:center;
-  font-size:18px;
-}
-.tb-text{font-size:12px;color:#475569;font-weight:500;line-height:1.4}
-.tb-text strong{color:var(--navy);display:block;font-size:13px}
+.tb-icon{width:38px;height:38px;border-radius:10px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;font-size:16px}
+.tb-text strong{color:var(--white);display:block;font-size:13px;font-weight:600;margin-bottom:1px}
+.tb-text{font-size:12px;color:var(--silver)}
 
-/* ═══════════════════════════════════════════════════════
-   DIENSTEN
-═══════════════════════════════════════════════════════ */
-#diensten{padding:120px 6vw;background:var(--navy)}
-.diensten-inner{max-width:1200px;margin:0 auto}
-.diensten-header{margin-bottom:80px;max-width:640px}
-.diensten-header .section-title{margin-top:8px}
-.diensten-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
-  background:rgba(255,255,255,.05);border-radius:20px;overflow:hidden;
-}
-.dg-item{
-  background:var(--navy);padding:48px 40px;
-  transition:background var(--t);position:relative;overflow:hidden;
-}
-.dg-item::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--accent),transparent);
-  opacity:0;transition:opacity var(--t);
-}
-.dg-item:hover{background:var(--navy-md)}
-.dg-item:hover::before{opacity:1}
-.dg-icon{
-  font-size:32px;margin-bottom:24px;display:block;
-  transition:transform .4s var(--ease);
-}
+/* ── DIENSTEN ── */
+#diensten{padding:0 6vw 100px}
+#diensten .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw}
+.diensten-header{margin-bottom:64px;max-width:560px}
+.diensten-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:rgba(255,255,255,.04);border-radius:18px;overflow:hidden}
+.dg-item{background:rgba(15,23,42,.9);padding:44px 36px;transition:background var(--t);position:relative;overflow:hidden}
+.dg-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:0;transition:opacity var(--t)}
+.dg-item:hover{background:rgba(30,41,59,.95)}.dg-item:hover::before{opacity:1}
+.dg-icon{font-size:30px;margin-bottom:20px;display:block;transition:transform .4s var(--ease)}
 .dg-item:hover .dg-icon{transform:scale(1.1) translateY(-2px)}
-.dg-num{
-  font-size:10px;font-weight:700;letter-spacing:.4em;color:var(--accent);
-  margin-bottom:12px;
-}
-.dg-title{font-size:20px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:-.01em}
-.dg-text{font-size:13px;line-height:1.85;color:var(--silver);max-width:28ch}
+.dg-num{font-size:10px;font-weight:700;letter-spacing:.4em;color:var(--accent);margin-bottom:10px}
+.dg-title{font-size:19px;font-weight:700;color:var(--white);margin-bottom:10px}
+.dg-text{font-size:13px;line-height:1.85;color:var(--silver)}
 
-/* ═══════════════════════════════════════════════════════
-   STATS COUNTER
-═══════════════════════════════════════════════════════ */
-#stats{
-  padding:100px 6vw;
-  background:linear-gradient(135deg,var(--accent-dk),#1d4ed8);
-  position:relative;overflow:hidden;
-}
-#stats::before{
-  content:'';position:absolute;top:-50%;right:-10%;
-  width:600px;height:600px;border-radius:50%;
-  background:rgba(255,255,255,.04);pointer-events:none;
-}
-.stats-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
-  max-width:1100px;margin:0 auto;text-align:center;
-}
-.stat-item{}
-.stat-num{
-  font-size:clamp(40px,6vw,72px);font-weight:900;color:#fff;
-  letter-spacing:-.04em;line-height:1;
-}
-.stat-suffix{color:rgba(255,255,255,.6);font-size:0.6em}
-.stat-label{
-  font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(255,255,255,.65);margin-top:8px;
-}
+/* ── STATS ── */
+#stats{padding:0 6vw 100px}
+#stats .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw;background:rgba(37,99,235,.12)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:1100px;margin:0 auto;text-align:center}
+.stat-num{font-size:clamp(40px,5.5vw,68px);font-weight:900;color:var(--white);letter-spacing:-.04em;line-height:1}
+.stat-suffix{color:rgba(255,255,255,.5);font-size:.6em}
+.stat-label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--silver);margin-top:8px}
 
-/* ═══════════════════════════════════════════════════════
-   OVER ONS
-═══════════════════════════════════════════════════════ */
-#over{padding:120px 6vw;background:var(--bg)}
-.over-inner{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
-}
-.over-left .chip{}
-.over-title{
-  font-size:clamp(32px,4.5vw,54px);font-weight:900;letter-spacing:-.03em;
-  line-height:1.05;color:var(--white);margin:8px 0 32px;
-}
-.over-title em{
-  font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;
-  color:var(--silver);
-}
-.over-text{font-size:14px;line-height:1.85;color:var(--silver);margin-bottom:32px}
+/* ── OVER ONS ── */
+#over{padding:0 6vw 100px}
+#over .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw}
+.over-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.over-title{font-size:clamp(30px,4vw,52px);font-weight:900;letter-spacing:-.03em;line-height:1.05;color:var(--white);margin:8px 0 28px}
+.over-title em{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;color:var(--silver)}
+.over-text{font-size:14px;line-height:1.85;color:var(--silver);margin-bottom:24px}
 .over-text strong{color:var(--white);font-weight:600}
-.over-right{position:relative}
-.over-img-grid{
-  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:200px 200px;gap:12px;
-}
-.oi-main{grid-row:1/3;grid-column:1/2}
-.oi-main img,.oi-sub img{
-  width:100%;height:100%;object-fit:cover;border-radius:12px;
-  transition:transform .6s var(--ease);
-}
+.over-img-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:200px 200px;gap:10px;position:relative}
+.oi-main{grid-row:1/3}
+.oi-main img,.oi-sub img{width:100%;height:100%;object-fit:cover;border-radius:10px;transition:transform .6s var(--ease)}
 .oi-main:hover img,.oi-sub:hover img{transform:scale(1.03)}
-.over-badge{
-  position:absolute;bottom:-20px;left:-20px;
-  padding:20px 24px;background:var(--accent);border-radius:14px;
-  text-align:center;box-shadow:0 20px 60px rgba(59,130,246,.4);
-}
-.ob-num{font-size:36px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1}
-.ob-text{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:4px}
+.over-badge{position:absolute;bottom:-16px;left:-16px;padding:18px 22px;background:var(--accent);border-radius:12px;text-align:center;box-shadow:0 16px 48px rgba(59,130,246,.4)}
+.ob-num{font-size:32px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1}
+.ob-text{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:3px}
 
-/* ═══════════════════════════════════════════════════════
-   CONTACT
-═══════════════════════════════════════════════════════ */
-#contact{padding:120px 6vw;background:var(--navy)}
-.contact-inner{
-  max-width:1100px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
-}
-.contact-left{}
-.contact-left .section-title{margin:8px 0 24px}
-.contact-left p{font-size:14px;line-height:1.8;color:var(--silver);margin-bottom:40px}
-.contact-info-list{display:flex;flex-direction:column;gap:20px}
-.ci-item{display:flex;align-items:flex-start;gap:14px}
-.ci-icon{
-  width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,.12);
-  border:1px solid rgba(59,130,246,.2);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-}
+/* ── CONTACT ── */
+#contact{padding:0 6vw 100px}
+#contact .section-glass{padding:80px 6vw;border-radius:24px;margin:0 -2vw}
+.contact-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.contact-left p{font-size:14px;line-height:1.8;color:var(--silver);margin-bottom:36px;margin-top:8px}
+.ci-list{display:flex;flex-direction:column;gap:18px}
+.ci-item{display:flex;align-items:flex-start;gap:12px}
+.ci-icon{width:38px;height:38px;border-radius:10px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px}
+.ci-text strong{color:var(--white);font-size:14px;font-weight:600;display:block;margin-bottom:2px}
 .ci-text{font-size:13px;color:var(--silver);line-height:1.6}
-.ci-text strong{color:var(--white);font-size:14px;display:block;font-weight:600;margin-bottom:2px}
-
-/* form */
-.contact-form{
-  background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.07);
-  border-radius:20px;padding:40px;backdrop-filter:blur(12px);
+.cf{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:36px;backdrop-filter:blur(12px)}
+.cf-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:6px}
+.cf-sub{font-size:12px;color:var(--muted);margin-bottom:28px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:16px;display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--silver)}
+.form-group input,.form-group select,.form-group textarea{
+  background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  padding:11px 14px;color:var(--white);font-size:13px;font-family:'Inter',sans-serif;
+  transition:border-color var(--t),box-shadow var(--t);outline:none;width:100%
 }
-.cf-title{font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px}
-.cf-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{margin-bottom:20px;display:flex;flex-direction:column;gap:6px}
-.form-group label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--silver)}
-.form-group input,
-.form-group select,
-.form-group textarea{
-  background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.1);
-  border-radius:8px;padding:12px 16px;color:var(--white);font-size:14px;
-  font-family:'Inter',sans-serif;transition:border-color var(--t),box-shadow var(--t);
-  outline:none;width:100%;
-}
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-  border-color:rgba(59,130,246,.5);
-  box-shadow:0 0 0 3px rgba(59,130,246,.08);
-}
-.form-group input::placeholder,
-.form-group textarea::placeholder{color:var(--muted)}
-.form-group select option{background:var(--navy-md);color:var(--white)}
-.form-group textarea{resize:vertical;min-height:110px}
-.btn-submit{
-  width:100%;padding:16px;background:var(--accent);color:#fff;
-  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  border-radius:8px;cursor:pointer;
-  transition:all var(--t);margin-top:4px;
-}
-.btn-submit:hover{background:var(--accent-dk);transform:translateY(-1px);box-shadow:0 12px 32px rgba(59,130,246,.3)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(59,130,246,.5);box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted)}
+.form-group select option{background:var(--navy2)}
+.form-group textarea{resize:vertical;min-height:100px}
+.btn-submit{width:100%;padding:15px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:8px;cursor:pointer;transition:all var(--t);margin-top:4px}
+.btn-submit:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 10px 28px rgba(59,130,246,.3)}
 .btn-submit.sent{background:#16a34a}
 
-/* ═══════════════════════════════════════════════════════
-   MAP STRIP
-═══════════════════════════════════════════════════════ */
-#kaart{height:400px;background:var(--navy-md);position:relative;overflow:hidden}
-#kaart iframe{width:100%;height:100%;border:none;opacity:.85;filter:invert(0.9) hue-rotate(180deg) brightness(.8)}
+/* ── MAP ── */
+#kaart{height:360px;background:var(--navy2);position:relative;overflow:hidden;z-index:10}
+#kaart iframe{width:100%;height:100%;border:none;filter:invert(.88) hue-rotate(180deg) brightness(.75)}
 
-/* ═══════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════ */
-footer{
-  background:var(--bg);padding:64px 6vw 40px;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-.footer-inner{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;
-  margin-bottom:48px;
-}
-.fi-brand .nl-1{font-size:18px;margin-bottom:4px}
-.fi-brand .nl-2{margin-bottom:16px}
-.fi-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:28ch}
-.footer-col h4{
-  font-size:10px;font-weight:700;letter-spacing:.45em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:20px;
-}
-.footer-col ul{display:flex;flex-direction:column;gap:10px}
-.footer-col a{font-size:13px;color:var(--muted);transition:color var(--t)}
+/* ── FOOTER ── */
+footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rgba(255,255,255,.05);position:relative;z-index:10}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:44px}
+.fi-brand p{font-size:12px;color:var(--muted);line-height:1.7;max-width:26ch;margin-top:12px}
+.footer-col h4{font-size:9px;font-weight:700;letter-spacing:.45em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.footer-col ul{display:flex;flex-direction:column;gap:9px}
+.footer-col a{font-size:12px;color:var(--muted);transition:color var(--t)}
 .footer-col a:hover{color:var(--white)}
-.footer-bottom{
-  border-top:1px solid rgba(255,255,255,.05);padding-top:24px;
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-bottom span{font-size:11px;color:var(--muted)}
 
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════ */
+/* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .fil-cols,.diensten-grid,.stats-grid{grid-template-columns:repeat(2,1fr)}
-  .over-inner,.contact-inner{grid-template-columns:1fr;gap:48px}
-  .footer-inner{grid-template-columns:1fr 1fr;gap:32px}
+  .over-inner,.contact-inner{grid-template-columns:1fr;gap:40px}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:28px}
 }
 @media(max-width:768px){
-  .nav-links,.nav-cta{display:none}
-  .hb{display:flex}
+  .nav-links,.nav-cta{display:none}.hb{display:flex}
   .fil-cols,.diensten-grid{grid-template-columns:1fr}
   .cars-grid{grid-template-columns:1fr}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .hero-stats{gap:32px}
   .form-row{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr}
   .over-img-grid{grid-template-columns:1fr;grid-template-rows:auto}
-  .oi-main{grid-row:auto;grid-column:auto}
-  .aanbod-header{flex-direction:column;align-items:flex-start}
-}
-@media(max-width:480px){
-  .hero-stats{display:none}
+  .oi-main{grid-row:auto}
 }
 </style>
 </head>
 <body>
 
-<!-- SCROLL PROGRESS BAR -->
 <div id="spb"></div>
-
-<!-- CURSOR -->
 <div class="cur-dot" id="cDot"></div>
 <div class="cur-ring" id="cRing"></div>
 
-<!-- MOBILE MENU -->
+<!-- ══ MOBILE MENU ══ -->
 <div class="mm" id="mm">
   <a href="#aanbod" onclick="closeMM()">Aanbod</a>
   <a href="#filosofie" onclick="closeMM()">Filosofie</a>
   <a href="#diensten" onclick="closeMM()">Diensten</a>
   <a href="#over" onclick="closeMM()">Over ons</a>
   <a href="#contact" onclick="closeMM()">Contact</a>
-  <div class="mm-info">+32 3 411 75 05 &nbsp;·&nbsp; Nijlen</div>
 </div>
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav id="mainNav">
-  <div class="nav-logo">
-    <span class="nl-1">Bellens</span>
-    <span class="nl-2">Autobedrijf · Nijlen</span>
-  </div>
+  <div class="nav-logo"><span class="nl1">Bellens</span><span class="nl2">Autobedrijf · Nijlen</span></div>
   <div class="nav-links">
     <a href="#aanbod">Aanbod</a>
     <a href="#filosofie">Filosofie</a>
@@ -884,24 +528,261 @@ footer{
     <a href="#over">Over ons</a>
     <a href="#contact">Contact</a>
   </div>
-  <a href="#contact" class="nav-cta">Neem contact op</a>
-  <button class="hb" id="hb" onclick="toggleMM()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <a href="#contact" class="nav-cta">Contact</a>
+  <button class="hb" id="hb" onclick="toggleMM()"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- ═══ HERO ═══ -->
+<!-- ══════════════════════════════════════════
+     FIXED BACKGROUND CANVAS
+══════════════════════════════════════════ -->
+<div id="bg-canvas">
+  <div id="bg-stars"></div>
+  <div id="bg-road">
+    <div class="road-dash-strip" id="roadDash"></div>
+  </div>
+  <div id="headlight-left"></div>
+  <div id="headlight-right"></div>
+
+  <!-- PHASE 1: Approaching car -->
+  <div id="phase-approach" class="show">
+    <div id="speed-lines"></div>
+    <div id="car-approach-wrap">
+      <!-- Detailed front-3/4 view car SVG -->
+      <svg id="carFrontSvg" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="width:min(700px,85vw);height:auto">
+        <defs>
+          <linearGradient id="bodyM" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c8d4e0"/>
+            <stop offset="25%" stop-color="#9ab0c4"/>
+            <stop offset="60%" stop-color="#6888a0"/>
+            <stop offset="100%" stop-color="#3a5570"/>
+          </linearGradient>
+          <linearGradient id="bodyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#dce8f0"/>
+            <stop offset="100%" stop-color="#8098b0"/>
+          </linearGradient>
+          <linearGradient id="glassG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(140,200,255,.5)"/>
+            <stop offset="100%" stop-color="rgba(20,50,90,.75)"/>
+          </linearGradient>
+          <linearGradient id="wheelG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#aaa"/>
+            <stop offset="40%" stop-color="#ddd"/>
+            <stop offset="100%" stop-color="#666"/>
+          </linearGradient>
+          <radialGradient id="hlGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,250,200,.95)"/>
+            <stop offset="60%" stop-color="rgba(180,220,255,.6)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="gShad"><feDropShadow dx="0" dy="30" stdDeviation="25" flood-color="rgba(0,0,0,.6)"/></filter>
+          <filter id="glow2"><feGaussianBlur stdDeviation="6" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter>
+        </defs>
+        <!-- Ground shadow -->
+        <ellipse cx="440" cy="535" rx="400" ry="22" fill="rgba(0,0,0,.5)" filter="url(#gShad)"/>
+        <!-- BODY - main shape (low, wide sports car) -->
+        <path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z"
+          fill="url(#bodyM)" stroke="rgba(100,140,180,.4)" stroke-width="1"/>
+        <!-- ROOF -->
+        <path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z"
+          fill="url(#bodyTop)" stroke="rgba(120,160,200,.3)" stroke-width="1"/>
+        <!-- WINDSHIELD -->
+        <path d="M255 200 L280 165 Q292 152 310 148 L570 142 Q588 148 600 165 L622 200 Z"
+          fill="url(#glassG)" stroke="rgba(100,160,220,.5)" stroke-width="1.5"/>
+        <!-- Windshield reflection -->
+        <path d="M280 165 L300 152 L370 146 L370 160 L285 195 Z" fill="rgba(255,255,255,.12)"/>
+        <!-- SIDE WINDOW -->
+        <path d="M660 235 L638 195 L598 168 L560 162 L560 240 Z"
+          fill="url(#glassG)" opacity=".8" stroke="rgba(100,160,220,.4)" stroke-width="1.5"/>
+        <!-- Hood lines -->
+        <path d="M310 215 Q440 200 580 205" fill="none" stroke="rgba(180,210,240,.3)" stroke-width="2"/>
+        <path d="M340 240 Q440 228 560 235" fill="none" stroke="rgba(150,180,210,.2)" stroke-width="1.5"/>
+        <!-- Body crease line -->
+        <path d="M95 370 Q300 355 560 360 L730 370" fill="none" stroke="rgba(200,220,240,.35)" stroke-width="2"/>
+        <!-- Lower body highlight -->
+        <path d="M90 410 Q280 400 560 400 L800 410" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+        <!-- FRONT BUMPER -->
+        <path d="M840 380 L848 400 Q852 420 848 440 L830 445 L820 440 L820 380 Z"
+          fill="#1a2d42" stroke="rgba(80,120,160,.4)" stroke-width="1"/>
+        <!-- GRILL -->
+        <rect x="822" y="370" width="22" height="52" rx="4" fill="#0a1828" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
+        <line x1="829" y1="374" x2="829" y2="420" stroke="rgba(59,130,246,.25)" stroke-width="1"/>
+        <line x1="836" y1="374" x2="836" y2="420" stroke="rgba(59,130,246,.25)" stroke-width="1"/>
+        <line x1="822" y1="390" x2="844" y2="390" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
+        <line x1="822" y1="400" x2="844" y2="400" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
+        <!-- HEADLIGHT RIGHT (front) -->
+        <path d="M800 345 L840 355 L845 375 L800 380 Q785 370 785 362 Z"
+          fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.4)" stroke-width="1.5"/>
+        <ellipse cx="818" cy="362" rx="16" ry="10" fill="url(#hlGlow)" filter="url(#glow2)"/>
+        <path d="M800 350 L840 358" stroke="rgba(180,220,255,.7)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- HEADLIGHT LEFT (3/4 view) -->
+        <path d="M700 318 L750 328 L752 348 L700 355 Q688 345 688 335 Z"
+          fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.3)" stroke-width="1.5"/>
+        <ellipse cx="720" cy="336" rx="14" ry="9" fill="url(#hlGlow)" opacity=".7" filter="url(#glow2)"/>
+        <!-- REAR TAIL LIGHT -->
+        <rect x="55" y="360" width="14" height="40" rx="5" fill="rgba(200,30,30,.8)" stroke="rgba(255,60,60,.5)" stroke-width="1"/>
+        <rect x="58" y="363" width="8" height="15" rx="3" fill="rgba(255,90,90,.9)"/>
+        <!-- WING MIRRORS -->
+        <path d="M220 285 L200 278 L198 292 L218 298 Z" fill="#8098b0" stroke="rgba(100,140,170,.4)" stroke-width="1"/>
+        <path d="M660 252 L680 244 L682 258 L660 264 Z" fill="#8098b0" stroke="rgba(100,140,170,.4)" stroke-width="1"/>
+        <!-- FRONT WHEEL (right) -->
+        <circle cx="680" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
+        <g class="tire-spin">
+          <circle cx="680" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/>
+          <circle cx="680" cy="480" r="20" fill="#1a2d44"/>
+          <path d="M680 424 L680 480 L724 480" fill="none" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M680 480 L680 536 L636 480" fill="none" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M680 480 L636 452 L680 424" fill="none" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+          <path d="M680 480 L724 508 L680 536" fill="none" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        </g>
+        <circle cx="680" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
+        <!-- REAR WHEEL (left, partial) -->
+        <circle cx="185" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
+        <g class="tire-spin">
+          <circle cx="185" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/>
+          <circle cx="185" cy="480" r="20" fill="#1a2d44"/>
+          <path d="M185 424 L185 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M129 480 L241 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M147 442 L223 518" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+          <path d="M147 518 L223 442" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        </g>
+        <circle cx="185" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
+        <!-- DOOR LINE -->
+        <path d="M380 215 L370 355 L380 440" fill="none" stroke="rgba(80,120,160,.3)" stroke-width="1.5"/>
+        <!-- ROOF SCOOP / SPOILER hint -->
+        <path d="M255 200 L270 190 Q440 182 620 192 L636 200" fill="none" stroke="rgba(150,190,220,.2)" stroke-width="2"/>
+        <!-- Body panel gloss -->
+        <path d="M250 280 Q440 265 640 272" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PHASE 2: Wheel close-up -->
+  <div id="phase-wheel">
+    <div id="wheel-road-blur"></div>
+    <div id="wheel-svg-wrap">
+      <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="tireG" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a2535"/>
+            <stop offset="100%" stop-color="#080e18"/>
+          </radialGradient>
+          <radialGradient id="rimG" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#e0e8f0"/>
+            <stop offset="40%" stop-color="#9ab0c8"/>
+            <stop offset="100%" stop-color="#3a5070"/>
+          </radialGradient>
+          <linearGradient id="brakeG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#cc3300"/>
+            <stop offset="100%" stop-color="#881100"/>
+          </linearGradient>
+        </defs>
+        <!-- Tire -->
+        <circle cx="250" cy="250" r="238" fill="url(#tireG)"/>
+        <!-- Tread pattern -->
+        <g class="tire-spin">
+          <circle cx="250" cy="250" r="238" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="6"
+            stroke-dasharray="18 12"/>
+        </g>
+        <!-- Rim -->
+        <circle cx="250" cy="250" r="175" fill="url(#rimG)"/>
+        <!-- Rim inner shadow -->
+        <circle cx="250" cy="250" r="175" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="8"/>
+        <!-- Spoke group (rotates) -->
+        <g class="tire-spin">
+          <!-- 5 spokes -->
+          <g>
+            <path d="M250 250 L250 88" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
+            <path d="M250 250 L390 170" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
+            <path d="M250 250 L335 388" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
+            <path d="M250 250 L165 388" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
+            <path d="M250 250 L110 170" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
+            <!-- Spoke highlights -->
+            <path d="M250 250 L250 88" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M250 250 L390 170" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M250 250 L335 388" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M250 250 L165 388" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M250 250 L110 170" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
+          </g>
+        </g>
+        <!-- Rim ring -->
+        <circle cx="250" cy="250" r="90" fill="rgba(10,18,30,.9)" stroke="rgba(100,140,180,.4)" stroke-width="3"/>
+        <!-- Brake caliper -->
+        <path d="M310 160 Q380 170 395 250 Q380 330 310 340 Q260 345 245 300 L245 200 Q260 155 310 160 Z"
+          fill="url(#brakeG)" opacity=".85"/>
+        <text x="330" y="256" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.6)" font-family="Inter" font-weight="700" letter-spacing="1">BREMBO</text>
+        <!-- Brake disc -->
+        <circle cx="250" cy="250" r="90" fill="none" stroke="rgba(60,80,100,.8)" stroke-width="4"
+          stroke-dasharray="8 6"/>
+        <!-- Center cap -->
+        <circle cx="250" cy="250" r="32" fill="rgba(8,14,24,.95)" stroke="rgba(100,140,180,.5)" stroke-width="2"/>
+        <circle cx="250" cy="250" r="18" fill="rgba(20,40,80,.9)"/>
+        <text x="250" y="255" text-anchor="middle" font-size="10" fill="rgba(148,163,184,.8)" font-family="Inter" font-weight="900" letter-spacing="1">B</text>
+      </svg>
+    </div>
+    <!-- Speed motion blur ground -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(180deg,transparent,rgba(4,9,15,.95))"></div>
+    <!-- Blurred road streaks -->
+    <div style="position:absolute;bottom:25%;left:0;right:0;height:6px;
+      background:repeating-linear-gradient(90deg,rgba(240,200,30,.3) 0,rgba(240,200,30,.3) 40px,transparent 40px,transparent 120px);
+      animation:dashAnim .3s linear infinite;filter:blur(3px)"></div>
+  </div>
+
+  <!-- PHASE 3: 3D Rotating car -->
+  <div id="phase-3d">
+    <div id="car3d-glow"></div>
+    <div id="car3d-wrap">
+      <!-- Reuse the front SVG but it'll rotate in 3D via CSS -->
+      <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
+        <use href="#carFrontSvg"/>
+        <!-- Actually, inline the same car but with slightly different lighting -->
+        <defs>
+          <linearGradient id="b3M" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#c8d4e0"/>
+            <stop offset="35%" stop-color="#9ab0c4"/>
+            <stop offset="75%" stop-color="#6888a0"/>
+            <stop offset="100%" stop-color="#3a5570"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="440" cy="535" rx="400" ry="22" fill="rgba(0,0,0,.45)"/>
+        <path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z" fill="url(#b3M)" stroke="rgba(100,140,180,.3)" stroke-width="1"/>
+        <path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z" fill="url(#bodyTop)" stroke="rgba(120,160,200,.25)" stroke-width="1"/>
+        <path d="M255 200 L280 165 Q292 152 310 148 L570 142 Q588 148 600 165 L622 200 Z" fill="url(#glassG)" stroke="rgba(100,160,220,.4)" stroke-width="1.5"/>
+        <path d="M660 235 L638 195 L598 168 L560 162 L560 240 Z" fill="url(#glassG)" opacity=".75" stroke="rgba(100,160,220,.3)" stroke-width="1.5"/>
+        <path d="M95 370 Q300 355 560 360 L730 370" fill="none" stroke="rgba(200,220,240,.3)" stroke-width="2"/>
+        <rect x="822" y="370" width="22" height="52" rx="4" fill="#0a1828" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
+        <path d="M800 345 L840 355 L845 375 L800 380 Q785 370 785 362 Z" fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.4)" stroke-width="1.5"/>
+        <ellipse cx="818" cy="362" rx="16" ry="10" fill="url(#hlGlow)" filter="url(#glow2)"/>
+        <path d="M800 350 L840 358" stroke="rgba(180,220,255,.7)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="55" y="360" width="14" height="40" rx="5" fill="rgba(200,30,30,.8)" stroke="rgba(255,60,60,.5)" stroke-width="1"/>
+        <circle cx="680" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
+        <g class="tire-spin"><circle cx="680" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/><circle cx="680" cy="480" r="20" fill="#1a2d44"/><path d="M680 424 L680 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M624 480 L736 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M641 441 L719 519" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M641 519 L719 441" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/></g>
+        <circle cx="680" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
+        <circle cx="185" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
+        <g class="tire-spin"><circle cx="185" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/><circle cx="185" cy="480" r="20" fill="#1a2d44"/><path d="M185 424 L185 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M129 480 L241 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M147 442 L223 518" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M147 518 L223 442" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/></g>
+        <circle cx="185" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PHASE 4: Exploded diagram -->
+  <div id="phase-explode">
+    <!-- Parts injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCROLLABLE SITE CONTENT
+══════════════════════════════════════════ -->
+<div id="site-content">
+
+<!-- HERO -->
 <section id="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow1"></div>
-  <div class="hero-glow2"></div>
-  <div class="hero-glow3"></div>
   <div class="hero-inner">
     <div class="hero-badge">Vertrouwd in Nijlen &amp; regio Antwerpen</div>
     <div class="hero-headline">
-      <div class="hl"><span>Kwaliteit</span></div>
-      <div class="hl"><span>rijdt verder</span></div>
-      <div class="hl"><span>met Bellens</span></div>
+      <div class="hl-wrap"><span>Kwaliteit</span></div>
+      <div class="hl-wrap"><span>rijdt verder</span></div>
+      <div class="hl-wrap"><span>met Bellens</span></div>
     </div>
     <p class="hero-sub">Nijlen · Antwerpen · Sinds 1993</p>
     <div class="hero-ctas">
@@ -909,719 +790,504 @@ footer{
       <a href="#contact" class="btn-ghost">Gratis adviesgesprek</a>
     </div>
   </div>
-  <div class="hero-stats">
-    <div class="hs-item">
-      <div class="hs-num" data-target="30">0</div>
-      <div class="hs-label">Jaar expertise</div>
-    </div>
-    <div class="hs-item">
-      <div class="hs-num" data-target="500">0</div>
-      <div class="hs-label">Tevreden klanten</div>
-    </div>
-    <div class="hs-item">
-      <div class="hs-num" data-target="100">0</div>
-      <div class="hs-label">Wagens in stock</div>
-    </div>
-  </div>
-  <div class="scroll-cue">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ═══ SCROLL CAR SCENE ═══ -->
-<section id="car-scene">
-  <div class="car-sticky" id="carSticky">
-    <!-- Background layers -->
-    <div class="scene-sky"></div>
-    <div class="scene-stars"></div>
-    <div class="scene-horizon"></div>
+<!-- spacer: car approaches -->
+<div class="bg-spacer"><div class="bg-spacer-label"></div></div>
+<div class="bg-spacer"><div class="bg-spacer-label"></div></div>
 
-    <!-- Road -->
-    <div class="scene-road">
-      <div class="road-edge"></div>
-      <div class="road-dashes" id="roadDashes"></div>
-    </div>
-
-    <!-- Ground glow under car -->
-    <div class="car-ground-glow" id="carGlow"></div>
-
-    <!-- Headlight beams -->
-    <div class="scene-beam" id="sceneBeam">
-      <div class="beam-cone-wide"></div>
-      <div class="beam-cone"></div>
-    </div>
-
-    <!-- CAR SVG (inline — always renders) -->
-    <div class="car-wrap" id="carWrap">
-      <svg viewBox="0 0 820 310" xmlns="http://www.w3.org/2000/svg">
-        <!-- Shadow under car -->
-        <ellipse cx="410" cy="295" rx="310" ry="12" fill="rgba(0,0,0,.45)"/>
-        <!-- Body lower -->
-        <path d="M80 230 L80 195 Q82 180 100 175 L180 170 L240 120 L570 115 L660 170 L740 175 Q758 180 760 195 L760 230 Z"
-          fill="#1a3355" stroke="#2a5080" stroke-width="1.5"/>
-        <!-- Body upper (cabin) -->
-        <path d="M240 120 L270 72 Q280 60 295 58 L520 58 Q535 60 548 72 L570 115 Z"
-          fill="#152840" stroke="#2a5080" stroke-width="1.5"/>
-        <!-- Windshield -->
-        <path d="M268 118 L295 68 L360 62 L360 118 Z"
-          fill="rgba(80,140,220,.25)" stroke="rgba(100,160,240,.5)" stroke-width="1.5"/>
-        <!-- Rear window -->
-        <path d="M388 118 L388 62 L518 62 L544 118 Z"
-          fill="rgba(80,140,220,.25)" stroke="rgba(100,160,240,.5)" stroke-width="1.5"/>
-        <!-- Window pillar -->
-        <rect x="373" y="60" width="12" height="60" rx="3" fill="#0e1f35"/>
-        <!-- Door line -->
-        <line x1="390" y1="120" x2="390" y2="225" stroke="rgba(60,100,160,.6)" stroke-width="2"/>
-        <!-- Sill -->
-        <rect x="82" y="225" width="676" height="8" rx="4" fill="#0f2035" stroke="#1e3a5a" stroke-width="1"/>
-        <!-- Hood highlight -->
-        <path d="M570 118 L640 165 L680 165 Q695 168 700 178 L700 195" fill="none" stroke="rgba(60,110,180,.3)" stroke-width="2"/>
-        <!-- Side mirror -->
-        <rect x="246" y="130" width="18" height="10" rx="3" fill="#1a3060" stroke="#2a5080" stroke-width="1"/>
-        <!-- Front bumper -->
-        <path d="M740 195 L762 200 Q775 205 778 215 L778 228 Q778 232 775 233 L760 233 L760 230 Z"
-          fill="#12263d" stroke="#1e3a5a" stroke-width="1"/>
-        <!-- Rear bumper -->
-        <path d="M80 195 L58 200 Q45 205 42 215 L42 228 Q42 232 45 233 L80 233 L80 230 Z"
-          fill="#12263d" stroke="#1e3a5a" stroke-width="1"/>
-        <!-- HEADLIGHT (right/front) -->
-        <ellipse cx="758" cy="185" rx="14" ry="9" fill="rgba(255,255,200,.15)" stroke="rgba(255,255,200,.4)" stroke-width="1.5"/>
-        <ellipse cx="758" cy="185" rx="8" ry="5" fill="rgba(255,255,210,.7)"/>
-        <!-- DRL stripe -->
-        <line x1="744" y1="178" x2="770" y2="178" stroke="rgba(180,220,255,.6)" stroke-width="2" stroke-linecap="round"/>
-        <!-- TAILLIGHT (left/rear) -->
-        <rect x="44" y="175" width="10" height="26" rx="4" fill="rgba(220,30,30,.7)" stroke="rgba(255,50,50,.5)" stroke-width="1"/>
-        <rect x="46" y="177" width="6" height="10" rx="2" fill="rgba(255,80,80,.9)"/>
-        <!-- Grill -->
-        <rect x="758" y="190" width="16" height="32" rx="3" fill="#0a1828" stroke="#1e3a5a" stroke-width="1.5"/>
-        <line x1="764" y1="194" x2="764" y2="220" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
-        <line x1="769" y1="194" x2="769" y2="220" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
-        <!-- Badge center grill -->
-        <circle cx="766" cy="185" r="5" fill="none" stroke="rgba(150,180,220,.4)" stroke-width="1.5"/>
-        <!-- FRONT WHEEL -->
-        <circle cx="620" cy="260" r="50" fill="#08111e" stroke="#1e3358" stroke-width="2.5"/>
-        <g class="w-spin" id="wFront">
-          <circle cx="620" cy="260" r="38" fill="none" stroke="#1e3358" stroke-width="1.5"/>
-          <circle cx="620" cy="260" r="14" fill="#12233a"/>
-          <line x1="620" y1="222" x2="620" y2="298" stroke="#2a4878" stroke-width="3" stroke-linecap="round"/>
-          <line x1="582" y1="260" x2="658" y2="260" stroke="#2a4878" stroke-width="3" stroke-linecap="round"/>
-          <line x1="593" y1="233" x2="647" y2="287" stroke="#2a4878" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="593" y1="287" x2="647" y2="233" stroke="#2a4878" stroke-width="2.5" stroke-linecap="round"/>
-        </g>
-        <circle cx="620" cy="260" r="10" fill="#1e3a60" stroke="#3a6aaa" stroke-width="2"/>
-        <!-- REAR WHEEL -->
-        <circle cx="200" cy="260" r="50" fill="#08111e" stroke="#1e3358" stroke-width="2.5"/>
-        <g class="w-spin" id="wRear">
-          <circle cx="200" cy="260" r="38" fill="none" stroke="#1e3358" stroke-width="1.5"/>
-          <circle cx="200" cy="260" r="14" fill="#12233a"/>
-          <line x1="200" y1="222" x2="200" y2="298" stroke="#2a4878" stroke-width="3" stroke-linecap="round"/>
-          <line x1="162" y1="260" x2="238" y2="260" stroke="#2a4878" stroke-width="3" stroke-linecap="round"/>
-          <line x1="173" y1="233" x2="227" y2="287" stroke="#2a4878" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="173" y1="287" x2="227" y2="233" stroke="#2a4878" stroke-width="2.5" stroke-linecap="round"/>
-        </g>
-        <circle cx="200" cy="260" r="10" fill="#1e3a60" stroke="#3a6aaa" stroke-width="2"/>
-        <!-- Roof accent line -->
-        <path d="M270 70 Q410 55 545 70" fill="none" stroke="rgba(80,130,200,.3)" stroke-width="1"/>
-        <!-- Body highlight -->
-        <path d="M110 190 Q300 175 560 175 L640 178" fill="none" stroke="rgba(80,140,220,.2)" stroke-width="2"/>
-      </svg>
-    </div>
-
-    <!-- Overlay text -->
-    <div class="car-scene-text" id="carSceneText">
-      <div class="cst-chip">Persoonlijk geselecteerd</div>
-      <div class="cst-title">Elke wagen<br>rijdt <em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--silver)">perfect</em></div>
-      <div class="cst-sub">Vóór elke verkoop: volledige technische keuring, carrosseriecheck &amp; service-update</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ AANBOD ═══ -->
-<section id="aanbod">
-  <div class="aanbod-header rv">
-    <div class="ah-left">
+<!-- AANBOD -->
+<section id="aanbod" style="padding:100px 6vw 80px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px">
+    <div class="aanbod-header rv">
       <span class="chip">Ons aanbod</span>
       <h2 class="section-title">Vind uw <em>droomwagen</em></h2>
     </div>
-    <div class="ah-right">Alle wagens persoonlijk gekeurd &amp; klaar voor de weg</div>
-  </div>
-
-  <!-- BRAND FILTER -->
-  <div class="brand-filter" id="brandFilter">
-    <button class="brand-btn active" data-brand="all">
-      <span>Alle merken</span>
-    </button>
-  </div>
-
-  <div class="result-count" id="resultCount"></div>
-  <div class="cars-grid" id="carsGrid">
-    <div style="grid-column:1/-1;text-align:center;padding:80px 0;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)">
-      Aanbod wordt geladen…
+    <div class="brand-filter" id="brandFilter">
+      <button class="brand-btn active" data-brand="all"><span>Alle merken</span></button>
     </div>
-  </div>
-
-  <div class="aanbod-footer rv">
-    <p>Geen wagen gevonden die past? Vertel ons wat u zoekt &mdash; wij gaan het voor u vinden.</p>
-    <a href="#contact" class="btn-primary">Vraag uw wagen aan</a>
-  </div>
-</section>
-
-<!-- ═══ FILOSOFIE ═══ -->
-<section id="filosofie">
-  <div class="fil-intro rv">
-    <span class="chip">Onze filosofie</span>
-    <h2 class="section-title">Wij verkopen geen <em>aantallen.</em><br>Wij verkopen zekerheid.</h2>
-    <p>Elk voertuig wordt persoonlijk geselecteerd door ons team. Geen fabrieksoverstock, geen opgelapte pechvogels — enkel wagens waarbij wij zelf achter staan met onze naam van meer dan 30 jaar.</p>
-  </div>
-
-  <div class="fil-cols">
-    <div class="fc rv" data-d="1">
-      <div class="fc-num">01 <span class="fc-num-line"></span></div>
-      <h3 class="fc-title">Persoonlijke selectie</h3>
-      <p class="fc-text">Iedere wagen die u in ons aanbod vindt, is persoonlijk geïnspecteerd door Bellens. Als het niet goed genoeg is voor onze naam, staat het niet te koop.</p>
+    <div class="result-count" id="resultCount"></div>
+    <div class="cars-grid" id="carsGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:60px 0;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)">Aanbod wordt geladen…</div>
     </div>
-    <div class="fc rv" data-d="2">
-      <div class="fc-num">02 <span class="fc-num-line"></span></div>
-      <h3 class="fc-title">Volledige transparantie</h3>
-      <p class="fc-text">Eerlijke prijzen, duidelijke uitleg over de staat van het voertuig en geen verborgen kosten. U weet altijd exact wat u koopt.</p>
-    </div>
-    <div class="fc rv" data-d="3">
-      <div class="fc-num">03 <span class="fc-num-line"></span></div>
-      <h3 class="fc-title">Nazorg &amp; garantie</h3>
-      <p class="fc-text">Na de verkoop staat Bellens nog steeds voor u klaar. Van onderhoud tot technisch advies — wij begeleiden u door heel het bezit van uw wagen.</p>
-    </div>
-  </div>
-
-  <div class="trust-strip rv">
-    <div class="tb">
-      <div class="tb-icon">🔧</div>
-      <div class="tb-text"><strong>Technische keuring</strong>Standaard bij elke verkoop</div>
-    </div>
-    <div class="tb">
-      <div class="tb-icon">📋</div>
-      <div class="tb-text"><strong>Carfax-controle</strong>Volledige historiek beschikbaar</div>
-    </div>
-    <div class="tb">
-      <div class="tb-icon">🛡️</div>
-      <div class="tb-text"><strong>Garantie</strong>Op elk voertuig in ons aanbod</div>
-    </div>
-    <div class="tb">
-      <div class="tb-icon">💬</div>
-      <div class="tb-text"><strong>Persoonlijk advies</strong>U bent geen nummer bij ons</div>
-    </div>
-    <div class="tb">
-      <div class="tb-icon">💳</div>
-      <div class="tb-text"><strong>Financiering</strong>Flexibele betaaloplossingen</div>
+    <div class="aanbod-footer rv">
+      <p>Geen wagen gevonden? Vertel ons wat u zoekt.</p>
+      <a href="#contact" class="btn-primary">Vraag uw wagen aan</a>
     </div>
   </div>
 </section>
 
-<!-- ═══ DIENSTEN ═══ -->
-<section id="diensten">
-  <div class="diensten-inner">
+<!-- spacer: wheel phase -->
+<div class="bg-spacer"></div>
+
+<!-- FILOSOFIE -->
+<section id="filosofie" style="padding:0 6vw 100px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px">
+    <div class="fil-intro rv">
+      <span class="chip">Onze filosofie</span>
+      <h2 class="section-title">Wij verkopen geen <em>aantallen.</em><br>Wij verkopen zekerheid.</h2>
+      <p>Elk voertuig wordt persoonlijk geselecteerd. Geen fabrieksoverstock, geen opgelapte pechvogels — enkel wagens waarbij wij zelf achter staan.</p>
+    </div>
+    <div class="fil-cols">
+      <div class="fc rv" data-d="1"><div class="fc-num">01 <span class="fc-line"></span></div><h3 class="fc-title">Persoonlijke selectie</h3><p class="fc-text">Iedere wagen die u in ons aanbod vindt, is persoonlijk geïnspecteerd. Als het niet goed genoeg is voor onze naam, staat het niet te koop.</p></div>
+      <div class="fc rv" data-d="2"><div class="fc-num">02 <span class="fc-line"></span></div><h3 class="fc-title">Volledige transparantie</h3><p class="fc-text">Eerlijke prijzen, duidelijke uitleg over de staat van het voertuig en geen verborgen kosten. U weet altijd exact wat u koopt.</p></div>
+      <div class="fc rv" data-d="3"><div class="fc-num">03 <span class="fc-line"></span></div><h3 class="fc-title">Nazorg &amp; garantie</h3><p class="fc-text">Na de verkoop staat Bellens nog steeds voor u klaar — van onderhoud tot technisch advies bij elke stap.</p></div>
+    </div>
+    <div class="trust-strip rv">
+      <div class="tb"><div class="tb-icon">🔧</div><div class="tb-text"><strong>Technische keuring</strong>Standaard bij elke verkoop</div></div>
+      <div class="tb"><div class="tb-icon">📋</div><div class="tb-text"><strong>Carfax-controle</strong>Volledige historiek</div></div>
+      <div class="tb"><div class="tb-icon">🛡️</div><div class="tb-text"><strong>Garantie</strong>Op elk voertuig</div></div>
+      <div class="tb"><div class="tb-icon">💳</div><div class="tb-text"><strong>Financiering</strong>Flexibele betaaloplossingen</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- spacer: 3D car phase -->
+<div class="bg-spacer"></div>
+
+<!-- DIENSTEN -->
+<section id="diensten" style="padding:0 6vw 100px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px">
     <div class="diensten-header rv">
       <span class="chip">Wat we doen</span>
-      <h2 class="section-title">Meer dan<br>enkel <em>verkopen</em></h2>
+      <h2 class="section-title">Meer dan enkel <em>verkopen</em></h2>
     </div>
     <div class="diensten-grid">
-      <div class="dg-item rv" data-d="1">
-        <span class="dg-icon">🚗</span>
-        <div class="dg-num">01</div>
-        <h3 class="dg-title">Verkoop tweedehands</h3>
-        <p class="dg-text">Persoonlijk geselecteerde wagens van alle merken. Elke wagen technisch in orde en rijklaar afgeleverd.</p>
+      <div class="dg-item rv" data-d="1"><span class="dg-icon">🚗</span><div class="dg-num">01</div><h3 class="dg-title">Verkoop tweedehands</h3><p class="dg-text">Persoonlijk geselecteerde wagens van alle merken, rijklaar afgeleverd.</p></div>
+      <div class="dg-item rv" data-d="2"><span class="dg-icon">⚙️</span><div class="dg-num">02</div><h3 class="dg-title">Mechanische herstelling</h3><p class="dg-text">Motor, remmen, ophanging, banden &amp; meer. Ons werkplaatsteam staat klaar.</p></div>
+      <div class="dg-item rv" data-d="3"><span class="dg-icon">🎨</span><div class="dg-num">03</div><h3 class="dg-title">Koetswerk &amp; lak</h3><p class="dg-text">Van kleine deukjes tot volledige lakbeurt. Professioneel en perfect afgewerkt.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- spacer: explode phase -->
+<div class="bg-spacer"></div>
+<div class="bg-spacer"></div>
+
+<!-- STATS -->
+<section id="stats" style="padding:0 6vw 100px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px;background:rgba(37,99,235,.1)">
+    <div class="stats-grid">
+      <div class="rv"><div class="stat-num"><span class="counter" data-target="30">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Jaar actief</div></div>
+      <div class="rv" data-d="1"><div class="stat-num"><span class="counter" data-target="500">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Tevreden klanten</div></div>
+      <div class="rv" data-d="2"><div class="stat-num"><span class="counter" data-target="15">0</span><span class="stat-suffix">+</span></div><div class="stat-label">Merken in aanbod</div></div>
+      <div class="rv" data-d="3"><div class="stat-num"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></div><div class="stat-label">Persoonlijk gekeurd</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OVER ONS -->
+<section id="over" style="padding:0 6vw 100px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px">
+    <div class="over-inner">
+      <div class="rv-l">
+        <span class="chip">Over Bellens</span>
+        <h2 class="over-title">Drie generaties<br><em>passie voor</em><br>de auto</h2>
+        <p class="over-text">Autobedrijf Bellens is sinds <strong>1993</strong> een begrip in Nijlen en de regio Antwerpen. Wat begon als een kleine familiezaak, groeide uit tot een vertrouwde naam bij duizenden tevreden klanten.</p>
+        <p class="over-text">Onze kracht? Wij zijn geen massamarkt. Elk voertuig wordt <strong>persoonlijk gecontroleerd</strong>. Wij kennen onze klanten bij naam.</p>
+        <a href="#contact" class="btn-primary">Maak een afspraak</a>
       </div>
-      <div class="dg-item rv" data-d="2">
-        <span class="dg-icon">⚙️</span>
-        <div class="dg-num">02</div>
-        <h3 class="dg-title">Mechanische herstelling</h3>
-        <p class="dg-text">Motor, remmen, ophanging, banden &amp; meer. Ons werkplaatsteam staat klaar voor onderhoud en herstel.</p>
-      </div>
-      <div class="dg-item rv" data-d="3">
-        <span class="dg-icon">🎨</span>
-        <div class="dg-num">03</div>
-        <h3 class="dg-title">Koetswerk &amp; lak</h3>
-        <p class="dg-text">Van kleine deukjes tot volledige lakbeurt. Professioneel koetswerk voor een perfecte afwerking.</p>
+      <div class="rv-r">
+        <div class="over-img-grid">
+          <div class="oi-main"><img src="images/zaak.png" alt="Autobedrijf Bellens" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&auto=format'"></div>
+          <div class="oi-sub"><img src="images/terras.jpg" alt="Buitenzicht" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&q=80&auto=format'"></div>
+          <div class="oi-sub"><img src="https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=400&q=80&auto=format&fit=crop" alt="Werkplaats" loading="lazy"></div>
+        </div>
+        <div class="over-badge"><div class="ob-num">1993</div><div class="ob-text">Opgericht</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ STATS ═══ -->
-<section id="stats">
-  <div class="stats-grid">
-    <div class="stat-item rv">
-      <div class="stat-num"><span class="counter" data-target="30">0</span><span class="stat-suffix">+</span></div>
-      <div class="stat-label">Jaar actief</div>
-    </div>
-    <div class="stat-item rv" data-d="1">
-      <div class="stat-num"><span class="counter" data-target="500">0</span><span class="stat-suffix">+</span></div>
-      <div class="stat-label">Tevreden klanten</div>
-    </div>
-    <div class="stat-item rv" data-d="2">
-      <div class="stat-num"><span class="counter" data-target="15">0</span><span class="stat-suffix">+</span></div>
-      <div class="stat-label">Merken in aanbod</div>
-    </div>
-    <div class="stat-item rv" data-d="3">
-      <div class="stat-num"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></div>
-      <div class="stat-label">Persoonlijk gekeurd</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ OVER ONS ═══ -->
-<section id="over">
-  <div class="over-inner">
-    <div class="over-left rv-l">
-      <span class="chip">Over Bellens</span>
-      <h2 class="over-title">Drie generaties<br><em>passie voor</em><br>de auto</h2>
-      <p class="over-text">
-        Autobedrijf Bellens is sinds <strong>1993</strong> een begrip in Nijlen en de regio Antwerpen.
-        Wat begon als een kleine familiezaak, groeide uit tot een vertrouwde naam bij duizenden
-        tevreden klanten in de streek.
-      </p>
-      <p class="over-text">
-        Onze kracht? Wij zijn geen massamarkt. Elk voertuig dat wij verkopen,
-        wordt <strong>persoonlijk gecontroleerd</strong>. Wij kennen onze klanten bij naam
-        en begeleiden hen bij elke stap — van eerste interesse tot jarenlang rijden
-        met plezier.
-      </p>
-      <a href="#contact" class="btn-primary">Maak een afspraak</a>
-    </div>
-    <div class="over-right rv-r">
-      <div class="over-img-grid">
-        <div class="oi-main">
-          <img src="images/zaak.png" alt="Autobedrijf Bellens — de zaak" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format'">
-        </div>
-        <div class="oi-sub">
-          <img src="images/terras.jpg" alt="Autobedrijf Bellens — buitenzicht" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80&auto=format'">
-        </div>
-        <div class="oi-sub">
-          <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&q=80&auto=format&fit=crop" alt="Werkplaats" loading="lazy">
+<!-- CONTACT -->
+<section id="contact" style="padding:0 6vw 100px">
+  <div class="section-glass" style="padding:72px 6vw;border-radius:24px">
+    <div class="contact-inner">
+      <div class="rv-l">
+        <span class="chip">Contact</span>
+        <h2 class="section-title">Laten we <em>praten</em></h2>
+        <p>Vraag over een wagen, afspraak of iets specifieks? Ons team staat klaar.</p>
+        <div class="ci-list">
+          <div class="ci-item"><div class="ci-icon">📍</div><div class="ci-text"><strong>Adres</strong>Nijlen, provincie Antwerpen</div></div>
+          <div class="ci-item"><div class="ci-icon">📞</div><div class="ci-text"><strong>Telefoon</strong><a href="tel:+3234117505" style="color:var(--silver)">+32 3 411 75 05</a></div></div>
+          <div class="ci-item"><div class="ci-icon">🕐</div><div class="ci-text"><strong>Openingsuren</strong>Ma–Vr 08:30–18:00 · Za 09:00–13:00</div></div>
         </div>
       </div>
-      <div class="over-badge">
-        <div class="ob-num">1993</div>
-        <div class="ob-text">Opgericht</div>
+      <div class="cf rv-r">
+        <div class="cf-title">Stuur ons een bericht</div>
+        <div class="cf-sub">We antwoorden binnen 24 uur</div>
+        <form onsubmit="handleForm(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Voornaam</label><input type="text" placeholder="Jan" required></div>
+            <div class="form-group"><label>Achternaam</label><input type="text" placeholder="Peeters" required></div>
+          </div>
+          <div class="form-group"><label>E-mail</label><input type="email" placeholder="jan@email.be" required></div>
+          <div class="form-group"><label>Telefoon</label><input type="tel" placeholder="+32 4..."></div>
+          <div class="form-group"><label>Onderwerp</label>
+            <select><option>Vraag over een wagen</option><option>Herstelling / onderhoud</option><option>Koetswerk</option><option>Mijn wagen verkopen</option><option>Iets anders</option></select>
+          </div>
+          <div class="form-group"><label>Bericht</label><textarea placeholder="Vertel ons waarmee we u kunnen helpen…"></textarea></div>
+          <button type="submit" class="btn-submit" id="cfBtn">Verstuur bericht →</button>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="contact-left rv-l">
-      <span class="chip">Contact</span>
-      <h2 class="section-title">Laten we<br><em>praten</em></h2>
-      <p>Heeft u een vraag over een wagen, wilt u een afspraak maken of zoekt u iets specifieks? Ons team staat klaar om u persoonlijk te helpen.</p>
-      <div class="contact-info-list">
-        <div class="ci-item">
-          <div class="ci-icon">📍</div>
-          <div class="ci-text">
-            <strong>Adres</strong>
-            Nijlen, provincie Antwerpen, België
-          </div>
-        </div>
-        <div class="ci-item">
-          <div class="ci-icon">📞</div>
-          <div class="ci-text">
-            <strong>Telefoon</strong>
-            <a href="tel:+3234117505" style="color:var(--silver);transition:color .3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--silver)'">+32 3 411 75 05</a>
-          </div>
-        </div>
-        <div class="ci-item">
-          <div class="ci-icon">🕐</div>
-          <div class="ci-text">
-            <strong>Openingsuren</strong>
-            Ma–Vr: 08:30–12:00 &amp; 13:00–18:00<br>
-            Za: 09:00–13:00 &nbsp;·&nbsp; Zo: gesloten
-          </div>
-        </div>
-        <div class="ci-item">
-          <div class="ci-icon">🚗</div>
-          <div class="ci-text">
-            <strong>Inkoop</strong>
-            Wij kopen ook uw wagen in — contacteer ons voor een vrijblijvende schatting
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="contact-form rv-r">
-      <div class="cf-title">Stuur ons een bericht</div>
-      <div class="cf-sub">We antwoorden binnen 24 uur op werkdagen</div>
-      <form onsubmit="handleForm(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Voornaam</label>
-            <input type="text" placeholder="Jan" required>
-          </div>
-          <div class="form-group">
-            <label>Achternaam</label>
-            <input type="text" placeholder="Peeters" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>E-mail</label>
-          <input type="email" placeholder="jan@email.be" required>
-        </div>
-        <div class="form-group">
-          <label>Telefoon</label>
-          <input type="tel" placeholder="+32 4...">
-        </div>
-        <div class="form-group">
-          <label>Onderwerp</label>
-          <select>
-            <option value="">Selecteer een onderwerp</option>
-            <option>Vraag over een wagen in het aanbod</option>
-            <option>Wagen laten keuren / herstellen</option>
-            <option>Koetswerk &amp; lak</option>
-            <option>Mijn wagen verkopen / inruilen</option>
-            <option>Iets anders</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Bericht</label>
-          <textarea placeholder="Vertel ons waarmee we u kunnen helpen…"></textarea>
-        </div>
-        <button type="submit" class="btn-submit" id="cfBtn">Verstuur bericht →</button>
-      </form>
-    </div>
-  </div>
-</section>
+</div><!-- /site-content -->
 
-<!-- ═══ MAP ═══ -->
+<!-- MAP -->
 <div id="kaart">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5009.254!2d4.6583!3d51.1600!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f0b0b0b0b0b0%3A0x0!2sNijlen%2C+Belgium!5e0!3m2!1snl!2sbe!4v1234567890"
-    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-    title="Locatie Autobedrijf Bellens"
-  ></iframe>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10018.5!2d4.6583!3d51.1600!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3ef7b7b7b7b7b%3A0x0!2sNijlen%2C+Belgium!5e0!3m2!1snl!2sbe" allowfullscreen loading="lazy" title="Locatie Autobedrijf Bellens"></iframe>
 </div>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="fi-brand footer-col">
-      <div class="nav-logo" style="margin-bottom:16px">
-        <span class="nl-1">Bellens</span>
-        <span class="nl-2">Autobedrijf · Nijlen</span>
-      </div>
-      <p>Uw vertrouwde partner voor kwaliteits­wagens en vakkundige herstelling in de regio Antwerpen. Sinds 1993.</p>
+    <div class="footer-col fi-brand">
+      <div class="nav-logo"><span class="nl1">Bellens</span><span class="nl2">Autobedrijf · Nijlen</span></div>
+      <p>Uw vertrouwde partner voor kwaliteitswagens en vakkundige herstelling. Sinds 1993.</p>
     </div>
-    <div class="footer-col">
-      <h4>Aanbod</h4>
-      <ul>
-        <li><a href="#aanbod">Alle wagens</a></li>
-        <li><a href="#aanbod">Volkswagen</a></li>
-        <li><a href="#aanbod">BMW</a></li>
-        <li><a href="#aanbod">Audi</a></li>
-        <li><a href="#aanbod">Mercedes</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Diensten</h4>
-      <ul>
-        <li><a href="#diensten">Verkoop</a></li>
-        <li><a href="#diensten">Mechaniek</a></li>
-        <li><a href="#diensten">Koetswerk</a></li>
-        <li><a href="#contact">Inkoop</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="tel:+3234117505">+32 3 411 75 05</a></li>
-        <li><a href="#contact">Contactformulier</a></li>
-        <li><a href="#kaart">Routebeschrijving</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Aanbod</h4><ul><li><a href="#aanbod">Alle wagens</a></li><li><a href="#aanbod">Volkswagen</a></li><li><a href="#aanbod">BMW</a></li><li><a href="#aanbod">Audi</a></li><li><a href="#aanbod">Mercedes</a></li></ul></div>
+    <div class="footer-col"><h4>Diensten</h4><ul><li><a href="#diensten">Verkoop</a></li><li><a href="#diensten">Mechaniek</a></li><li><a href="#diensten">Koetswerk</a></li><li><a href="#contact">Inkoop</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+3234117505">+32 3 411 75 05</a></li><li><a href="#contact">Contactformulier</a></li></ul></div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2024 Autobedrijf Bellens · Nijlen</span>
-    <span>Alle rechten voorbehouden</span>
-  </div>
+  <div class="footer-bottom"><span>© 2024 Autobedrijf Bellens · Nijlen</span><span>Alle rechten voorbehouden</span></div>
 </footer>
 
-<!-- ═══════════════════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════════════════ -->
 <script>
-/* ── CAR DATA ── */
-const CARS = [
-  {id:1,merk:'Volkswagen',model:'Golf VIII',versie:'1.5 TSI Life',jaar:2022,km:38000,prijs:22900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:2,merk:'BMW',model:'3 Reeks',versie:'318d Advantage',jaar:2021,km:52000,prijs:27500,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:3,merk:'Audi',model:'A4 Avant',versie:'2.0 TDI S Line',jaar:2020,km:71000,prijs:24900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:4,merk:'Mercedes-Benz',model:'C 200',versie:'Avantgarde Aut.',jaar:2021,km:44000,prijs:31500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:5,merk:'Toyota',model:'Corolla',versie:'1.8 Hybrid Active',jaar:2022,km:29000,prijs:23500,brandstof:'Hybride',img:'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:6,merk:'Volvo',model:'XC40',versie:'T3 Momentum',jaar:2021,km:61000,prijs:26900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1566008885218-90abf9200ddb?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:7,merk:'Volkswagen',model:'Passat',versie:'2.0 TDI Highline',jaar:2020,km:83000,prijs:19900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:8,merk:'Ford',model:'Focus',versie:'1.0 EcoBoost ST-Line',jaar:2021,km:47000,prijs:17500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1541443131876-a4246b97a7b9?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:9,merk:'Skoda',model:'Octavia',versie:'2.0 TDI Style',jaar:2021,km:56000,prijs:20900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1581540222194-0def2dda95b8?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:10,merk:'Audi',model:'Q5',versie:'2.0 TDI quattro S Line',jaar:2020,km:74000,prijs:32500,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:11,merk:'BMW',model:'X3',versie:'xDrive20d M Sport',jaar:2020,km:65000,prijs:34900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:12,merk:'Peugeot',model:'308',versie:'1.2 PureTech Allure',jaar:2022,km:33000,prijs:18900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:13,merk:'Renault',model:'Clio',versie:'1.0 TCe Zen',jaar:2021,km:41000,prijs:13500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:14,merk:'Seat',model:'Leon',versie:'1.5 TSI FR',jaar:2021,km:39000,prijs:17900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1504215680853-026ed2a45def?w=700&q=85&auto=format&fit=crop',nieuw:false},
-  {id:15,merk:'Opel',model:'Astra',versie:'1.2 Turbo GS Line',jaar:2022,km:28000,prijs:19500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:16,merk:'Mercedes-Benz',model:'GLA 200',versie:'Progressive Aut.',jaar:2022,km:35000,prijs:33900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1617531653332-bd46c16f4d68?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:17,merk:'Toyota',model:'Yaris',versie:'1.5 Hybrid Dynamic',jaar:2022,km:22000,prijs:21500,brandstof:'Hybride',img:'https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=700&q=85&auto=format&fit=crop',nieuw:true},
-  {id:18,merk:'Volkswagen',model:'Tiguan',versie:'1.5 TSI Life Aut.',jaar:2021,km:49000,prijs:27900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=85&auto=format&fit=crop',nieuw:false},
+/* ══════════════════════════════════════════════
+   CAR DATA
+══════════════════════════════════════════════ */
+const CARS=[
+  {merk:'Volkswagen',model:'Golf VIII',versie:'1.5 TSI Life',jaar:2022,km:38000,prijs:22900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'BMW',model:'3 Reeks',versie:'318d Advantage',jaar:2021,km:52000,prijs:27500,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=80&auto=format&fit=crop',nieuw:true},
+  {merk:'Audi',model:'A4 Avant',versie:'2.0 TDI S Line',jaar:2020,km:71000,prijs:24900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1542362567-b07e54358753?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Mercedes-Benz',model:'C 200',versie:'Avantgarde Aut.',jaar:2021,km:44000,prijs:31500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=700&q=80&auto=format&fit=crop',nieuw:true},
+  {merk:'Toyota',model:'Corolla',versie:'1.8 Hybrid Active',jaar:2022,km:29000,prijs:23500,brandstof:'Hybride',img:'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Volvo',model:'XC40',versie:'T3 Momentum',jaar:2021,km:61000,prijs:26900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1566008885218-90abf9200ddb?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Volkswagen',model:'Passat',versie:'2.0 TDI Highline',jaar:2020,km:83000,prijs:19900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Ford',model:'Focus',versie:'1.0 EcoBoost ST-Line',jaar:2021,km:47000,prijs:17500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1541443131876-a4246b97a7b9?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Skoda',model:'Octavia',versie:'2.0 TDI Style',jaar:2021,km:56000,prijs:20900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1581540222194-0def2dda95b8?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Audi',model:'Q5',versie:'2.0 TDI quattro S Line',jaar:2020,km:74000,prijs:32500,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'BMW',model:'X3',versie:'xDrive20d M Sport',jaar:2020,km:65000,prijs:34900,brandstof:'Diesel',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Peugeot',model:'308',versie:'1.2 PureTech Allure',jaar:2022,km:33000,prijs:18900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=700&q=80&auto=format&fit=crop',nieuw:true},
+  {merk:'Renault',model:'Clio',versie:'1.0 TCe Zen',jaar:2021,km:41000,prijs:13500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Seat',model:'Leon',versie:'1.5 TSI FR',jaar:2021,km:39000,prijs:17900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1504215680853-026ed2a45def?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Mercedes-Benz',model:'GLA 200',versie:'Progressive Aut.',jaar:2022,km:35000,prijs:33900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1617531653332-bd46c16f4d68?w=700&q=80&auto=format&fit=crop',nieuw:true},
+  {merk:'Toyota',model:'Yaris',versie:'1.5 Hybrid Dynamic',jaar:2022,km:22000,prijs:21500,brandstof:'Hybride',img:'https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=700&q=80&auto=format&fit=crop',nieuw:true},
+  {merk:'Volkswagen',model:'Tiguan',versie:'1.5 TSI Life Aut.',jaar:2021,km:49000,prijs:27900,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80&auto=format&fit=crop',nieuw:false},
+  {merk:'Opel',model:'Astra',versie:'1.2 Turbo GS Line',jaar:2022,km:28000,prijs:19500,brandstof:'Benzine',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=80&auto=format&fit=crop',nieuw:true},
 ];
 
-/* ── BRAND LOGO SVGs (inline) ── */
-const BRAND_LOGOS = {
-  'Volkswagen': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="36" font-weight="900" font-family="Arial">VW</text></svg>`,
-  'BMW': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="28" font-weight="900" font-family="Arial">BMW</text></svg>`,
-  'Audi': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial">AUDI</text></svg>`,
-  'Mercedes-Benz': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="56" text-anchor="middle" font-size="20" font-weight="900" font-family="Arial">MB</text></svg>`,
-  'Toyota': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="20" font-weight="900" font-family="Arial">TOY.</text></svg>`,
-  'Volvo': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial">VOL.</text></svg>`,
-  'Ford': `<svg viewBox="0 0 100 100" fill="currentColor"><ellipse cx="50" cy="50" rx="48" ry="32" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="57" text-anchor="middle" font-size="24" font-weight="900" font-family="Arial" font-style="italic">Ford</text></svg>`,
-  'Skoda': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="20" font-weight="900" font-family="Arial">ŠKODA</text></svg>`,
-  'Peugeot': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="18" font-weight="900" font-family="Arial">PEUG.</text></svg>`,
-  'Renault': `<svg viewBox="0 0 100 100" fill="currentColor"><polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-size="18" font-weight="900" font-family="Arial">REN.</text></svg>`,
-  'Seat': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="24" font-weight="900" font-family="Arial">SEAT</text></svg>`,
-  'Opel': `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="24" font-weight="900" font-family="Arial">OPEL</text></svg>`,
+const BRAND_LOGOS={
+  'Volkswagen':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="34" font-weight="900" font-family="Arial">VW</text></svg>',
+  'BMW':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="26" font-weight="900" font-family="Arial">BMW</text></svg>',
+  'Audi':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="24" font-weight="900" font-family="Arial">AUDI</text></svg>',
+  'Mercedes-Benz':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="58" text-anchor="middle" font-size="18" font-weight="900" font-family="Arial">Merc.</text></svg>',
+  'Toyota':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-size="18" font-weight="900" font-family="Arial">TOY.</text></svg>',
+  'Volvo':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-size="18" font-weight="900" font-family="Arial">VOLVO</text></svg>',
+  'Ford':'<svg viewBox="0 0 100 100" fill="currentColor"><ellipse cx="50" cy="50" rx="46" ry="30" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="57" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial" font-style="italic">Ford</text></svg>',
+  'Skoda':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-size="16" font-weight="900" font-family="Arial">ŠKODA</text></svg>',
+  'Peugeot':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-size="15" font-weight="900" font-family="Arial">PEUG.</text></svg>',
+  'Renault':'<svg viewBox="0 0 100 100" fill="currentColor"><polygon points="50,5 93,50 50,95 7,50" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="58" text-anchor="middle" font-size="16" font-weight="900" font-family="Arial">REN.</text></svg>',
+  'Seat':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial">SEAT</text></svg>',
+  'Opel':'<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial">OPEL</text></svg>',
 };
 
-function formatPrice(p){
-  return '€ ' + p.toLocaleString('nl-BE');
-}
 function fuelClass(f){
-  if(f==='Elektrisch') return 'badge-elektrisch';
-  if(f==='Hybride') return 'badge-hybride';
-  if(f==='Diesel') return 'badge-diesel';
+  if(f==='Elektrisch')return 'badge-elektrisch';
+  if(f==='Hybride')return 'badge-hybride';
+  if(f==='Diesel')return 'badge-diesel';
   return 'badge-benzine';
 }
 
-/* ── BUILD BRAND FILTER ── */
 function buildBrandFilter(){
-  const brands = [...new Set(CARS.map(c=>c.merk))].sort();
-  const row = document.getElementById('brandFilter');
-  brands.forEach(brand=>{
-    const btn = document.createElement('button');
-    btn.className = 'brand-btn';
-    btn.dataset.brand = brand;
-    const logo = BRAND_LOGOS[brand]||'';
-    btn.innerHTML = logo + `<span>${brand}</span>`;
-    btn.addEventListener('click',()=>filterByBrand(brand));
+  const brands=[...new Set(CARS.map(c=>c.merk))].sort();
+  const row=document.getElementById('brandFilter');
+  brands.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.className='brand-btn';btn.dataset.brand=b;
+    btn.innerHTML=(BRAND_LOGOS[b]||'')+`<span>${b}</span>`;
+    btn.onclick=()=>filterBrand(b);
     row.appendChild(btn);
   });
 }
 
-let activeBrand = 'all';
-function filterByBrand(brand){
-  activeBrand = brand;
-  document.querySelectorAll('.brand-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.brand===brand);
+function filterBrand(brand){
+  document.querySelectorAll('.brand-btn').forEach(b=>b.classList.toggle('active',b.dataset.brand===brand));
+  let v=0;
+  document.querySelectorAll('.car-card').forEach(c=>{
+    const show=brand==='all'||c.dataset.brand===brand;
+    c.classList.toggle('hidden',!show);if(show)v++;
   });
-  let visible = 0;
-  document.querySelectorAll('.car-card').forEach(card=>{
-    const show = brand==='all' || card.dataset.brand===brand;
-    card.classList.toggle('hidden', !show);
-    if(show) visible++;
-  });
-  const rc = document.getElementById('resultCount');
-  rc.textContent = brand==='all'
-    ? `${visible} wagens beschikbaar`
-    : `${visible} ${brand}-wagen${visible!==1?'s':''} beschikbaar`;
+  document.getElementById('resultCount').textContent=`${v} wagen${v!==1?'s':''} beschikbaar`;
 }
 
-/* ── RENDER CARS ── */
 function renderCars(){
-  const grid = document.getElementById('carsGrid');
-  grid.innerHTML='';
+  const grid=document.getElementById('carsGrid');grid.innerHTML='';
   CARS.forEach((car,i)=>{
-    const card = document.createElement('div');
-    card.className='car-card rv';
-    card.dataset.brand = car.merk;
-    card.dataset.d = String((i%3)+1);
+    const card=document.createElement('div');
+    card.className='car-card rv';card.dataset.brand=car.merk;card.dataset.d=String((i%4)+1);
     card.innerHTML=`
       <div class="car-img-wrap">
         <img src="${car.img}" alt="${car.merk} ${car.model}" loading="lazy"
-          onerror="this.parentElement.innerHTML='<div class=\'car-placeholder\'><div class=\'car-ph-letter\'>${car.merk[0]}</div></div>'">
+          onerror="this.parentElement.style.background='#0d1825';this.style.display='none'">
         <span class="fuel-badge ${fuelClass(car.brandstof)}">${car.brandstof}</span>
-        ${car.nieuw?'<span class="new-badge">Nieuw in</span>':''}
+        ${car.nieuw?'<span class="new-badge">Nieuw</span>':''}
       </div>
       <div class="car-body">
-        <div class="car-brand-line">
-          <span class="car-brand-name">${car.merk}</span>
-        </div>
+        <div class="car-brand-name">${car.merk}</div>
         <div class="car-model">${car.model}</div>
         <div class="car-version">${car.versie}</div>
-        <div class="car-price"><sup>€</sup>${(car.prijs).toLocaleString('nl-BE')}</div>
+        <div class="car-price">€${car.prijs.toLocaleString('nl-BE')}</div>
         <div class="car-specs">
           <span class="spec-pill">${car.jaar}</span>
           <span class="spec-pill">${car.km.toLocaleString('nl-BE')} km</span>
           <span class="spec-pill">${car.brandstof}</span>
         </div>
         <div class="car-cta">Meer info <span>→</span></div>
-      </div>
-    `;
-    card.addEventListener('click',()=>{
-      window.open(`https://www.autoscout24.be/nl/verkopers/vak-garage-autobedrijf-bellens/occasions`, '_blank');
-    });
+      </div>`;
+    card.onclick=()=>window.open('https://www.autoscout24.be/nl/verkopers/vak-garage-autobedrijf-bellens/occasions','_blank');
     grid.appendChild(card);
   });
-
-  const rc = document.getElementById('resultCount');
-  rc.textContent = `${CARS.length} wagens beschikbaar`;
-
-  // re-observe new cards
-  document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s').forEach(el=>revealObs.observe(el));
+  document.getElementById('resultCount').textContent=`${CARS.length} wagens beschikbaar`;
+  document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el=>revObs.observe(el));
 }
 
-/* ── REVEAL OBSERVER ── */
-const revealObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('vi');
-      // trigger fc-num-line
-      if(e.target.classList.contains('fc')) e.target.classList.add('vi');
-    }
-  });
-},{threshold:0.12});
+/* ══════════════════════════════════════════════
+   SCROLL BACKGROUND ANIMATION
+══════════════════════════════════════════════ */
 
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll',()=>{
-  const nav = document.getElementById('mainNav');
-  nav.classList.toggle('sc',window.scrollY>40);
+// Phase breakpoints (0..1 of total scroll)
+const PH={
+  APPROACH_START: 0,
+  APPROACH_END:   0.22,
+  WHEEL_START:    0.20,
+  WHEEL_PEAK:     0.28,
+  WHEEL_END:      0.38,
+  CAR3D_START:    0.36,
+  CAR3D_PEAK:     0.44,
+  CAR3D_END:      0.56,
+  EXPLODE_START:  0.54,
+  EXPLODE_END:    0.78,
+};
+
+// Exploded parts definition
+const PARTS=[
+  {id:'p-engine',  label:'Motor',        desc:'2.0 TSI Turbomotor',  cx:0.52, cy:0.38, dx:-0.18, dy:-0.16},
+  {id:'p-roof',    label:'Dak',          desc:'Panoramadak in glas', cx:0.50, cy:0.22, dx: 0.00, dy:-0.18},
+  {id:'p-wfl',     label:'Voorwiel L.',  desc:'225/40 R18 Michelin', cx:0.25, cy:0.72, dx:-0.22, dy: 0.14},
+  {id:'p-wfr',     label:'Voorwiel R.',  desc:'225/40 R18 Michelin', cx:0.75, cy:0.72, dx: 0.22, dy: 0.14},
+  {id:'p-doorl',   label:'Deur links',   desc:'Staal met versterking',cx:0.32, cy:0.52, dx:-0.24, dy: 0.0},
+  {id:'p-doorr',   label:'Deur rechts',  desc:'Staal met versterking',cx:0.68, cy:0.52, dx: 0.24, dy: 0.0},
+  {id:'p-wind',    label:'Voorruit',     desc:'Gelaagd veiligheidsglas',cx:0.50, cy:0.30, dx: 0.0, dy:-0.14},
+  {id:'p-exhaust', label:'Uitlaat',      desc:'Sport dubbele uitlaat', cx:0.20, cy:0.60, dx:-0.18, dy: 0.10},
+  {id:'p-hl',      label:'Koplampen',    desc:'Full-LED Matrix',      cx:0.80, cy:0.42, dx: 0.20, dy:-0.08},
+];
+
+function lerp(a,b,t){return a+(b-a)*t}
+function clamp01(v){return Math.max(0,Math.min(1,v))}
+function invlerp(a,b,v){return clamp01((v-a)/(b-a))}
+function smoothstep(t){return t*t*(3-2*t)}
+
+let lastScroll=-1;
+let explodeBuilt=false;
+
+function buildExplodeLayer(){
+  if(explodeBuilt)return;
+  explodeBuilt=true;
+  const layer=document.getElementById('phase-explode');
+  const vw=window.innerWidth, vh=window.innerHeight;
+  // Center car silhouette
+  const carSvg=document.createElement('div');
+  carSvg.style.cssText=`position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(600px,80vw);opacity:.25;`;
+  carSvg.innerHTML='<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z" fill="none" stroke="rgba(59,130,246,.3)" stroke-width="1.5"/><path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z" fill="none" stroke="rgba(59,130,246,.25)" stroke-width="1.5"/><circle cx="680" cy="480" r="72" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1.5"/><circle cx="185" cy="480" r="72" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1.5"/></svg>';
+  layer.appendChild(carSvg);
+
+  PARTS.forEach(part=>{
+    const el=document.createElement('div');
+    el.className='ep';el.id=part.id;
+    // Position label
+    const lx=part.cx*100, ly=part.cy*100;
+    el.style.cssText=`left:${lx}%;top:${ly}%;transform:translate(-50%,-50%);`;
+    // dot
+    const dot=document.createElement('div');
+    dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(59,130,246,.6);margin:0 auto 8px';
+    // label
+    const labelEl=document.createElement('div');
+    labelEl.className='ep-label';
+    labelEl.style.cssText='flex-direction:column;align-items:center;text-align:center;';
+    labelEl.innerHTML=`<span class="ep-line" style="width:0;height:1px;background:var(--accent);margin-bottom:6px;transition:width .8s var(--ease) .5s"></span><span class="ep-name">${part.label}</span><span class="ep-desc">${part.desc}</span>`;
+    el.appendChild(dot);el.appendChild(labelEl);
+    layer.appendChild(el);
+    // store offset for animation
+    el._dx=part.dx*100;el._dy=part.dy*100;
+  });
+}
+
+function animBg(){
+  const scrollY=window.scrollY;
+  if(Math.abs(scrollY-lastScroll)<0.5&&lastScroll!==-1)return;
+  lastScroll=scrollY;
+
+  const maxScroll=document.body.scrollHeight-window.innerHeight;
+  const p=clamp01(scrollY/maxScroll);
+
   // progress bar
-  const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
-  document.getElementById('spb').style.width=pct+'%';
-}, {passive:true});
+  document.getElementById('spb').style.width=(p*100)+'%';
 
-/* ── SCROLL CAR EFFECT ── */
-function updateCarScene(){
-  const scene = document.getElementById('car-scene');
-  if(!scene) return;
-  const carWrap  = document.getElementById('carWrap');
-  const sceneBeam= document.getElementById('sceneBeam');
-  const carGlow  = document.getElementById('carGlow');
-  const sceneText= document.getElementById('carSceneText');
-  const dashes   = document.getElementById('roadDashes');
+  // Nav scroll
+  document.getElementById('mainNav').classList.toggle('sc',scrollY>40);
 
-  const rect   = scene.getBoundingClientRect();
-  const total  = scene.offsetHeight - window.innerHeight;
-  const scrolled = -rect.top;
+  // ── PHASE 1: APPROACH ──
+  const aP=invlerp(PH.APPROACH_START,PH.APPROACH_END,p);
+  const aSmooth=smoothstep(aP);
+  const approachEl=document.getElementById('phase-approach');
+  const carWrap=document.getElementById('car-approach-wrap');
+  const hlL=document.getElementById('headlight-left');
+  const hlR=document.getElementById('headlight-right');
+  const bgStars=document.getElementById('bg-stars');
+  const bgRoad=document.getElementById('bg-road');
+  const roadDash=document.getElementById('roadDash');
+  const speedLines=document.getElementById('speed-lines');
 
-  // clamp progress 0..1
-  const p = Math.max(0, Math.min(1, scrolled / total));
+  // Approach visible 0→0.28
+  const approachOpacity = p<0.26 ? 1 : clamp01(1-(p-0.26)/0.06);
+  approachEl.style.opacity=approachOpacity;
+  bgStars.classList.toggle('show', p<0.3);
+  bgRoad.classList.toggle('show', p>0.02 && p<0.35);
 
-  const vw = window.innerWidth;
-  // car width offset so it's fully off-screen at start/end
-  const carW = Math.min(560, vw * 0.4);
-  const startX = -(carW + 80);           // fully left off screen
-  const endX   = vw + 80;                // fully right off screen
-  const xPos   = startX + p * (endX - startX);
+  // Car scale: from 0.03 (far away) to 2.5 (fills screen / blows past)
+  const scale=lerp(0.03,2.8,aSmooth);
+  // Slight upward drift as car approaches (driving toward you)
+  const yShift=lerp(40,-20,aSmooth);
+  carWrap.style.transform=`translateX(-50%) translateY(${yShift}px) scale(${scale})`;
+  carWrap.style.filter=`drop-shadow(0 0 ${lerp(0,120,aSmooth)}px rgba(59,130,246,${lerp(0,.4,aSmooth)}))`;
 
-  // beam & glow track the front of the car
-  const beamX = xPos + carW;
-  const glowX = xPos + carW * 0.5 - 200;
+  // Motion blur at high speeds
+  const blurAmt=aP>0.7 ? (aP-0.7)*30 : 0;
+  carWrap.style.filter+= blurAmt>0 ? ` blur(${blurAmt}px)` : '';
 
-  carWrap.style.transform   = `translateX(${xPos}px)`;
-  sceneBeam.style.transform = `translateX(${beamX}px)`;
-  carGlow.style.transform   = `translateX(${glowX}px)`;
+  // Headlights visible when car is somewhat close
+  const hlOpacity=clamp01((aP-0.1)/0.3)*approachOpacity;
+  hlL.style.opacity=hlOpacity;hlR.style.opacity=hlOpacity;
+  hlL.classList.toggle('glow',aP>0.1);hlR.classList.toggle('glow',aP>0.1);
 
-  // Car visible = driving animation on wheels
-  const inView = p > 0.02 && p < 0.98;
-  carWrap.classList.toggle('driving', inView);
+  // Speed lines intensify as car approaches
+  speedLines.style.opacity=lerp(0,0.6,Math.min(1,aP*3))*approachOpacity;
+  roadDash.classList.toggle('go', p>0.02 && p<0.35);
 
-  // Road dashes move when car is moving
-  dashes.classList.toggle('moving', inView);
+  // ── PHASE 2: WHEEL ──
+  const wStart=p>PH.WHEEL_START, wEnd=p<PH.WHEEL_END;
+  const wP=invlerp(PH.WHEEL_START,PH.WHEEL_END,p);
+  const wSmooth=smoothstep(clamp01(wP<0.5?wP*2:1-(wP-0.5)*2));
+  const phWheel=document.getElementById('phase-wheel');
+  phWheel.style.opacity=wStart&&wEnd ? wSmooth : '0';
+  phWheel.style.pointerEvents=wStart&&wEnd?'all':'none';
+  // Zoom the wheel in/out
+  const wScale=lerp(0.6,1,wSmooth);
+  document.getElementById('wheel-svg-wrap').style.transform=`scale(${wScale})`;
 
-  // Text overlay fades in around center
-  sceneText.classList.toggle('show', p > 0.3 && p < 0.75);
-}
-window.addEventListener('scroll', updateCarScene, {passive:true});
+  // ── PHASE 3: 3D ROTATE ──
+  const r3Start=p>PH.CAR3D_START,r3End=p<PH.CAR3D_END;
+  const r3P=invlerp(PH.CAR3D_START,PH.CAR3D_END,p);
+  const r3Smooth=smoothstep(clamp01(r3P<0.5?r3P*2:1-(r3P-0.5)*2));
+  const ph3d=document.getElementById('phase-3d');
+  ph3d.style.opacity=r3Start&&r3End ? r3Smooth : '0';
+  ph3d.style.pointerEvents=r3Start&&r3End?'all':'none';
+  ph3d.classList.toggle('show',r3Start&&r3End&&r3Smooth>0.1);
 
-/* ── CUSTOM CURSOR ── */
-const dot = document.getElementById('cDot');
-const ring = document.getElementById('cRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  dot.style.left=mx+'px'; dot.style.top=my+'px';
-});
-function animCursor(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(animCursor);
-}
-animCursor();
-document.querySelectorAll('a,button,.car-card,.brand-btn').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.classList.add('hovered'));
-  el.addEventListener('mouseleave',()=>ring.classList.remove('hovered'));
-});
+  // ── PHASE 4: EXPLODE ──
+  buildExplodeLayer();
+  const exP=invlerp(PH.EXPLODE_START,PH.EXPLODE_END,p);
+  const exSmooth=smoothstep(clamp01(exP<0.8?exP/0.8:1-(exP-0.8)/0.2));
+  const phEx=document.getElementById('phase-explode');
+  phEx.style.opacity=p>PH.EXPLODE_START&&p<PH.EXPLODE_END ? exSmooth : '0';
+  phEx.style.pointerEvents=p>PH.EXPLODE_START&&p<PH.EXPLODE_END?'all':'none';
 
-/* ── COUNTER ANIMATION ── */
-function animateCounters(){
-  document.querySelectorAll('.counter').forEach(el=>{
-    const target=parseInt(el.dataset.target,10);
-    const dur=1600;
-    const step=16;
-    const inc=target/(dur/step);
-    let cur=0;
-    const t=setInterval(()=>{
-      cur=Math.min(cur+inc,target);
-      el.textContent=Math.floor(cur);
-      if(cur>=target) clearInterval(t);
-    },step);
+  // Animate each part outward
+  const spread=smoothstep(clamp01(exP<0.6?exP/0.6:1));
+  PARTS.forEach(part=>{
+    const el=document.getElementById(part.id);
+    if(!el)return;
+    const tx=el._dx*spread;
+    const ty=el._dy*spread;
+    el.style.transform=`translate(calc(-50% + ${tx}vw), calc(-50% + ${ty}vh))`;
+    el.style.opacity=exSmooth;
+    // Show label line
+    const line=el.querySelector('.ep-line');
+    if(line) line.style.width=spread>0.5?'48px':'0';
   });
 }
-const statsObs = new IntersectionObserver(entries=>{
-  if(entries[0].isIntersecting){
-    animateCounters();
-    statsObs.disconnect();
+
+window.addEventListener('scroll',animBg,{passive:true});
+
+/* Speed lines init */
+(function buildSpeedLines(){
+  const container=document.getElementById('speed-lines');
+  for(let i=0;i<24;i++){
+    const line=document.createElement('div');
+    line.className='sl';
+    const angle=(i/24)*360;
+    const len=80+Math.random()*200;
+    line.style.cssText=`
+      left:50%;top:50%;
+      width:${len}px;height:${1+Math.random()}px;
+      transform:rotate(${angle}deg);
+      opacity:${0.3+Math.random()*0.4};
+    `;
+    container.appendChild(line);
   }
-},{threshold:0.3});
-const statsEl = document.getElementById('stats');
-if(statsEl) statsObs.observe(statsEl);
+})();
 
-/* ── MOBILE MENU ── */
-function toggleMM(){
-  document.getElementById('hb').classList.toggle('open');
-  document.getElementById('mm').classList.toggle('open');
-  document.body.style.overflow=document.getElementById('mm').classList.contains('open')?'hidden':'';
-}
-function closeMM(){
-  document.getElementById('hb').classList.remove('open');
-  document.getElementById('mm').classList.remove('open');
-  document.body.style.overflow='';
-}
+/* ══ REVEAL OBSERVER ══ */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vi');if(e.target.classList.contains('fc'))e.target.classList.add('vi');}});
+},{threshold:0.12});
+document.querySelectorAll('.rv,.rv-l,.rv-r,.fc,.dg-item').forEach(el=>revObs.observe(el));
 
-/* ── CONTACT FORM ── */
+/* ══ COUNTER ══ */
+function animCounters(){
+  document.querySelectorAll('.counter').forEach(el=>{
+    const target=+el.dataset.target,dur=1600,step=16;
+    const inc=target/(dur/step);let cur=0;
+    const t=setInterval(()=>{cur=Math.min(cur+inc,target);el.textContent=Math.floor(cur);if(cur>=target)clearInterval(t);},step);
+  });
+}
+new IntersectionObserver(e=>{if(e[0].isIntersecting){animCounters();statsObs.disconnect();}},{threshold:.3}).observe(document.getElementById('stats'));
+const statsObs={disconnect:()=>{}};
+
+/* ══ NAV MENU ══ */
+function toggleMM(){document.getElementById('hb').classList.toggle('open');document.getElementById('mm').classList.toggle('open');document.body.style.overflow=document.getElementById('mm').classList.contains('open')?'hidden':'';}
+function closeMM(){document.getElementById('hb').classList.remove('open');document.getElementById('mm').classList.remove('open');document.body.style.overflow='';}
+
+/* ══ CONTACT FORM ══ */
 function handleForm(e){
   e.preventDefault();
   const btn=document.getElementById('cfBtn');
-  btn.textContent='✓ Verstuurd!';
-  btn.classList.add('sent');
-  setTimeout(()=>{
-    btn.textContent='Verstuur bericht →';
-    btn.classList.remove('sent');
-    e.target.reset();
-  },3500);
+  btn.textContent='✓ Verstuurd!';btn.classList.add('sent');
+  setTimeout(()=>{btn.textContent='Verstuur bericht →';btn.classList.remove('sent');e.target.reset();},3500);
 }
 
-/* ── SMOOTH ANCHORS ── */
+/* ══ SMOOTH ANCHORS ══ */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});
 });
 
-/* ── INIT ── */
+/* ══ CURSOR ══ */
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function animCur(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCur);})();
+document.querySelectorAll('a,button,.car-card').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('h'));el.addEventListener('mouseleave',()=>ring.classList.remove('h'));});
+
+/* ══ INIT ══ */
 window.addEventListener('DOMContentLoaded',()=>{
   buildBrandFilter();
   renderCars();
-
-  document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s,.fc,.dg-item').forEach(el=>{
-    revealObs.observe(el);
-  });
-
-  updateCarScene();
+  animBg(); // run once on load
 });
 </script>
 </body>
