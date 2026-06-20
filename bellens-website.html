@@ -152,7 +152,8 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;color:inhe
 #wheel-svg-wrap{
   width:min(70vw,70vh);height:min(70vw,70vh);
 }
-#wheel-svg-wrap svg{width:100%;height:100%}
+#wheel-svg-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;animation:tireSpin .6s linear infinite paused}
+#phase-wheel.show #wheel-svg-wrap img{animation-play-state:running}
 .tire-spin{
   transform-box:fill-box;transform-origin:center;
   animation:tireSpin .4s linear infinite paused;
@@ -185,7 +186,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;color:inhe
   0%{transform:rotateY(0deg) rotateX(5deg)}
   100%{transform:rotateY(360deg) rotateX(5deg)}
 }
-#car3d-wrap svg{width:100%;height:auto;display:block}
+#car3d-wrap img{width:100%;height:auto;display:block;border-radius:8px}
 /* Dramatic glow behind rotating car */
 #car3d-glow{
   position:absolute;
@@ -547,112 +548,8 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
   <div id="phase-approach" class="show">
     <div id="speed-lines"></div>
     <div id="car-approach-wrap">
-      <!-- Detailed front-3/4 view car SVG -->
-      <svg id="carFrontSvg" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="width:min(700px,85vw);height:auto">
-        <defs>
-          <linearGradient id="bodyM" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#c8d4e0"/>
-            <stop offset="25%" stop-color="#9ab0c4"/>
-            <stop offset="60%" stop-color="#6888a0"/>
-            <stop offset="100%" stop-color="#3a5570"/>
-          </linearGradient>
-          <linearGradient id="bodyTop" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#dce8f0"/>
-            <stop offset="100%" stop-color="#8098b0"/>
-          </linearGradient>
-          <linearGradient id="glassG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="rgba(140,200,255,.5)"/>
-            <stop offset="100%" stop-color="rgba(20,50,90,.75)"/>
-          </linearGradient>
-          <linearGradient id="wheelG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#aaa"/>
-            <stop offset="40%" stop-color="#ddd"/>
-            <stop offset="100%" stop-color="#666"/>
-          </linearGradient>
-          <radialGradient id="hlGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="rgba(255,250,200,.95)"/>
-            <stop offset="60%" stop-color="rgba(180,220,255,.6)"/>
-            <stop offset="100%" stop-color="transparent"/>
-          </radialGradient>
-          <filter id="gShad"><feDropShadow dx="0" dy="30" stdDeviation="25" flood-color="rgba(0,0,0,.6)"/></filter>
-          <filter id="glow2"><feGaussianBlur stdDeviation="6" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter>
-        </defs>
-        <!-- Ground shadow -->
-        <ellipse cx="440" cy="535" rx="400" ry="22" fill="rgba(0,0,0,.5)" filter="url(#gShad)"/>
-        <!-- BODY - main shape (low, wide sports car) -->
-        <path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z"
-          fill="url(#bodyM)" stroke="rgba(100,140,180,.4)" stroke-width="1"/>
-        <!-- ROOF -->
-        <path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z"
-          fill="url(#bodyTop)" stroke="rgba(120,160,200,.3)" stroke-width="1"/>
-        <!-- WINDSHIELD -->
-        <path d="M255 200 L280 165 Q292 152 310 148 L570 142 Q588 148 600 165 L622 200 Z"
-          fill="url(#glassG)" stroke="rgba(100,160,220,.5)" stroke-width="1.5"/>
-        <!-- Windshield reflection -->
-        <path d="M280 165 L300 152 L370 146 L370 160 L285 195 Z" fill="rgba(255,255,255,.12)"/>
-        <!-- SIDE WINDOW -->
-        <path d="M660 235 L638 195 L598 168 L560 162 L560 240 Z"
-          fill="url(#glassG)" opacity=".8" stroke="rgba(100,160,220,.4)" stroke-width="1.5"/>
-        <!-- Hood lines -->
-        <path d="M310 215 Q440 200 580 205" fill="none" stroke="rgba(180,210,240,.3)" stroke-width="2"/>
-        <path d="M340 240 Q440 228 560 235" fill="none" stroke="rgba(150,180,210,.2)" stroke-width="1.5"/>
-        <!-- Body crease line -->
-        <path d="M95 370 Q300 355 560 360 L730 370" fill="none" stroke="rgba(200,220,240,.35)" stroke-width="2"/>
-        <!-- Lower body highlight -->
-        <path d="M90 410 Q280 400 560 400 L800 410" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
-        <!-- FRONT BUMPER -->
-        <path d="M840 380 L848 400 Q852 420 848 440 L830 445 L820 440 L820 380 Z"
-          fill="#1a2d42" stroke="rgba(80,120,160,.4)" stroke-width="1"/>
-        <!-- GRILL -->
-        <rect x="822" y="370" width="22" height="52" rx="4" fill="#0a1828" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
-        <line x1="829" y1="374" x2="829" y2="420" stroke="rgba(59,130,246,.25)" stroke-width="1"/>
-        <line x1="836" y1="374" x2="836" y2="420" stroke="rgba(59,130,246,.25)" stroke-width="1"/>
-        <line x1="822" y1="390" x2="844" y2="390" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
-        <line x1="822" y1="400" x2="844" y2="400" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
-        <!-- HEADLIGHT RIGHT (front) -->
-        <path d="M800 345 L840 355 L845 375 L800 380 Q785 370 785 362 Z"
-          fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.4)" stroke-width="1.5"/>
-        <ellipse cx="818" cy="362" rx="16" ry="10" fill="url(#hlGlow)" filter="url(#glow2)"/>
-        <path d="M800 350 L840 358" stroke="rgba(180,220,255,.7)" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- HEADLIGHT LEFT (3/4 view) -->
-        <path d="M700 318 L750 328 L752 348 L700 355 Q688 345 688 335 Z"
-          fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.3)" stroke-width="1.5"/>
-        <ellipse cx="720" cy="336" rx="14" ry="9" fill="url(#hlGlow)" opacity=".7" filter="url(#glow2)"/>
-        <!-- REAR TAIL LIGHT -->
-        <rect x="55" y="360" width="14" height="40" rx="5" fill="rgba(200,30,30,.8)" stroke="rgba(255,60,60,.5)" stroke-width="1"/>
-        <rect x="58" y="363" width="8" height="15" rx="3" fill="rgba(255,90,90,.9)"/>
-        <!-- WING MIRRORS -->
-        <path d="M220 285 L200 278 L198 292 L218 298 Z" fill="#8098b0" stroke="rgba(100,140,170,.4)" stroke-width="1"/>
-        <path d="M660 252 L680 244 L682 258 L660 264 Z" fill="#8098b0" stroke="rgba(100,140,170,.4)" stroke-width="1"/>
-        <!-- FRONT WHEEL (right) -->
-        <circle cx="680" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
-        <g class="tire-spin">
-          <circle cx="680" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/>
-          <circle cx="680" cy="480" r="20" fill="#1a2d44"/>
-          <path d="M680 424 L680 480 L724 480" fill="none" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M680 480 L680 536 L636 480" fill="none" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M680 480 L636 452 L680 424" fill="none" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-          <path d="M680 480 L724 508 L680 536" fill="none" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-        </g>
-        <circle cx="680" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
-        <!-- REAR WHEEL (left, partial) -->
-        <circle cx="185" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
-        <g class="tire-spin">
-          <circle cx="185" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/>
-          <circle cx="185" cy="480" r="20" fill="#1a2d44"/>
-          <path d="M185 424 L185 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M129 480 L241 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M147 442 L223 518" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-          <path d="M147 518 L223 442" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-        </g>
-        <circle cx="185" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
-        <!-- DOOR LINE -->
-        <path d="M380 215 L370 355 L380 440" fill="none" stroke="rgba(80,120,160,.3)" stroke-width="1.5"/>
-        <!-- ROOF SCOOP / SPOILER hint -->
-        <path d="M255 200 L270 190 Q440 182 620 192 L636 200" fill="none" stroke="rgba(150,190,220,.2)" stroke-width="2"/>
-        <!-- Body panel gloss -->
-        <path d="M250 280 Q440 265 640 272" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3"/>
-      </svg>
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145517_39075f46-83d3-412a-9308-00225329f1e9.png"
+        alt="Luxury silver sports car" style="width:min(800px,90vw);height:auto;display:block;filter:drop-shadow(0 0 60px rgba(59,130,246,.4))">
     </div>
   </div>
 
@@ -660,64 +557,8 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
   <div id="phase-wheel">
     <div id="wheel-road-blur"></div>
     <div id="wheel-svg-wrap">
-      <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="tireG" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#1a2535"/>
-            <stop offset="100%" stop-color="#080e18"/>
-          </radialGradient>
-          <radialGradient id="rimG" cx="40%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#e0e8f0"/>
-            <stop offset="40%" stop-color="#9ab0c8"/>
-            <stop offset="100%" stop-color="#3a5070"/>
-          </radialGradient>
-          <linearGradient id="brakeG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#cc3300"/>
-            <stop offset="100%" stop-color="#881100"/>
-          </linearGradient>
-        </defs>
-        <!-- Tire -->
-        <circle cx="250" cy="250" r="238" fill="url(#tireG)"/>
-        <!-- Tread pattern -->
-        <g class="tire-spin">
-          <circle cx="250" cy="250" r="238" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="6"
-            stroke-dasharray="18 12"/>
-        </g>
-        <!-- Rim -->
-        <circle cx="250" cy="250" r="175" fill="url(#rimG)"/>
-        <!-- Rim inner shadow -->
-        <circle cx="250" cy="250" r="175" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="8"/>
-        <!-- Spoke group (rotates) -->
-        <g class="tire-spin">
-          <!-- 5 spokes -->
-          <g>
-            <path d="M250 250 L250 88" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
-            <path d="M250 250 L390 170" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
-            <path d="M250 250 L335 388" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
-            <path d="M250 250 L165 388" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
-            <path d="M250 250 L110 170" stroke="rgba(180,200,220,.85)" stroke-width="22" stroke-linecap="round"/>
-            <!-- Spoke highlights -->
-            <path d="M250 250 L250 88" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
-            <path d="M250 250 L390 170" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
-            <path d="M250 250 L335 388" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
-            <path d="M250 250 L165 388" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
-            <path d="M250 250 L110 170" stroke="rgba(255,255,255,.25)" stroke-width="8" stroke-linecap="round"/>
-          </g>
-        </g>
-        <!-- Rim ring -->
-        <circle cx="250" cy="250" r="90" fill="rgba(10,18,30,.9)" stroke="rgba(100,140,180,.4)" stroke-width="3"/>
-        <!-- Brake caliper -->
-        <path d="M310 160 Q380 170 395 250 Q380 330 310 340 Q260 345 245 300 L245 200 Q260 155 310 160 Z"
-          fill="url(#brakeG)" opacity=".85"/>
-        <text x="330" y="256" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.6)" font-family="Inter" font-weight="700" letter-spacing="1">BREMBO</text>
-        <!-- Brake disc -->
-        <circle cx="250" cy="250" r="90" fill="none" stroke="rgba(60,80,100,.8)" stroke-width="4"
-          stroke-dasharray="8 6"/>
-        <!-- Center cap -->
-        <circle cx="250" cy="250" r="32" fill="rgba(8,14,24,.95)" stroke="rgba(100,140,180,.5)" stroke-width="2"/>
-        <circle cx="250" cy="250" r="18" fill="rgba(20,40,80,.9)"/>
-        <text x="250" y="255" text-anchor="middle" font-size="10" fill="rgba(148,163,184,.8)" font-family="Inter" font-weight="900" letter-spacing="1">B</text>
-      </svg>
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145558_1ec108be-e00c-4e12-bf1d-ad6b0f7afa19.png"
+        alt="Chrome alloy wheel" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
     </div>
     <!-- Speed motion blur ground -->
     <div style="position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(180deg,transparent,rgba(4,9,15,.95))"></div>
@@ -731,36 +572,8 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
   <div id="phase-3d">
     <div id="car3d-glow"></div>
     <div id="car3d-wrap">
-      <!-- Reuse the front SVG but it'll rotate in 3D via CSS -->
-      <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
-        <use href="#carFrontSvg"/>
-        <!-- Actually, inline the same car but with slightly different lighting -->
-        <defs>
-          <linearGradient id="b3M" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#c8d4e0"/>
-            <stop offset="35%" stop-color="#9ab0c4"/>
-            <stop offset="75%" stop-color="#6888a0"/>
-            <stop offset="100%" stop-color="#3a5570"/>
-          </linearGradient>
-        </defs>
-        <ellipse cx="440" cy="535" rx="400" ry="22" fill="rgba(0,0,0,.45)"/>
-        <path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z" fill="url(#b3M)" stroke="rgba(100,140,180,.3)" stroke-width="1"/>
-        <path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z" fill="url(#bodyTop)" stroke="rgba(120,160,200,.25)" stroke-width="1"/>
-        <path d="M255 200 L280 165 Q292 152 310 148 L570 142 Q588 148 600 165 L622 200 Z" fill="url(#glassG)" stroke="rgba(100,160,220,.4)" stroke-width="1.5"/>
-        <path d="M660 235 L638 195 L598 168 L560 162 L560 240 Z" fill="url(#glassG)" opacity=".75" stroke="rgba(100,160,220,.3)" stroke-width="1.5"/>
-        <path d="M95 370 Q300 355 560 360 L730 370" fill="none" stroke="rgba(200,220,240,.3)" stroke-width="2"/>
-        <rect x="822" y="370" width="22" height="52" rx="4" fill="#0a1828" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
-        <path d="M800 345 L840 355 L845 375 L800 380 Q785 370 785 362 Z" fill="rgba(30,50,80,.9)" stroke="rgba(100,160,240,.4)" stroke-width="1.5"/>
-        <ellipse cx="818" cy="362" rx="16" ry="10" fill="url(#hlGlow)" filter="url(#glow2)"/>
-        <path d="M800 350 L840 358" stroke="rgba(180,220,255,.7)" stroke-width="2.5" stroke-linecap="round"/>
-        <rect x="55" y="360" width="14" height="40" rx="5" fill="rgba(200,30,30,.8)" stroke="rgba(255,60,60,.5)" stroke-width="1"/>
-        <circle cx="680" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
-        <g class="tire-spin"><circle cx="680" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/><circle cx="680" cy="480" r="20" fill="#1a2d44"/><path d="M680 424 L680 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M624 480 L736 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M641 441 L719 519" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M641 519 L719 441" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/></g>
-        <circle cx="680" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
-        <circle cx="185" cy="480" r="72" fill="#0d1828" stroke="rgba(60,90,130,.5)" stroke-width="2"/>
-        <g class="tire-spin"><circle cx="185" cy="480" r="56" fill="none" stroke="rgba(60,90,130,.4)" stroke-width="1"/><circle cx="185" cy="480" r="20" fill="#1a2d44"/><path d="M185 424 L185 536" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M129 480 L241 480" stroke="url(#wheelG)" stroke-width="5" stroke-linecap="round"/><path d="M147 442 L223 518" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M147 518 L223 442" stroke="url(#wheelG)" stroke-width="4" stroke-linecap="round" opacity=".7"/></g>
-        <circle cx="185" cy="480" r="12" fill="#2a4468" stroke="rgba(100,160,220,.4)" stroke-width="2"/>
-      </svg>
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145553_a2b77351-d786-403e-9f05-689e7874b88e.png"
+        alt="Luxury silver car side view" style="width:100%;height:auto;display:block;filter:drop-shadow(0 20px 80px rgba(59,130,246,.35))">
     </div>
   </div>
 
@@ -1102,8 +915,8 @@ function buildExplodeLayer(){
   const vw=window.innerWidth, vh=window.innerHeight;
   // Center car silhouette
   const carSvg=document.createElement('div');
-  carSvg.style.cssText=`position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(600px,80vw);opacity:.25;`;
-  carSvg.innerHTML='<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><path d="M60 440 L55 400 Q58 370 90 355 L180 320 L220 260 L300 215 L580 205 L660 235 L730 270 L790 300 Q830 320 840 350 L845 400 L840 440 Z" fill="none" stroke="rgba(59,130,246,.3)" stroke-width="1.5"/><path d="M220 260 L255 200 Q270 178 295 170 L590 162 Q618 170 636 192 L660 235 Z" fill="none" stroke="rgba(59,130,246,.25)" stroke-width="1.5"/><circle cx="680" cy="480" r="72" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1.5"/><circle cx="185" cy="480" r="72" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1.5"/></svg>';
+  carSvg.style.cssText=`position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,85vw);opacity:.3;`;
+  carSvg.innerHTML='<img src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_145553_a2b77351-d786-403e-9f05-689e7874b88e.png" style="width:100%;height:auto;display:block;filter:saturate(0) brightness(0.6) sepia(1) hue-rotate(180deg)">';
   layer.appendChild(carSvg);
 
   PARTS.forEach(part=>{
