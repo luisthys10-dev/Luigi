@@ -199,48 +199,173 @@ nav.sc{background:rgba(4,9,15,.88);backdrop-filter:blur(24px);border-bottom-colo
 
 /* ── HERO ── */
 #hero{
-  height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:0 6vw;text-align:center;position:relative;
+  height:100vh;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
 }
-.hero-inner{position:relative;z-index:2;max-width:1100px}
+
+/* Hero video background */
+#hero-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(135deg,rgba(4,9,15,.7) 0%,rgba(4,9,15,.25) 50%,rgba(4,9,15,.65) 100%);
+}
+/* Vignette */
+.hero-overlay::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 60%,transparent 40%,rgba(4,9,15,.7) 100%);
+}
+
+/* ── GIANT BG LETTERS (behind content, in front of video) ── */
+.hero-bg-word{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  perspective:1400px;
+  pointer-events:none;
+  overflow:hidden;
+}
+.hbl{
+  font-size:clamp(110px,19vw,260px);
+  font-weight:900;letter-spacing:-.04em;line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.07);
+  text-shadow:0 0 160px rgba(59,130,246,.08);
+  opacity:0;
+  display:inline-block;
+  transform-origin:center center;
+  will-change:transform,opacity;
+}
+/* Each letter gets its own start position — defined per nth-child */
+.hbl:nth-child(1){animation:hbl1 1.4s cubic-bezier(.16,1,.3,1) .2s forwards}
+.hbl:nth-child(2){animation:hbl2 1.4s cubic-bezier(.16,1,.3,1) .32s forwards}
+.hbl:nth-child(3){animation:hbl3 1.6s cubic-bezier(.16,1,.3,1) .18s forwards}
+.hbl:nth-child(4){animation:hbl4 1.5s cubic-bezier(.16,1,.3,1) .38s forwards}
+.hbl:nth-child(5){animation:hbl5 1.4s cubic-bezier(.16,1,.3,1) .24s forwards}
+.hbl:nth-child(6){animation:hbl6 1.6s cubic-bezier(.16,1,.3,1) .42s forwards}
+.hbl:nth-child(7){animation:hbl7 1.5s cubic-bezier(.16,1,.3,1) .14s forwards}
+
+/* B — from far left + deep behind */
+@keyframes hbl1{
+  from{opacity:0;transform:translateX(-90vw) translateZ(-800px) rotateY(40deg) scale(.3)}
+  to  {opacity:1;transform:translateX(0) translateZ(0) rotateY(0deg) scale(1)}
+}
+/* E — from top, tumbling down */
+@keyframes hbl2{
+  from{opacity:0;transform:translateY(-70vh) rotateX(-50deg) scale(.5)}
+  to  {opacity:1;transform:translateY(0) rotateX(0) scale(1)}
+}
+/* L1 — from deep behind, zooms in */
+@keyframes hbl3{
+  from{opacity:0;transform:translateZ(-1200px) scale(.05) rotateZ(-12deg)}
+  to  {opacity:1;transform:translateZ(0) scale(1) rotateZ(0)}
+}
+/* L2 — from bottom-left */
+@keyframes hbl4{
+  from{opacity:0;transform:translateX(-50vw) translateY(60vh) rotateZ(25deg)}
+  to  {opacity:1;transform:translateX(0) translateY(0) rotateZ(0)}
+}
+/* E2 — from right, depth */
+@keyframes hbl5{
+  from{opacity:0;transform:translateX(80vw) translateZ(-500px) rotateY(-35deg)}
+  to  {opacity:1;transform:translateX(0) translateZ(0) rotateY(0)}
+}
+/* N — from top-right, spinning */
+@keyframes hbl6{
+  from{opacity:0;transform:translateX(60vw) translateY(-50vh) rotateZ(30deg) scale(.4)}
+  to  {opacity:1;transform:translateX(0) translateY(0) rotateZ(0) scale(1)}
+}
+/* S — from far right deep */
+@keyframes hbl7{
+  from{opacity:0;transform:translateX(100vw) translateZ(-700px) rotateY(-45deg) scale(.3)}
+  to  {opacity:1;transform:translateX(0) translateZ(0) rotateY(0) scale(1)}
+}
+
+/* Glow sweep across BELLENS after landing */
+.hero-bg-word::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(59,130,246,.06) 50%,transparent 100%);
+  animation:heroGlowSweep 3.5s ease-in-out 1.8s infinite;
+}
+@keyframes heroGlowSweep{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(110%)}
+}
+
+/* ── HERO FOREGROUND CONTENT ── */
+.hero-inner{
+  position:relative;z-index:5;
+  max-width:1100px;width:100%;
+  padding:0 6vw;text-align:center;
+}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   padding:7px 16px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);
   border-radius:100px;font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--silver);
-  margin-bottom:40px;opacity:0;animation:fadeUp .8s var(--ease) .3s forwards;
+  margin-bottom:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 1.2s forwards;
 }
 .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hl-wrap{overflow:hidden;line-height:.92}
-.hl-wrap span{display:block;font-size:clamp(52px,10vw,134px);font-weight:900;letter-spacing:-.04em;
-  transform:translateY(110%);animation:slideUp 1s var(--ease) forwards}
-.hl-wrap:nth-child(1) span{animation-delay:.4s;color:var(--white)}
-.hl-wrap:nth-child(2) span{animation-delay:.55s;font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;color:var(--silver);font-size:clamp(44px,8.5vw,114px)}
-.hl-wrap:nth-child(3) span{animation-delay:.7s;color:var(--white)}
-@keyframes slideUp{to{transform:translateY(0)}}
-.hero-sub{font-size:11px;font-weight:300;color:var(--muted);letter-spacing:.35em;text-transform:uppercase;
-  margin:28px 0 52px;opacity:0;animation:fadeUp .8s var(--ease) 1s forwards}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
-  opacity:0;animation:fadeUp .8s var(--ease) 1.15s forwards}
+
+/* Tagline — words stagger in from left */
+.hero-tagline{
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:28px;
+}
+.htw{overflow:hidden;line-height:.9}
+.htw span{
+  display:block;
+  font-size:clamp(54px,9.5vw,128px);
+  font-weight:900;letter-spacing:-.04em;
+  opacity:0;
+}
+.htw:nth-child(1) span{color:var(--white);animation:heroFadeUp 1s var(--ease) 1.4s forwards}
+.htw:nth-child(2) span{
+  font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;
+  color:var(--silver);font-size:clamp(44px,8vw,110px);
+  animation:heroFadeUp 1s var(--ease) 1.55s forwards;
+}
+.htw:nth-child(3) span{color:var(--white);animation:heroFadeUp 1s var(--ease) 1.7s forwards}
+
+@keyframes heroFadeUp{
+  from{opacity:0;transform:translateY(80px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.hero-sub{
+  font-size:11px;font-weight:300;color:var(--muted);letter-spacing:.35em;text-transform:uppercase;
+  margin:28px 0 52px;opacity:0;animation:heroFadeUp .8s var(--ease) 1.9s forwards;
+}
+.hero-ctas{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:heroFadeUp .8s var(--ease) 2.05s forwards;
+}
 .btn-primary{padding:16px 40px;background:var(--accent);color:#fff;font-size:13px;font-weight:600;letter-spacing:.06em;border-radius:4px;transition:all var(--t)}
 .btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 16px 40px rgba(59,130,246,.3)}
 .btn-ghost{padding:15px 40px;border:1px solid rgba(148,163,184,.3);color:var(--silver);font-size:13px;letter-spacing:.06em;border-radius:4px;transition:all var(--t)}
 .btn-ghost:hover{border-color:rgba(148,163,184,.7);color:var(--white);transform:translateY(-2px)}
+
+/* Scan line effect across hero */
+.hero-scanline{
+  position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);
+  animation:scanMove 8s linear infinite;
+  opacity:.4;
+}
+@keyframes scanMove{0%{background-position:0 0}100%{background-position:0 200px}}
+
 .scroll-cue{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  opacity:0;animation:fadeUp .8s var(--ease) 1.5s forwards}
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:6;
+  opacity:0;animation:heroFadeUp .8s var(--ease) 2.4s forwards}
 .scroll-cue span{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
 .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--accent),transparent);
   animation:linePulse 2.4s ease-in-out infinite}
 @keyframes linePulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.25;transform:scaleY(.4)}}
 
-/* ── SPACER SECTIONS (let background animate) ── */
+/* ── SPACER SECTIONS ── */
 .bg-spacer{height:80vh;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.bg-spacer-label{
-  font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;
-  color:rgba(59,130,246,.3);
-}
+.bg-spacer-label{font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:rgba(59,130,246,.3)}
 
 /* ── AANBOD ── */
 #aanbod{padding:100px 6vw 80px}
@@ -441,19 +566,19 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
 
   <!-- PHASE 1: Car driving toward camera (video) -->
   <div id="phase-approach" class="vid-phase show">
-    <video id="vid-approach" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150543_169b9739-25f7-47ab-b68b-20aeb722f338.mp4"
+    <video id="vid-approach" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_185851_5b003755-7576-4899-9db7-8e7e4a4a2c29.mp4"
       muted playsinline preload="auto"></video>
   </div>
 
   <!-- PHASE 2: 3D rotating car (video) -->
   <div id="phase-3d" class="vid-phase">
-    <video id="vid-3d" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150558_02191326-1169-44d8-9011-fdb211d444a0.mp4"
+    <video id="vid-3d" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_185859_990884bf-108e-42ad-8ad6-e14deeacca0c.mp4"
       muted playsinline preload="auto"></video>
   </div>
 
   <!-- PHASE 3: Exploded car (video) + label overlay -->
   <div id="phase-explode" class="vid-phase">
-    <video id="vid-explode" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_150608_d013dc65-10ae-49da-858a-c6a23c6e64f8.mp4"
+    <video id="vid-explode" src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_185908_4c3d2df0-34d6-4c3e-8555-8d5f0fdd192d.mp4"
       muted playsinline preload="auto"></video>
     <div id="explode-labels">
       <!-- Pins injected by JS -->
@@ -469,12 +594,24 @@ footer{background:rgba(4,9,15,.95);padding:60px 6vw 36px;border-top:1px solid rg
 
 <!-- HERO -->
 <section id="hero">
+  <!-- Background video (will be set by JS once URL is known) -->
+  <video id="hero-video" autoplay muted loop playsinline
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_3EOGocDQKkCRNSrZ72UqgMWUWX0/hf_20260620_185836_8405e4c6-ab07-4f29-9ee1-349194abdeca.mp4"></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-scanline"></div>
+
+  <!-- Giant BG letters — sit behind the foreground content -->
+  <div class="hero-bg-word" aria-hidden="true">
+    <span class="hbl">B</span><span class="hbl">E</span><span class="hbl">L</span><span class="hbl">L</span><span class="hbl">E</span><span class="hbl">N</span><span class="hbl">S</span>
+  </div>
+
+  <!-- Foreground content -->
   <div class="hero-inner">
     <div class="hero-badge">Vertrouwd in Nijlen &amp; regio Antwerpen</div>
-    <div class="hero-headline">
-      <div class="hl-wrap"><span>Kwaliteit</span></div>
-      <div class="hl-wrap"><span>rijdt verder</span></div>
-      <div class="hl-wrap"><span>met Bellens</span></div>
+    <div class="hero-tagline">
+      <div class="htw"><span>Kwaliteit</span></div>
+      <div class="htw"><span>rijdt verder</span></div>
+      <div class="htw"><span>met Bellens</span></div>
     </div>
     <p class="hero-sub">Nijlen · Antwerpen · Sinds 1993</p>
     <div class="hero-ctas">
@@ -761,15 +898,10 @@ const PH={
 
 // Label pins for explode phase
 const PINS=[
-  {id:'pin-motor',   label:'Motor',       desc:'2.0 TSI Turbomotor',    cx:52, cy:42},
-  {id:'pin-dak',     label:'Dak',         desc:'Panorama glasdak',       cx:50, cy:20},
-  {id:'pin-wfl',     label:'Voorwiel L.', desc:'225/40 R18 Michelin',    cx:22, cy:74},
-  {id:'pin-wfr',     label:'Voorwiel R.', desc:'225/40 R18 Michelin',    cx:78, cy:74},
-  {id:'pin-doorl',   label:'Deur links',  desc:'Versterkt staal',        cx:32, cy:54},
-  {id:'pin-doorr',   label:'Deur rechts', desc:'Versterkt staal',        cx:68, cy:54},
-  {id:'pin-ruit',    label:'Voorruit',    desc:'Gelaagd veiligheidsglas',cx:50, cy:32},
-  {id:'pin-uitlaat', label:'Uitlaat',     desc:'Sport dubbele uitlaat',  cx:18, cy:64},
-  {id:'pin-koplamp', label:'Koplampen',   desc:'Full-LED Matrix',        cx:82, cy:44},
+  {id:'pin-motor',   label:'Turbo Motor', desc:'2.0 TSI · 310 pk',       cx:52, cy:38, delay:0},
+  {id:'pin-deur',    label:'Interieur',   desc:'Premium Nappa-leder',     cx:35, cy:52, delay:2.5},
+  {id:'pin-velg',    label:'Sport Velgen',desc:'20" Brembo Remmen',       cx:22, cy:74, delay:5.0},
+  {id:'pin-dak',     label:'Panoramadak', desc:'Elektrisch hemelvenster', cx:50, cy:20, delay:7.5},
 ];
 
 function lerp(a,b,t){return a+(b-a)*t}
@@ -797,20 +929,26 @@ const vidApproach = document.getElementById('vid-approach');
 const vid3d       = document.getElementById('vid-3d');
 const vidExplode  = document.getElementById('vid-explode');
 
-function scrub(video, t){
-  // t is 0..1 within the phase
-  if(!video || !video.duration) return;
-  const target = clamp01(t) * video.duration;
-  if(Math.abs(video.currentTime - target) > 0.05) video.currentTime = target;
-}
+// All bg videos loop silently
+[vidApproach, vid3d, vidExplode].forEach(v=>{
+  if(v){ v.muted=true; v.loop=true; v.playsInline=true; }
+});
 
 function phaseOpacity(p, start, end){
-  const fadeW = 0.04;
+  const fadeW = 0.045;
   if(p < start) return 0;
   if(p > end)   return 0;
-  const fadeIn  = clamp01((p - start) / fadeW);
-  const fadeOut = clamp01((end - p)   / fadeW);
-  return Math.min(fadeIn, fadeOut);
+  return Math.min(clamp01((p-start)/fadeW), clamp01((end-p)/fadeW));
+}
+
+function setPhase(el, video, opacity){
+  el.style.opacity = opacity;
+  if(!video) return;
+  if(opacity > 0.02){
+    if(video.paused) video.play().catch(()=>{});
+  } else {
+    if(!video.paused) video.pause();
+  }
 }
 
 function animBg(){
@@ -824,26 +962,20 @@ function animBg(){
   document.getElementById('spb').style.width=(p*100)+'%';
   document.getElementById('mainNav').classList.toggle('sc',scrollY>40);
 
-  // ── PHASE 1: APPROACH VIDEO ──
-  const aOp = p < PH.APPROACH_END + 0.04 ? clamp01(1-(p-PH.APPROACH_END)/0.06) : 0;
-  const aEl  = document.getElementById('phase-approach');
-  aEl.style.opacity = p <= PH.APPROACH_END ? 1 : aOp;
-  scrub(vidApproach, invlerp(PH.APPROACH_START, PH.APPROACH_END, p));
+  // ── PHASE 1: APPROACH VIDEO (plays, no scrubbing) ──
+  const aOp = p <= PH.APPROACH_END ? 1 : clamp01(1-(p-PH.APPROACH_END)/0.06);
+  setPhase(document.getElementById('phase-approach'), vidApproach, aOp);
 
   // ── PHASE 2: 3D ROTATION VIDEO ──
   const rOp = phaseOpacity(p, PH.ROT3D_START, PH.ROT3D_END);
-  const rEl  = document.getElementById('phase-3d');
-  rEl.style.opacity = rOp;
-  rEl.style.pointerEvents = rOp > 0 ? 'none' : 'none';
-  scrub(vid3d, invlerp(PH.ROT3D_START, PH.ROT3D_END, p));
+  setPhase(document.getElementById('phase-3d'), vid3d, rOp);
 
   // ── PHASE 3: EXPLODE VIDEO + PINS ──
   buildPins();
   const eOp = phaseOpacity(p, PH.EXPLODE_START, PH.EXPLODE_END);
-  const eEl  = document.getElementById('phase-explode');
-  eEl.style.opacity = eOp;
+  const eEl = document.getElementById('phase-explode');
+  setPhase(eEl, vidExplode, eOp);
   eEl.classList.toggle('show', eOp > 0.05);
-  scrub(vidExplode, invlerp(PH.EXPLODE_START, PH.EXPLODE_END, p));
 }
 
 window.addEventListener('scroll',animBg,{passive:true});
